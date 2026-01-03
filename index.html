@@ -131,10 +131,21 @@
         }
         .video-card:hover { border-color: var(--accent); transform: translateY(-5px); }
 
-        .video-box.portrait { aspect-ratio: 9 / 16; background: #000; }
-        .video-box.landscape { aspect-ratio: 16 / 9; background: #000; }
+        /* CLEAN PLAYER CSS */
+        .video-box { position: relative; background: #000; overflow: hidden; }
+        .video-box.portrait { aspect-ratio: 9 / 16; }
+        .video-box.landscape { aspect-ratio: 16 / 9; }
+        
+        /* Magic Trick: Hiding top info by slightly scaling and offsetting */
+        .video-box iframe { 
+            position: absolute;
+            top: -2px;
+            left: 0;
+            width: 100%;
+            height: calc(100% + 4px);
+            border: none;
+        }
 
-        .video-box iframe { width: 100%; height: 100%; border: none; }
         .card-info { padding: 12px; text-align: center; border-top: 1px solid var(--border); }
         .card-info a { color: var(--accent); font-weight: 700; font-size: 0.65rem; text-decoration: none; letter-spacing: 1px; }
 
@@ -233,7 +244,7 @@
             </div>
             <div class="video-card" style="max-width: 950px; margin: 0 auto; border: 2px solid var(--accent);">
                 <div class="video-box landscape">
-                    <iframe src="https://www.youtube.com/embed/P0OZp1dbb0g?autoplay=1&mute=1&loop=1&playlist=P0OZp1dbb0g" allow="autoplay"></iframe>
+                    <iframe src="https://www.youtube.com/embed/P0OZp1dbb0g?autoplay=1&mute=1&loop=1&playlist=P0OZp1dbb0g&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3" allow="autoplay"></iframe>
                 </div>
             </div>
         </section>
@@ -246,30 +257,30 @@
             
             <div class="portfolio-grid">
                 <div class="video-card">
-                    <div class="video-box portrait"><iframe src="https://www.youtube.com/embed/qvABBZOzxIA"></iframe></div>
+                    <div class="video-box portrait"><iframe src="https://www.youtube.com/embed/qvABBZOzxIA?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3"></iframe></div>
                     <div class="card-info"><a href="https://youtube.com/shorts/qvABBZOzxIA" target="_blank">WATCH REEL</a></div>
                 </div>
                 <div class="video-card">
-                    <div class="video-box portrait"><iframe src="https://www.youtube.com/embed/ahxMFjt9bKk"></iframe></div>
+                    <div class="video-box portrait"><iframe src="https://www.youtube.com/embed/ahxMFjt9bKk?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3"></iframe></div>
                     <div class="card-info"><a href="https://youtube.com/shorts/ahxMFjt9bKk" target="_blank">WATCH REEL</a></div>
                 </div>
                 <div class="video-card">
-                    <div class="video-box portrait"><iframe src="https://www.youtube.com/embed/PxtZWx0hAaI"></iframe></div>
+                    <div class="video-box portrait"><iframe src="https://www.youtube.com/embed/PxtZWx0hAaI?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3"></iframe></div>
                     <div class="card-info"><a href="https://youtube.com/shorts/PxtZWx0hAaI" target="_blank">WATCH REEL</a></div>
                 </div>
                 <div class="video-card">
-                    <div class="video-box portrait"><iframe src="https://www.youtube.com/embed/jTZZndniYVc"></iframe></div>
+                    <div class="video-box portrait"><iframe src="https://www.youtube.com/embed/jTZZndniYVc?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3"></iframe></div>
                     <div class="card-info"><a href="https://youtube.com/shorts/jTZZndniYVc" target="_blank">WATCH REEL</a></div>
                 </div>
             </div>
 
             <div class="portfolio-grid-landscape">
                 <div class="video-card">
-                    <div class="video-box landscape"><iframe src="https://www.youtube.com/embed/jL-qLryhBs0"></iframe></div>
+                    <div class="video-box landscape"><iframe src="https://www.youtube.com/embed/jL-qLryhBs0?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3"></iframe></div>
                     <div class="card-info"><a href="https://youtu.be/jL-qLryhBs0" target="_blank">WATCH FULL VIDEO</a></div>
                 </div>
                 <div class="video-card">
-                    <div class="video-box landscape"><iframe src="https://www.youtube.com/embed/Dz7SG_VWSd8"></iframe></div>
+                    <div class="video-box landscape"><iframe src="https://www.youtube.com/embed/Dz7SG_VWSd8?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3"></iframe></div>
                     <div class="card-info"><a href="https://youtu.be/Dz7SG_VWSd8" target="_blank">WATCH FULL VIDEO</a></div>
                 </div>
             </div>
