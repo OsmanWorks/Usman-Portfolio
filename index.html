@@ -224,6 +224,41 @@
 </head>
 <body>
 
+    <script>
+        // Lazy video loading - jab video screen pe aaye tab play ho
+        document.addEventListener('DOMContentLoaded', function() {
+            const videos = document.querySelectorAll('.video-box iframe');
+            
+            const observerOptions = {
+                root: null,
+                rootMargin: '50px',
+                threshold: 0.25
+            };
+            
+            const videoObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const iframe = entry.target;
+                    const src = iframe.dataset.src;
+                    
+                    if (entry.isIntersecting && src) {
+                        // Video ko load karo jab visible ho
+                        iframe.src = src;
+                        iframe.removeAttribute('data-src');
+                    }
+                });
+            }, observerOptions);
+            
+            videos.forEach(video => {
+                // Initially src ko data-src mein move karo
+                if (video.src && !video.closest('#showreel')) {
+                    video.dataset.src = video.src;
+                    video.src = '';
+                }
+                videoObserver.observe(video);
+            });
+        });
+    </script>
+
     <div class="side-bar">
         <a href="mailto:osman.chaajao@gmail.com"><i class="fas fa-envelope"></i></a>
         <a href="https://wa.me/923072969303" target="_blank"><i class="fab fa-whatsapp"></i></a>
