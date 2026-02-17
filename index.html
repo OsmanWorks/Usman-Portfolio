@@ -27,6 +27,45 @@
             overflow-x: hidden;
         }
 
+        /* ANIMATED BG GRID */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,210,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,210,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+            pointer-events: none;
+            animation: gridMove 20s linear infinite;
+        }
+        @keyframes gridMove {
+            0%   { background-position: 0 0; }
+            100% { background-position: 60px 60px; }
+        }
+
+        /* GLOW BLOBS */
+        .blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.10;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .blob-1 { width: 600px; height: 600px; background: var(--accent); top: -150px; left: -150px; animation: blobFloat 9s ease-in-out infinite; }
+        .blob-2 { width: 500px; height: 500px; background: #0055ff; bottom: -150px; right: -150px; animation: blobFloat 12s ease-in-out infinite reverse; }
+        .blob-3 { width: 350px; height: 350px; background: var(--accent); top: 50%; left: 50%; transform: translate(-50%,-50%); animation: blobFloat 15s ease-in-out infinite 3s; opacity: 0.05; }
+
+        @keyframes blobFloat {
+            0%, 100% { transform: translate(0,0) scale(1); }
+            50%       { transform: translate(30px,30px) scale(1.08); }
+        }
+
+        /* Make sure all content sits above background */
+        nav, .container, footer { position: relative; z-index: 1; }
+
         /* --- STICKY SOCIAL BAR --- */
         .side-bar {
             position: fixed;
@@ -460,6 +499,10 @@
     </style>
 </head>
 <body>
+
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
