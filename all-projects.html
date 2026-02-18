@@ -18,15 +18,13 @@
             --border: rgba(255, 255, 255, 0.05);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
         body {
             background: var(--bg);
             color: var(--text);
             font-family: 'Outfit', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            line-height: 1.6;
             overflow-x: hidden;
         }
 
@@ -65,16 +63,36 @@
             50%       { transform: translate(30px,30px) scale(1.1); }
         }
 
+        /* SIDEBAR */
+        .side-bar {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background: var(--card-bg);
+            padding: 20px 15px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            z-index: 1000;
+        }
+        .side-bar a { color: var(--muted); font-size: 1.2rem; transition: 0.3s; }
+        .side-bar a:hover { color: var(--accent); transform: scale(1.2); }
+
         /* NAV */
         nav {
             position: relative;
-            z-index: 10;
+            z-index: 999;
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 5%;
-            background: rgba(5,5,5,0.7);
+            background: rgba(5,5,5,0.85);
             backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
             border-bottom: 1px solid var(--border);
         }
         .logo { font-weight: 900; font-size: 1.2rem; letter-spacing: 1px; color: var(--text); text-transform: uppercase; text-decoration: none; }
@@ -89,203 +107,456 @@
         }
         .back-btn:hover { color: var(--accent); border-color: var(--accent); }
 
-        /* MAIN */
-        .main {
-            flex: 1;
+        /* CONTAINER */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 5%; position: relative; z-index: 1; }
+
+        /* PAGE HERO */
+        .page-hero { padding: 60px 0 40px; text-align: center; }
+        .page-hero .badge {
+            display: inline-block;
+            background: rgba(0,210,255,0.1);
+            border: 1px solid rgba(0,210,255,0.25);
+            color: var(--accent);
+            font-size: 0.72rem; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase;
+            padding: 6px 16px; border-radius: 50px;
+            margin-bottom: 18px;
+        }
+        .page-hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 14px; }
+        .page-hero h1 span { color: var(--accent); }
+        .page-hero p { color: var(--muted); font-size: 1rem; max-width: 600px; margin: 0 auto; }
+
+        /* SECTION */
+        .section-block { margin: 60px 0; }
+
+        .section-header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 60px 5%;
-            position: relative;
-            z-index: 1;
+            gap: 16px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
         }
-
-        .wrap { text-align: center; max-width: 600px; }
-
-        /* ICON */
-        .uc-icon {
-            width: 90px; height: 90px;
-            background: rgba(0,210,255,0.08);
-            border: 2px solid rgba(0,210,255,0.2);
-            border-radius: 24px;
+        .section-header .icon-wrap {
+            width: 48px; height: 48px;
+            background: rgba(0,210,255,0.1);
+            border: 1px solid rgba(0,210,255,0.2);
+            border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 28px;
-            font-size: 2.2rem; color: var(--accent);
-            animation: iconPulse 3s ease-in-out infinite;
+            color: var(--accent); font-size: 1.2rem; flex-shrink: 0;
         }
-        @keyframes iconPulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(0,210,255,0); }
-            50%       { box-shadow: 0 0 0 18px rgba(0,210,255,0.07); }
+        .section-header .title-wrap h2 {
+            font-size: 1.4rem; font-weight: 900;
+            text-transform: uppercase; letter-spacing: 2px; color: var(--text);
         }
+        .section-header .title-wrap p { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
 
-        /* BADGE */
-        .badge {
-            display: inline-block;
-            background: rgba(255,160,0,0.1);
-            border: 1px solid rgba(255,160,0,0.3);
-            color: #ffa500;
-            font-size: 0.7rem; font-weight: 700;
-            letter-spacing: 3px; text-transform: uppercase;
-            padding: 6px 18px; border-radius: 50px;
-            margin-bottom: 22px;
-            animation: fadeInUp 0.5s ease both;
+        /* BEFORE AFTER */
+        .ba-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: 0.4s;
+            max-width: 900px;
+            margin: 0 auto;
         }
+        .ba-card:hover { border-color: var(--accent); box-shadow: 0 15px 40px rgba(0,210,255,0.15); }
+        .ba-row { display: grid; grid-template-columns: 1fr 3px 1fr; }
+        .ba-side { position: relative; }
+        .ba-label {
+            position: absolute; top: 12px; left: 12px;
+            font-size: 0.62rem; font-weight: 800; letter-spacing: 2px;
+            text-transform: uppercase; padding: 5px 12px; border-radius: 6px; z-index: 10;
+        }
+        .ba-label.before { background: rgba(255,80,80,0.9); color: #fff; }
+        .ba-label.after  { background: rgba(0,210,255,0.9);  color: #000; }
+        .ba-divider { background: var(--accent); }
+        .ba-video { aspect-ratio: 9/16; background: #000; }
+        .ba-video iframe { width: 100%; height: 100%; border: none; }
 
-        h1 {
-            font-size: clamp(2.2rem, 6vw, 4rem);
-            font-weight: 900; line-height: 1.1;
-            margin-bottom: 16px;
-            animation: fadeInUp 0.6s ease 0.1s both;
-        }
-        h1 span { color: var(--accent); }
-
-        .subtitle {
-            color: var(--muted);
-            font-size: 1rem;
-            line-height: 1.7;
-            margin-bottom: 40px;
-            animation: fadeInUp 0.6s ease 0.2s both;
-        }
-
-        /* PROGRESS BAR */
-        .progress-wrap {
-            margin-bottom: 40px;
-            animation: fadeInUp 0.6s ease 0.3s both;
-        }
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.75rem;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
+        /* PODCAST PLAYLIST */
+        .podcast-container {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 20px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border);
             overflow: hidden;
         }
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--accent), #0066ff);
-            border-radius: 10px;
-            animation: fillBar 2s ease 0.8s forwards;
-        }
-        @keyframes fillBar {
-            to { width: 35%; }
+
+        .playlist-sidebar {
+            background: rgba(0,0,0,0.3);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            max-height: 600px;
         }
 
-        /* SECTIONS PREVIEW */
-        .sections-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 40px;
-            animation: fadeInUp 0.6s ease 0.4s both;
+        .playlist-header {
+            background: linear-gradient(135deg, rgba(0,210,255,0.15), rgba(0,210,255,0.05));
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
-        .sec-chip {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px 8px;
-            text-align: center;
-            font-size: 0.68rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--muted);
-            transition: 0.3s;
-        }
-        .sec-chip i { display: block; font-size: 1.1rem; color: rgba(0,210,255,0.4); margin-bottom: 6px; }
-        .sec-chip:hover { border-color: rgba(0,210,255,0.3); color: var(--text); }
-
-        /* BACK BUTTON */
-        .back-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--accent);
-            color: #000;
-            padding: 14px 30px;
-            border-radius: 8px;
-            text-decoration: none;
+        .playlist-header h3 {
+            font-size: 0.95rem;
             font-weight: 800;
-            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: 0.3s;
-            animation: fadeInUp 0.6s ease 0.5s both;
+            color: var(--accent);
         }
-        .back-cta:hover { box-shadow: 0 0 24px rgba(0,210,255,0.4); transform: translateY(-3px); }
 
-        footer {
-            position: relative; z-index: 1;
-            text-align: center; padding: 24px;
-            color: var(--muted); font-size: 0.76rem;
-            border-top: 1px solid var(--border);
+        .playlist-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: 0.3s;
         }
+        .playlist-item:hover { background: rgba(0,210,255,0.05); }
+        .playlist-item.active {
+            background: rgba(0,210,255,0.1);
+            border-left: 3px solid var(--accent);
+        }
+        .playlist-item .play-icon {
+            width: 32px; height: 32px;
+            background: rgba(0,210,255,0.15);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent);
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+        .playlist-item.active .play-icon { background: var(--accent); color: #000; }
+        .playlist-item .item-details h4 {
+            font-size: 0.78rem;
+            font-weight: 700;
+            line-height: 1.3;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+        .playlist-item .item-details span {
+            font-size: 0.68rem;
+            color: var(--muted);
+        }
+
+        .video-player {
+            position: relative;
+            background: #000;
+        }
+        .video-player iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+
+        /* LANDSCAPE GRID */
+        .landscape-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; }
+        .video-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: 0.4s;
+        }
+        .video-card:hover { border-color: var(--accent); transform: translateY(-6px); box-shadow: 0 12px 35px rgba(0,210,255,0.15); }
+        .video-box { background: #000; }
+        .video-box.landscape { aspect-ratio: 16/9; }
+        .video-box iframe { width:100%; height:100%; border:none; display:block; }
+
+        .card-meta {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-meta .tag {
+            font-size: 0.6rem; font-weight: 700; letter-spacing: 1.5px;
+            text-transform: uppercase; color: var(--muted);
+            background: rgba(255,255,255,0.04); padding: 4px 10px; border-radius: 4px;
+        }
+        .card-meta a {
+            color: var(--accent); font-weight: 700; font-size: 0.62rem;
+            text-decoration: none; letter-spacing: 1px; text-transform: uppercase;
+            display: flex; align-items: center; gap: 5px; transition: 0.3s;
+        }
+        .card-meta a:hover { gap: 8px; }
+
+        /* PLACEHOLDER */
+        .placeholder-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            border: 1px dashed rgba(0,210,255,0.2);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 10px; color: var(--muted); font-size: 0.78rem;
+            text-align: center; padding: 20px; transition: 0.3s;
+        }
+        .placeholder-card:hover { border-color: rgba(0,210,255,0.4); }
+        .placeholder-card i { font-size: 1.6rem; color: rgba(0,210,255,0.2); }
+        .placeholder-card small { font-size: 0.66rem; color: rgba(255,255,255,0.18); display: block; margin-top: 3px; }
+        .placeholder-card.landscape { aspect-ratio: 16/9; }
+
+        /* CTA */
+        .cta-strip {
+            background: linear-gradient(135deg,rgba(0,210,255,0.07),rgba(0,210,255,0.03));
+            border: 1px solid rgba(0,210,255,0.15);
+            border-radius: 20px; padding: 50px 30px;
+            text-align: center; margin: 60px 0;
+        }
+        .cta-strip h2 { font-size: clamp(1.4rem,3vw,2rem); font-weight: 900; margin-bottom: 12px; }
+        .cta-strip h2 span { color: var(--accent); }
+        .cta-strip p { color: var(--muted); font-size: 0.95rem; margin-bottom: 28px; }
+        .cta-strip-buttons { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+        .btn-solid {
+            background: var(--accent); color: #000; padding: 13px 28px; border-radius: 8px;
+            text-decoration: none; font-weight: 800; font-size: 0.82rem;
+            text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .btn-solid:hover { box-shadow: 0 0 20px rgba(0,210,255,0.4); transform: translateY(-3px); }
+        .btn-outline {
+            background: transparent; color: var(--accent); border: 2px solid var(--accent);
+            padding: 13px 28px; border-radius: 8px; text-decoration: none; font-weight: 800;
+            font-size: 0.82rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .btn-outline:hover { background: var(--accent); color: #000; transform: translateY(-3px); }
+
+        footer { text-align: center; padding: 30px; color: var(--muted); border-top: 1px solid var(--border); font-size: 0.8rem; position: relative; z-index: 1; }
         footer a { color: var(--accent); text-decoration: none; }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .podcast-container { grid-template-columns: 1fr; }
+            .playlist-sidebar { max-height: 300px; border-right: none; border-bottom: 1px solid var(--border); }
+            .landscape-grid { grid-template-columns: 1fr; }
+            .side-bar { display: none; }
         }
-
         @media (max-width: 600px) {
-            .sections-grid { grid-template-columns: repeat(2, 1fr); }
-            h1 { font-size: 2rem; }
+            nav { padding: 15px 5%; }
+            .page-hero { padding: 35px 0 25px; }
+            .ba-row { grid-template-columns: 1fr; grid-template-rows: 1fr 3px 1fr; }
+            .ba-divider { height: 3px; }
+            .video-player iframe { height: 400px; }
+            .cta-strip { padding: 35px 15px; }
+            .cta-strip-buttons { flex-direction: column; align-items: center; }
+            .btn-solid, .btn-outline { width: 100%; max-width: 300px; justify-content: center; }
         }
     </style>
 </head>
 <body>
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Playlist video switcher
+    const playlistItems = document.querySelectorAll('.playlist-item');
+    const mainPlayer = document.getElementById('mainPlayer');
+
+    playlistItems.forEach(item => {
+        item.addEventListener('click', () => {
+            playlistItems.forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            const videoId = item.dataset.video;
+            mainPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+        });
+    });
+
+    // Lazy load
+    const iframes = document.querySelectorAll('.video-box iframe[data-src]');
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.src = e.target.dataset.src;
+                e.target.removeAttribute('data-src');
+                io.unobserve(e.target);
+            }
+        });
+    }, { rootMargin: '80px', threshold: 0.2 });
+    iframes.forEach(f => io.observe(f));
+});
+</script>
+
 <div class="blob blob-1"></div>
 <div class="blob blob-2"></div>
+
+<div class="side-bar">
+    <a href="mailto:usmankhan@email.com"><i class="fas fa-envelope"></i></a>
+    <a href="https://wa.me/923072969303" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank"><i class="fab fa-linkedin"></i></a>
+    <a href="https://www.behance.net/usmani" target="_blank"><i class="fab fa-behance"></i></a>
+</div>
 
 <nav>
     <a href="index.html" class="logo">Visual <span>Artist</span></a>
     <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Home</a>
 </nav>
 
-<div class="main">
-    <div class="wrap">
+<div class="container">
 
-        <div class="badge">🚧 Under Construction</div>
-
-        <h1>Page is Being<br><span>Built.</span></h1>
-
-        <!-- PROGRESS -->
-        <div class="progress-wrap">
-            <div class="progress-label">
-                <span>Work in progress</span>
-                <span>35%</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill"></div>
-            </div>
-        </div>
-
-        <!-- SECTIONS PREVIEW -->
-        <div class="sections-grid">
-            <div class="sec-chip"><i class="fas fa-ad"></i>Social Ads</div>
-            <div class="sec-chip"><i class="fas fa-sliders-h"></i>Before/After</div>
-            <div class="sec-chip"><i class="fas fa-mobile-alt"></i>Reels</div>
-            <div class="sec-chip"><i class="fas fa-film"></i>Long-form</div>
-            <div class="sec-chip"><i class="fas fa-microphone"></i>Podcast</div>
-            <div class="sec-chip"><i class="fas fa-calendar-alt"></i>Events</div>
-            <div class="sec-chip"><i class="fas fa-broadcast-tower"></i>Live</div>
-            <div class="sec-chip"><i class="fas fa-ellipsis-h"></i>More...</div>
-        </div>
-
-        <a href="index.html" class="back-cta">
-            <i class="fas fa-arrow-left"></i> Home
-        </a>
-
+    <div class="page-hero">
+        <div class="badge">Complete Work Collection</div>
+        <h1>All <span>Projects</span></h1>
+        <p>Before/After comparisons, podcast sessions, long-form videos, live streams & more.</p>
     </div>
+
+    <!-- 1. BEFORE / AFTER -->
+    <div class="section-block">
+        <div class="section-header">
+            <div class="icon-wrap"><i class="fas fa-sliders-h"></i></div>
+            <div class="title-wrap">
+                <h2>Before / After</h2>
+                <p>Raw footage vs. final edit — see the transformation</p>
+            </div>
+        </div>
+        <div class="ba-card">
+            <div class="ba-row">
+                <div class="ba-side">
+                    <span class="ba-label before">Before</span>
+                    <div class="ba-video">
+                        <iframe src="https://www.youtube.com/embed/iNxi8hB739s?autoplay=1&mute=1&loop=1&playlist=iNxi8hB739s" allow="autoplay"></iframe>
+                    </div>
+                </div>
+                <div class="ba-divider"></div>
+                <div class="ba-side">
+                    <span class="ba-label after">After</span>
+                    <div class="ba-video">
+                        <iframe src="https://www.youtube.com/embed/mVAVkV9FzxY?autoplay=1&mute=1&loop=1&playlist=mVAVkV9FzxY" allow="autoplay"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. PODCAST SESSIONS & LONG-FORM VIDEOS -->
+    <div class="section-block">
+        <div class="section-header">
+            <div class="icon-wrap"><i class="fas fa-play-circle"></i></div>
+            <div class="title-wrap">
+                <h2>Podcast Sessions & Long-form Videos</h2>
+                <p>Full-length interviews, podcasts & educational content</p>
+            </div>
+        </div>
+        <div class="podcast-container">
+            <div class="playlist-sidebar">
+                <div class="playlist-header">
+                    <h3>📁 Portfolio</h3>
+                </div>
+
+                <div class="playlist-item active" data-video="fk2A5N-7sVI">
+                    <div class="play-icon"><i class="fas fa-play"></i></div>
+                    <div class="item-details">
+                        <h4>Namrita's MDCAT Success Journey</h4>
+                        <span>Overcoming challenges</span>
+                    </div>
+                </div>
+
+                <div class="playlist-item" data-video="uxap-3XFi0c">
+                    <div class="play-icon"><i class="fas fa-play"></i></div>
+                    <div class="item-details">
+                        <h4>Hitesh's Journey From Umerkot</h4>
+                        <span>Determination & MDCAT Success</span>
+                    </div>
+                </div>
+
+                <div class="playlist-item" data-video="VCZHvuSq56g">
+                    <div class="play-icon"><i class="fas fa-play"></i></div>
+                    <div class="item-details">
+                        <h4>Topper's Talk — IBA, MDCAT & NUST</h4>
+                        <span>Position holders prepped with Chaajao</span>
+                    </div>
+                </div>
+
+                <div class="playlist-item" data-video="iVG3ElK3gKA">
+                    <div class="play-icon"><i class="fas fa-play"></i></div>
+                    <div class="item-details">
+                        <h4>MDCAT 2025 Final Month Strategy</h4>
+                        <span>Aspirants guide</span>
+                    </div>
+                </div>
+
+                <div class="playlist-item" data-video="zmxoedfCv-4">
+                    <div class="play-icon"><i class="fas fa-play"></i></div>
+                    <div class="item-details">
+                        <h4>Why Choose Chaajao for XI–XII Prep</h4>
+                        <span>Top results & complete guidance</span>
+                    </div>
+                </div>
+
+                <div class="playlist-item" data-video="bttpT1ugQDk">
+                    <div class="play-icon"><i class="fas fa-play"></i></div>
+                    <div class="item-details">
+                        <h4>Small Towns to MDCAT Success</h4>
+                        <span>Interior Sindh's untold journey</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="video-player">
+                <iframe id="mainPlayer" src="https://www.youtube.com/embed/fk2A5N-7sVI?autoplay=1" allow="autoplay; fullscreen"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. LIVE STREAMING & BROADCASTING -->
+    <div class="section-block">
+        <div class="section-header">
+            <div class="icon-wrap"><i class="fas fa-broadcast-tower"></i></div>
+            <div class="title-wrap">
+                <h2>Live Streaming & Broadcasting</h2>
+                <p>Live stream recordings & highlight cuts</p>
+            </div>
+        </div>
+        <div class="landscape-grid">
+            <div class="video-card">
+                <div class="video-box landscape"><iframe data-src="https://www.youtube.com/embed/Qj-s_4y-D7w?autoplay=1&mute=1" allow="autoplay" src=""></iframe></div>
+                <div class="card-meta"><span class="tag">Live Stream</span><a href="https://www.youtube.com/live/Qj-s_4y-D7w" target="_blank">Watch <i class="fas fa-arrow-right"></i></a></div>
+            </div>
+            <div class="video-card">
+                <div class="video-box landscape"><iframe data-src="https://www.youtube.com/embed/SObTeDohyrw?autoplay=1&mute=1" allow="autoplay" src=""></iframe></div>
+                <div class="card-meta"><span class="tag">Live Stream</span><a href="https://www.youtube.com/live/SObTeDohyrw" target="_blank">Watch <i class="fas fa-arrow-right"></i></a></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. BASIC VIDEOS -->
+    <div class="section-block">
+        <div class="section-header">
+            <div class="icon-wrap"><i class="fas fa-film"></i></div>
+            <div class="title-wrap">
+                <h2>Basic Videos</h2>
+                <p>Additional video editing work</p>
+            </div>
+        </div>
+        <div class="landscape-grid">
+            <div class="placeholder-card landscape"><i class="fas fa-plus-circle"></i><span>Add Video<small>Replace with YouTube embed</small></span></div>
+            <div class="placeholder-card landscape"><i class="fas fa-plus-circle"></i><span>Add Video<small>Replace with YouTube embed</small></span></div>
+            <div class="placeholder-card landscape"><i class="fas fa-plus-circle"></i><span>Add Video<small>Replace with YouTube embed</small></span></div>
+            <div class="placeholder-card landscape"><i class="fas fa-plus-circle"></i><span>Add Video<small>Replace with YouTube embed</small></span></div>
+        </div>
+    </div>
+
+    <!-- CTA STRIP -->
+    <div class="cta-strip">
+        <h2>Ready to work <span>together?</span></h2>
+        <p>Let's create high-impact content that gets results — reach out and let's talk.</p>
+        <div class="cta-strip-buttons">
+            <a href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20video%20editing%20project." target="_blank" class="btn-solid">
+                <i class="fab fa-whatsapp"></i> WhatsApp Me
+            </a>
+            <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank" class="btn-outline">
+                <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+        </div>
+    </div>
+
 </div>
 
 <footer>
