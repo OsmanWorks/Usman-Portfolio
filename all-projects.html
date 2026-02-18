@@ -355,6 +355,24 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    // Load Before/After videos together
+    const baCard = document.querySelector('.ba-card');
+    if (baCard) {
+        const baObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const iframes = entry.target.querySelectorAll('.ba-video iframe[data-src]');
+                    iframes.forEach(iframe => {
+                        iframe.src = iframe.dataset.src;
+                        iframe.removeAttribute('data-src');
+                    });
+                    baObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+        baObserver.observe(baCard);
+    }
+
     // Playlist video switcher
     const playlistItems = document.querySelectorAll('.playlist-item');
     const mainPlayer = document.getElementById('mainPlayer');
@@ -368,7 +386,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Lazy load
+    // Lazy load other videos
     const iframes = document.querySelectorAll('.video-box iframe[data-src]');
     const io = new IntersectionObserver((entries) => {
         entries.forEach(e => {
@@ -387,7 +405,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="blob blob-2"></div>
 
 <div class="side-bar">
-    <a href="mailto:usmankhan@email.com"><i class="fas fa-envelope"></i></a>
+    <a href="/cdn-cgi/l/email-protection#6015130d010e0b08010e20050d01090c4e030f0d"><i class="fas fa-envelope"></i></a>
     <a href="https://wa.me/923072969303" target="_blank"><i class="fab fa-whatsapp"></i></a>
     <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank"><i class="fab fa-linkedin"></i></a>
     <a href="https://www.behance.net/usmani" target="_blank"><i class="fab fa-behance"></i></a>
@@ -420,14 +438,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="ba-side">
                     <span class="ba-label before">Before</span>
                     <div class="ba-video">
-                        <iframe src="https://www.youtube.com/embed/iNxi8hB739s?autoplay=1&mute=1&loop=1&playlist=iNxi8hB739s" allow="autoplay"></iframe>
+                        <iframe src="https://www.youtube.com/embed/iNxi8hB739s?mute=1&loop=1&playlist=iNxi8hB739s" allow="autoplay"></iframe>
                     </div>
                 </div>
                 <div class="ba-divider"></div>
                 <div class="ba-side">
                     <span class="ba-label after">After</span>
                     <div class="ba-video">
-                        <iframe src="https://www.youtube.com/embed/mVAVkV9FzxY?autoplay=1&mute=1&loop=1&playlist=mVAVkV9FzxY" allow="autoplay"></iframe>
+                        <iframe src="https://www.youtube.com/embed/mVAVkV9FzxY?mute=1&loop=1&playlist=mVAVkV9FzxY" allow="autoplay"></iframe>
                     </div>
                 </div>
             </div>
@@ -526,8 +544,8 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
     </div>
 
-    <!-- 4. BASIC VIDEOS -->
-    <div class="section-block">
+    <!-- 4. BASIC VIDEOS - HIDDEN -->
+    <!-- <div class="section-block">
         <div class="section-header">
             <div class="icon-wrap"><i class="fas fa-film"></i></div>
             <div class="title-wrap">
@@ -541,7 +559,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="placeholder-card landscape"><i class="fas fa-plus-circle"></i><span>Add Video<small>Replace with YouTube embed</small></span></div>
             <div class="placeholder-card landscape"><i class="fas fa-plus-circle"></i><span>Add Video<small>Replace with YouTube embed</small></span></div>
         </div>
-    </div>
+    </div> -->
 
     <!-- CTA STRIP -->
     <div class="cta-strip">
@@ -560,8 +578,4 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 
 <footer>
-    © 2025 Usman Khan — Visual Artist &nbsp;·&nbsp; <a href="index.html">← Home</a>
-</footer>
-
-</body>
-</html>
+    © 2025 Usman Khan — Visual Artist &nbsp;·&nbsp; <a href="index.html
