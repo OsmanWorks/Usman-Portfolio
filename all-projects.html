@@ -1,581 +1,371 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Projects | Usman Khan — Visual Artist</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Projects | Usman Khan — Visual Artist</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --bg:#08090f; --card:#0e0f1a; --blue:#00d2ff; --blue2:#0099ff;
+  --white:#f0f0ee; --grey:#1a1b2e; --muted:#5a5c70; --muted2:#8a8ca0;
+  --border:rgba(255,255,255,0.07); --borderb:rgba(0,210,255,0.15);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Nunito',sans-serif;line-height:1.6;overflow-x:hidden}
+#canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5}
+.noise{position:fixed;inset:0;z-index:1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");opacity:.5}
+nav,.sidebar,.page-hero,.page-content,footer{position:relative;z-index:2}
 
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+.sidebar{position:fixed;left:22px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:14px;z-index:500}
+.sb-line{width:1px;height:48px;background:linear-gradient(to bottom,transparent,var(--blue))}
+.sb-line-b{width:1px;height:48px;background:linear-gradient(to bottom,var(--blue),transparent)}
+.sidebar a{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted2);font-size:.85rem;text-decoration:none;transition:all .3s}
+.sidebar a:hover{color:var(--blue);border-color:var(--blue);background:rgba(0,210,255,.08);transform:scale(1.15)}
 
-    <style>
-        :root {
-            --bg: #050505;
-            --card-bg: #111111;
-            --accent: #00d2ff;
-            --text: #ffffff;
-            --muted: #888888;
-            --border: rgba(255, 255, 255, 0.05);
-        }
+nav{position:fixed;top:0;left:0;right:0;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 5%;transition:background .4s,border-color .4s;z-index:600}
+nav.solid{background:rgba(8,9,15,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Anton',sans-serif;font-size:1.4rem;letter-spacing:3px;color:var(--white);text-decoration:none}
+.nav-logo span{color:var(--blue)}
+.back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--muted2);text-decoration:none;font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:7px 16px;border:1px solid var(--border);border-radius:4px;transition:all .25s}
+.back-btn:hover{color:var(--blue);border-color:var(--blue);background:rgba(0,210,255,.06)}
 
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+.page-hero{padding:100px 5% 50px;max-width:1200px;margin:0 auto}
+.pg-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.2);border-radius:4px;padding:6px 14px;margin-bottom:20px}
+.pg-badge span{font-size:.68rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--blue)}
+.pg-dot{width:5px;height:5px;border-radius:50%;background:var(--blue);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.page-hero h1{font-family:'Anton',sans-serif;font-size:clamp(2.8rem,6vw,6rem);line-height:.95;letter-spacing:-1px;margin-bottom:14px}
+.page-hero h1 span{color:var(--blue)}
+.page-hero p{color:var(--muted2);font-size:.95rem;max-width:520px}
 
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Outfit', sans-serif;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+.page-content{max-width:1200px;margin:0 auto;padding:0 5% 80px}
+.sec-block{margin-bottom:70px}
+.sec-hdr{display:flex;align-items:center;gap:14px;margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.sec-icon{width:44px;height:44px;background:rgba(0,210,255,.08);border:1px solid rgba(0,210,255,.18);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--blue);font-size:1.1rem;flex-shrink:0}
+.sec-hdr .th h2{font-family:'Anton',sans-serif;font-size:1.3rem;letter-spacing:2px;text-transform:uppercase}
+.sec-hdr .th p{font-size:.78rem;color:var(--muted2);margin-top:2px}
 
-        /* ANIMATED BG GRID */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(0,210,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,210,255,0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
-            z-index: 0;
-            pointer-events: none;
-            animation: gridMove 20s linear infinite;
-        }
-        @keyframes gridMove {
-            0%   { background-position: 0 0; }
-            100% { background-position: 60px 60px; }
-        }
+/* BEFORE AFTER */
+.ba-wrap{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;max-width:860px;margin:0 auto;transition:all .35s}
+.ba-wrap:hover{border-color:var(--borderb);box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.ba-row{display:grid;grid-template-columns:1fr 2px 1fr}
+.ba-side{position:relative}
+.ba-lbl{position:absolute;top:10px;left:10px;z-index:5;font-size:.58rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;padding:4px 10px;border-radius:3px}
+.ba-lbl.before{background:rgba(255,70,70,.9);color:#fff}
+.ba-lbl.after{background:rgba(0,210,255,.9);color:#000}
+.ba-div{background:var(--blue)}
+.ba-vid{aspect-ratio:9/16;background:#000}
+.ba-vid iframe{width:100%;height:100%;border:none;display:block}
 
-        /* GLOW BLOBS */
-        .blob {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.12;
-            pointer-events: none;
-            z-index: 0;
-        }
-        .blob-1 { width: 500px; height: 500px; background: var(--accent); top: -100px; left: -100px; animation: blobFloat 8s ease-in-out infinite; }
-        .blob-2 { width: 400px; height: 400px; background: #0066ff; bottom: -100px; right: -100px; animation: blobFloat 10s ease-in-out infinite reverse; }
+/* PODCAST */
+.pod-wrap{display:grid;grid-template-columns:340px 1fr;background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.pl-side{border-right:1px solid var(--border);overflow-y:auto;max-height:580px}
+.pl-head{padding:16px 18px;background:rgba(0,210,255,.06);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5}
+.pl-head h3{font-size:.82rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
+.pl-item{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .2s}
+.pl-item:hover{background:rgba(0,210,255,.04)}
+.pl-item.active{background:rgba(0,210,255,.08);border-left:3px solid var(--blue)}
+.pl-icon{width:30px;height:30px;border-radius:50%;flex-shrink:0;background:rgba(0,210,255,.12);border:1px solid rgba(0,210,255,.2);display:flex;align-items:center;justify-content:center;color:var(--blue);font-size:.65rem;padding-left:2px;transition:all .2s}
+.pl-item.active .pl-icon{background:var(--blue);color:#000;border-color:var(--blue)}
+.pl-item h4{font-size:.75rem;font-weight:700;line-height:1.3;color:var(--white);margin-bottom:2px}
+.pl-item span{font-size:.65rem;color:var(--muted2)}
 
-        @keyframes blobFloat {
-            0%, 100% { transform: translate(0,0) scale(1); }
-            50%       { transform: translate(30px,30px) scale(1.1); }
-        }
+.pod-player{position:relative;background:#000;display:flex;align-items:center;justify-content:center}
+.pod-player iframe{width:100%;height:580px;border:none;display:block}
+.pod-thumb{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#000;cursor:pointer;z-index:10;transition:opacity .3s}
+.pod-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.45}
+.pt-ring{position:relative;z-index:2;width:72px;height:72px;border-radius:50%;border:2px solid var(--blue);background:rgba(0,210,255,.15);display:flex;align-items:center;justify-content:center;color:var(--blue);font-size:1.4rem;padding-left:4px;transition:all .3s}
+.pod-thumb:hover .pt-ring{background:var(--blue);color:#000;transform:scale(1.1);box-shadow:0 0 40px rgba(0,210,255,.5)}
+.pt-lbl{position:relative;z-index:2;font-size:.65rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.pt-title{position:relative;z-index:2;font-size:.85rem;font-weight:700;color:var(--white);max-width:320px;text-align:center;line-height:1.4;background:rgba(8,9,15,.65);padding:8px 16px;border-radius:4px}
 
-        /* SIDEBAR */
-        .side-bar {
-            position: fixed;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            background: var(--card-bg);
-            padding: 20px 15px;
-            border-radius: 50px;
-            border: 1px solid var(--border);
-            z-index: 1000;
-        }
-        .side-bar a { color: var(--muted); font-size: 1.2rem; transition: 0.3s; }
-        .side-bar a:hover { color: var(--accent); transform: scale(1.2); }
+/* VIDEO GRID */
+.vgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.vc{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:all .35s cubic-bezier(.4,0,.2,1);position:relative}
+.vc:hover{transform:translateY(-6px);border-color:var(--borderb);box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.vc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--blue2));transform:scaleX(0);transform-origin:left;transition:transform .35s;z-index:3}
+.vc:hover::before{transform:scaleX(1)}
+.vbox{background:#000;position:relative}
+.vbox.ls{aspect-ratio:16/9}
+.vbox iframe{width:100%;height:100%;border:none;display:block}
+.play-ov{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(8,9,15,.55);backdrop-filter:blur(2px);cursor:pointer;transition:background .25s}
+.play-ov.gone{display:none}
+.play-ov:hover{background:rgba(8,9,15,.35)}
+.pring{width:56px;height:56px;border-radius:50%;border:2px solid var(--blue);background:rgba(0,210,255,.1);display:flex;align-items:center;justify-content:center;color:var(--blue);font-size:1rem;padding-left:3px;transition:all .28s}
+.play-ov:hover .pring{background:var(--blue);color:#000;transform:scale(1.1);box-shadow:0 0 30px rgba(0,210,255,.5)}
+.plbl{font-size:.6rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.vc-ft{padding:9px 14px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,.2)}
+.vc-ft .tag{font-size:.6rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);background:rgba(255,255,255,.04);padding:3px 10px;border-radius:3px}
+.vc-ft a{font-size:.6rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);text-decoration:none;display:flex;align-items:center;gap:5px;transition:color .2s}
+.vc-ft a:hover{color:var(--blue)}
 
-        /* NAV */
-        nav {
-            position: relative;
-            z-index: 999;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 5%;
-            background: rgba(5,5,5,0.85);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            border-bottom: 1px solid var(--border);
-        }
-        .logo { font-weight: 900; font-size: 1.2rem; letter-spacing: 1px; color: var(--text); text-transform: uppercase; text-decoration: none; }
-        .logo span { color: var(--accent); }
-        .back-btn {
-            display: flex; align-items: center; gap: 8px;
-            color: var(--muted); text-decoration: none;
-            font-weight: 600; font-size: 0.8rem;
-            text-transform: uppercase; letter-spacing: 1px;
-            transition: 0.3s; padding: 8px 16px;
-            border: 1px solid var(--border); border-radius: 6px;
-        }
-        .back-btn:hover { color: var(--accent); border-color: var(--accent); }
+/* CTA */
+.cta-strip{background:linear-gradient(135deg,rgba(0,210,255,.06),rgba(0,210,255,.02));border:1px solid rgba(0,210,255,.12);border-radius:12px;padding:50px 30px;text-align:center;margin-top:30px}
+.cta-strip h2{font-family:'Anton',sans-serif;font-size:clamp(1.8rem,3.5vw,3rem);margin-bottom:10px}
+.cta-strip h2 span{color:var(--blue)}
+.cta-strip p{color:var(--muted2);font-size:.9rem;margin-bottom:28px}
+.cta-btns{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+.btn-blue{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#000;font-size:.78rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:14px 28px;border-radius:4px;text-decoration:none;border:1px solid var(--blue);transition:all .3s;position:relative;overflow:hidden}
+.btn-blue::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.2),transparent);transform:translateX(-100%) skewX(-15deg);transition:transform .5s}
+.btn-blue:hover::before{transform:translateX(200%) skewX(-15deg)}
+.btn-blue:hover{background:#33ddff;transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,210,255,.35)}
+.btn-wire{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--white);font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:13px 28px;border-radius:4px;text-decoration:none;border:1px solid rgba(255,255,255,.15);transition:all .3s}
+.btn-wire:hover{border-color:var(--blue);color:var(--blue);background:rgba(0,210,255,.06);transform:translateY(-2px)}
 
-        /* CONTAINER */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 5%; position: relative; z-index: 1; }
+footer{border-top:1px solid var(--border);padding:24px 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:relative;z-index:2}
+.f-logo{font-family:'Anton',sans-serif;font-size:1.2rem;letter-spacing:3px;color:var(--white)}
+.f-logo span{color:var(--blue)}
+.f-copy{font-size:.7rem;color:var(--muted);letter-spacing:.06em}
+.f-copy a{color:var(--blue);text-decoration:none}
 
-        /* PAGE HERO */
-        .page-hero { padding: 60px 0 40px; text-align: center; }
-        .page-hero .badge {
-            display: inline-block;
-            background: rgba(0,210,255,0.1);
-            border: 1px solid rgba(0,210,255,0.25);
-            color: var(--accent);
-            font-size: 0.72rem; font-weight: 700;
-            letter-spacing: 2px; text-transform: uppercase;
-            padding: 6px 16px; border-radius: 50px;
-            margin-bottom: 18px;
-        }
-        .page-hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 14px; }
-        .page-hero h1 span { color: var(--accent); }
-        .page-hero p { color: var(--muted); font-size: 1rem; max-width: 600px; margin: 0 auto; }
+.rv{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .7s cubic-bezier(.4,0,.2,1)}
+.rv.in{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
 
-        /* SECTION */
-        .section-block { margin: 60px 0; }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-        .section-header .icon-wrap {
-            width: 48px; height: 48px;
-            background: rgba(0,210,255,0.1);
-            border: 1px solid rgba(0,210,255,0.2);
-            border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--accent); font-size: 1.2rem; flex-shrink: 0;
-        }
-        .section-header .title-wrap h2 {
-            font-size: 1.4rem; font-weight: 900;
-            text-transform: uppercase; letter-spacing: 2px; color: var(--text);
-        }
-        .section-header .title-wrap p { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
-
-        /* BEFORE AFTER */
-        .ba-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            overflow: hidden;
-            transition: 0.4s;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .ba-card:hover { border-color: var(--accent); box-shadow: 0 15px 40px rgba(0,210,255,0.15); }
-        .ba-row { display: grid; grid-template-columns: 1fr 3px 1fr; }
-        .ba-side { position: relative; }
-        .ba-label {
-            position: absolute; top: 12px; left: 12px;
-            font-size: 0.62rem; font-weight: 800; letter-spacing: 2px;
-            text-transform: uppercase; padding: 5px 12px; border-radius: 6px; z-index: 10;
-        }
-        .ba-label.before { background: rgba(255,80,80,0.9); color: #fff; }
-        .ba-label.after  { background: rgba(0,210,255,0.9);  color: #000; }
-        .ba-divider { background: var(--accent); }
-        .ba-video { aspect-ratio: 9/16; background: #000; }
-        .ba-video iframe { width: 100%; height: 100%; border: none; }
-
-        /* PODCAST PLAYLIST */
-        .podcast-container {
-            display: grid;
-            grid-template-columns: 380px 1fr;
-            gap: 20px;
-            background: var(--card-bg);
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            overflow: hidden;
-        }
-
-        .playlist-sidebar {
-            background: rgba(0,0,0,0.3);
-            border-right: 1px solid var(--border);
-            overflow-y: auto;
-            max-height: 600px;
-        }
-
-        .playlist-header {
-            background: linear-gradient(135deg, rgba(0,210,255,0.15), rgba(0,210,255,0.05));
-            padding: 18px 20px;
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-        .playlist-header h3 {
-            font-size: 0.95rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--accent);
-        }
-
-        .playlist-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--border);
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .playlist-item:hover { background: rgba(0,210,255,0.05); }
-        .playlist-item.active {
-            background: rgba(0,210,255,0.1);
-            border-left: 3px solid var(--accent);
-        }
-        .playlist-item .play-icon {
-            width: 32px; height: 32px;
-            background: rgba(0,210,255,0.15);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--accent);
-            font-size: 0.7rem;
-            flex-shrink: 0;
-        }
-        .playlist-item.active .play-icon { background: var(--accent); color: #000; }
-        .playlist-item .item-details h4 {
-            font-size: 0.78rem;
-            font-weight: 700;
-            line-height: 1.3;
-            color: var(--text);
-            margin-bottom: 2px;
-        }
-        .playlist-item .item-details span {
-            font-size: 0.68rem;
-            color: var(--muted);
-        }
-
-        .video-player {
-            position: relative;
-            background: #000;
-        }
-        .video-player iframe {
-            width: 100%;
-            height: 600px;
-            border: none;
-        }
-
-        /* LANDSCAPE GRID */
-        .landscape-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; }
-        .video-card {
-            background: var(--card-bg);
-            border-radius: 14px;
-            border: 1px solid var(--border);
-            overflow: hidden;
-            transition: 0.4s;
-        }
-        .video-card:hover { border-color: var(--accent); transform: translateY(-6px); box-shadow: 0 12px 35px rgba(0,210,255,0.15); }
-        .video-box { background: #000; }
-        .video-box.landscape { aspect-ratio: 16/9; }
-        .video-box iframe { width:100%; height:100%; border:none; display:block; }
-
-        .card-meta {
-            padding: 12px 16px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .card-meta .tag {
-            font-size: 0.6rem; font-weight: 700; letter-spacing: 1.5px;
-            text-transform: uppercase; color: var(--muted);
-            background: rgba(255,255,255,0.04); padding: 4px 10px; border-radius: 4px;
-        }
-        .card-meta a {
-            color: var(--accent); font-weight: 700; font-size: 0.62rem;
-            text-decoration: none; letter-spacing: 1px; text-transform: uppercase;
-            display: flex; align-items: center; gap: 5px; transition: 0.3s;
-        }
-        .card-meta a:hover { gap: 8px; }
-
-        /* PLACEHOLDER */
-        .placeholder-card {
-            background: var(--card-bg);
-            border-radius: 14px;
-            border: 1px dashed rgba(0,210,255,0.2);
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            gap: 10px; color: var(--muted); font-size: 0.78rem;
-            text-align: center; padding: 20px; transition: 0.3s;
-        }
-        .placeholder-card:hover { border-color: rgba(0,210,255,0.4); }
-        .placeholder-card i { font-size: 1.6rem; color: rgba(0,210,255,0.2); }
-        .placeholder-card small { font-size: 0.66rem; color: rgba(255,255,255,0.18); display: block; margin-top: 3px; }
-        .placeholder-card.landscape { aspect-ratio: 16/9; }
-
-        /* CTA */
-        .cta-strip {
-            background: linear-gradient(135deg,rgba(0,210,255,0.07),rgba(0,210,255,0.03));
-            border: 1px solid rgba(0,210,255,0.15);
-            border-radius: 20px; padding: 50px 30px;
-            text-align: center; margin: 60px 0;
-        }
-        .cta-strip h2 { font-size: clamp(1.4rem,3vw,2rem); font-weight: 900; margin-bottom: 12px; }
-        .cta-strip h2 span { color: var(--accent); }
-        .cta-strip p { color: var(--muted); font-size: 0.95rem; margin-bottom: 28px; }
-        .cta-strip-buttons { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
-        .btn-solid {
-            background: var(--accent); color: #000; padding: 13px 28px; border-radius: 8px;
-            text-decoration: none; font-weight: 800; font-size: 0.82rem;
-            text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
-            display: flex; align-items: center; gap: 8px;
-        }
-        .btn-solid:hover { box-shadow: 0 0 20px rgba(0,210,255,0.4); transform: translateY(-3px); }
-        .btn-outline {
-            background: transparent; color: var(--accent); border: 2px solid var(--accent);
-            padding: 13px 28px; border-radius: 8px; text-decoration: none; font-weight: 800;
-            font-size: 0.82rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
-            display: flex; align-items: center; gap: 8px;
-        }
-        .btn-outline:hover { background: var(--accent); color: #000; transform: translateY(-3px); }
-
-        footer { text-align: center; padding: 30px; color: var(--muted); border-top: 1px solid var(--border); font-size: 0.8rem; position: relative; z-index: 1; }
-        footer a { color: var(--accent); text-decoration: none; }
-
-        /* RESPONSIVE */
-        @media (max-width: 1024px) {
-            .podcast-container { grid-template-columns: 1fr; }
-            .playlist-sidebar { max-height: 300px; border-right: none; border-bottom: 1px solid var(--border); }
-            .landscape-grid { grid-template-columns: 1fr; }
-            .side-bar { display: none; }
-        }
-        @media (max-width: 600px) {
-            nav { padding: 15px 5%; }
-            .page-hero { padding: 35px 0 25px; }
-            .ba-row { grid-template-columns: 1fr; grid-template-rows: 1fr 3px 1fr; }
-            .ba-divider { height: 3px; }
-            .video-player iframe { height: 400px; }
-            .cta-strip { padding: 35px 15px; }
-            .cta-strip-buttons { flex-direction: column; align-items: center; }
-            .btn-solid, .btn-outline { width: 100%; max-width: 300px; justify-content: center; }
-        }
-    </style>
+@media(max-width:1024px){
+  .pod-wrap{grid-template-columns:1fr}
+  .pl-side{max-height:260px;border-right:none;border-bottom:1px solid var(--border)}
+  .pod-player iframe{height:420px}
+  .sidebar{display:none}
+}
+@media(max-width:640px){
+  nav{height:auto;padding:12px 5%}
+  .back-btn{font-size:.65rem;padding:6px 12px}
+  .vgrid{grid-template-columns:1fr}
+  .ba-row{grid-template-columns:1fr;grid-template-rows:1fr 2px 1fr}
+  .ba-div{height:2px}
+  .pod-player iframe{height:300px}
+  .cta-btns{flex-direction:column;align-items:center}
+  .btn-blue,.btn-wire{width:100%;max-width:300px;justify-content:center}
+  .sidebar{display:none}
+  footer{flex-direction:column;text-align:center}
+}
+</style>
 </head>
 <body>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    // Load Before/After videos together
-    const baCard = document.querySelector('.ba-card');
-    if (baCard) {
-        const baObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const iframes = entry.target.querySelectorAll('.ba-video iframe[data-src]');
-                    iframes.forEach(iframe => {
-                        iframe.src = iframe.dataset.src;
-                        iframe.removeAttribute('data-src');
-                    });
-                    baObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.3 });
-        baObserver.observe(baCard);
-    }
+<canvas id="canvas"></canvas>
+<div class="noise"></div>
 
-    // Playlist video switcher
-    const playlistItems = document.querySelectorAll('.playlist-item');
-    const mainPlayer = document.getElementById('mainPlayer');
-
-    playlistItems.forEach(item => {
-        item.addEventListener('click', () => {
-            playlistItems.forEach(i => i.classList.remove('active'));
-            item.classList.add('active');
-            const videoId = item.dataset.video;
-            mainPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-        });
-    });
-
-    // Lazy load other videos
-    const iframes = document.querySelectorAll('.video-box iframe[data-src]');
-    const io = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-            if (e.isIntersecting) {
-                e.target.src = e.target.dataset.src;
-                e.target.removeAttribute('data-src');
-                io.unobserve(e.target);
-            }
-        });
-    }, { rootMargin: '80px', threshold: 0.2 });
-    iframes.forEach(f => io.observe(f));
-});
-</script>
-
-<div class="blob blob-1"></div>
-<div class="blob blob-2"></div>
-
-<div class="side-bar">
-    <a href="/cdn-cgi/l/email-protection#6015130d010e0b08010e20050d01090c4e030f0d"><i class="fas fa-envelope"></i></a>
-    <a href="https://wa.me/923072969303" target="_blank"><i class="fab fa-whatsapp"></i></a>
-    <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank"><i class="fab fa-linkedin"></i></a>
-    <a href="https://www.behance.net/usmani" target="_blank"><i class="fab fa-behance"></i></a>
+<!-- SIDEBAR — no Behance -->
+<div class="sidebar">
+  <div class="sb-line"></div>
+  <a href="mailto:usmankhan07editor@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+  <a href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20video%20editing%20project." target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+  <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+  <div class="sb-line-b"></div>
 </div>
 
-<nav>
-    <a href="index.html" class="logo">Visual <span>Artist</span></a>
-    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Home</a>
+<nav id="mainNav">
+  <a class="nav-logo" href="index.html">UK<span>.</span></a>
+  <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i>&nbsp; Back to Home</a>
 </nav>
 
-<div class="container">
+<div class="page-hero rv">
+  <div class="pg-badge"><div class="pg-dot"></div><span>Complete Work Collection</span></div>
+  <h1>All <span>Projects</span></h1>
+  <p>Before/After comparisons, podcast sessions, long-form videos, live streams &amp; more.</p>
+</div>
 
-    <div class="page-hero">
-        <div class="badge">Complete Work Collection</div>
-        <h1>All <span>Projects</span></h1>
-        <p>Before/After comparisons, podcast sessions, long-form videos, live streams & more.</p>
+<div class="page-content">
+
+  <!-- 1. BEFORE / AFTER -->
+  <div class="sec-block rv d1">
+    <div class="sec-hdr">
+      <div class="sec-icon"><i class="fas fa-sliders-h"></i></div>
+      <div class="th">
+        <h2>Before / After</h2>
+        <p>Raw footage vs. final edit — see the transformation</p>
+      </div>
     </div>
-
-    <!-- 1. BEFORE / AFTER -->
-    <div class="section-block">
-        <div class="section-header">
-            <div class="icon-wrap"><i class="fas fa-sliders-h"></i></div>
-            <div class="title-wrap">
-                <h2>Before / After</h2>
-                <p>Raw footage vs. final edit — see the transformation</p>
-            </div>
+    <div class="ba-wrap">
+      <div class="ba-row">
+        <div class="ba-side">
+          <span class="ba-lbl before">Before</span>
+          <div class="ba-vid">
+            <iframe src="https://www.youtube-nocookie.com/embed/iNxi8hB739s?mute=1&loop=1&playlist=iNxi8hB739s&rel=0&modestbranding=1" allow="autoplay" allowfullscreen></iframe>
+          </div>
         </div>
-        <div class="ba-card">
-            <div class="ba-row">
-                <div class="ba-side">
-                    <span class="ba-label before">Before</span>
-                    <div class="ba-video">
-                        <iframe src="https://www.youtube.com/embed/iNxi8hB739s?mute=1&loop=1&playlist=iNxi8hB739s" allow="autoplay"></iframe>
-                    </div>
-                </div>
-                <div class="ba-divider"></div>
-                <div class="ba-side">
-                    <span class="ba-label after">After</span>
-                    <div class="ba-video">
-                        <iframe src="https://www.youtube.com/embed/mVAVkV9FzxY?mute=1&loop=1&playlist=mVAVkV9FzxY" allow="autoplay"></iframe>
-                    </div>
-                </div>
-            </div>
+        <div class="ba-div"></div>
+        <div class="ba-side">
+          <span class="ba-lbl after">After</span>
+          <div class="ba-vid">
+            <iframe src="https://www.youtube-nocookie.com/embed/mVAVkV9FzxY?mute=1&loop=1&playlist=mVAVkV9FzxY&rel=0&modestbranding=1" allow="autoplay" allowfullscreen></iframe>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
-    <!-- 2. PODCAST SESSIONS & LONG-FORM VIDEOS -->
-    <div class="section-block">
-        <div class="section-header">
-            <div class="icon-wrap"><i class="fas fa-play-circle"></i></div>
-            <div class="title-wrap">
-                <h2>Podcast Sessions & Long-form Videos</h2>
-                <p>Full-length interviews, podcasts & educational content</p>
-            </div>
-        </div>
-        <div class="podcast-container">
-            <div class="playlist-sidebar">
-                <div class="playlist-header">
-                    <h3>📁 Portfolio</h3>
-                </div>
-
-                <div class="playlist-item active" data-video="fk2A5N-7sVI">
-                    <div class="play-icon"><i class="fas fa-play"></i></div>
-                    <div class="item-details">
-                        <h4>Namrita's MDCAT Success Journey</h4>
-                        <span>Overcoming challenges</span>
-                    </div>
-                </div>
-
-                <div class="playlist-item" data-video="uxap-3XFi0c">
-                    <div class="play-icon"><i class="fas fa-play"></i></div>
-                    <div class="item-details">
-                        <h4>Hitesh's Journey From Umerkot</h4>
-                        <span>Determination & MDCAT Success</span>
-                    </div>
-                </div>
-
-                <div class="playlist-item" data-video="VCZHvuSq56g">
-                    <div class="play-icon"><i class="fas fa-play"></i></div>
-                    <div class="item-details">
-                        <h4>Topper's Talk — IBA, MDCAT & NUST</h4>
-                        <span>Position holders prepped with Chaajao</span>
-                    </div>
-                </div>
-
-                <div class="playlist-item" data-video="iVG3ElK3gKA">
-                    <div class="play-icon"><i class="fas fa-play"></i></div>
-                    <div class="item-details">
-                        <h4>MDCAT 2025 Final Month Strategy</h4>
-                        <span>Aspirants guide</span>
-                    </div>
-                </div>
-
-                <div class="playlist-item" data-video="zmxoedfCv-4">
-                    <div class="play-icon"><i class="fas fa-play"></i></div>
-                    <div class="item-details">
-                        <h4>Why Choose Chaajao for XI–XII Prep</h4>
-                        <span>Top results & complete guidance</span>
-                    </div>
-                </div>
-
-                <div class="playlist-item" data-video="bttpT1ugQDk">
-                    <div class="play-icon"><i class="fas fa-play"></i></div>
-                    <div class="item-details">
-                        <h4>Small Towns to MDCAT Success</h4>
-                        <span>Interior Sindh's untold journey</span>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="video-player">
-                <iframe id="mainPlayer" src="https://www.youtube.com/embed/fk2A5N-7sVI?autoplay=1" allow="autoplay; fullscreen"></iframe>
-            </div>
-        </div>
+  <!-- 2. PODCAST / LONG-FORM — thumbnail first, no autoplay -->
+  <div class="sec-block rv d2">
+    <div class="sec-hdr">
+      <div class="sec-icon"><i class="fas fa-play-circle"></i></div>
+      <div class="th">
+        <h2>Podcast Sessions &amp; Long-form Videos</h2>
+        <p>Full-length interviews, podcasts &amp; educational content</p>
+      </div>
     </div>
+    <div class="pod-wrap">
+      <div class="pl-side">
+        <div class="pl-head"><h3>📁 Portfolio</h3></div>
+        <div class="pl-item active" data-video="fk2A5N-7sVI" data-title="Namrita's MDCAT Success Journey">
+          <div class="pl-icon"><i class="fas fa-play"></i></div>
+          <div><h4>Namrita's MDCAT Success Journey</h4><span>Overcoming challenges</span></div>
+        </div>
+        <div class="pl-item" data-video="uxap-3XFi0c" data-title="Hitesh's Journey From Umerkot">
+          <div class="pl-icon"><i class="fas fa-play"></i></div>
+          <div><h4>Hitesh's Journey From Umerkot</h4><span>Determination &amp; MDCAT Success</span></div>
+        </div>
+        <div class="pl-item" data-video="VCZHvuSq56g" data-title="Topper's Talk — IBA, MDCAT &amp; NUST">
+          <div class="pl-icon"><i class="fas fa-play"></i></div>
+          <div><h4>Topper's Talk — IBA, MDCAT &amp; NUST</h4><span>Position holders prepped with Chaajao</span></div>
+        </div>
+        <div class="pl-item" data-video="iVG3ElK3gKA" data-title="MDCAT 2025 Final Month Strategy">
+          <div class="pl-icon"><i class="fas fa-play"></i></div>
+          <div><h4>MDCAT 2025 Final Month Strategy</h4><span>Aspirants guide</span></div>
+        </div>
+        <div class="pl-item" data-video="zmxoedfCv-4" data-title="Why Choose Chaajao for XI–XII Prep">
+          <div class="pl-icon"><i class="fas fa-play"></i></div>
+          <div><h4>Why Choose Chaajao for XI–XII Prep</h4><span>Top results &amp; complete guidance</span></div>
+        </div>
+        <div class="pl-item" data-video="bttpT1ugQDk" data-title="Small Towns to MDCAT Success">
+          <div class="pl-icon"><i class="fas fa-play"></i></div>
+          <div><h4>Small Towns to MDCAT Success</h4><span>Interior Sindh's untold journey</span></div>
+        </div>
+      </div>
 
-    <!-- 3. LIVE STREAMING & BROADCASTING -->
-    <div class="section-block">
-        <div class="section-header">
-            <div class="icon-wrap"><i class="fas fa-broadcast-tower"></i></div>
-            <div class="title-wrap">
-                <h2>Live Streaming & Broadcasting</h2>
-                <p>Live stream recordings & highlight cuts</p>
-            </div>
+      <!-- Player: shows thumbnail until user clicks -->
+      <div class="pod-player">
+        <iframe id="mainPlayer" src="about:blank" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        <div class="pod-thumb" id="podThumb" onclick="playPodcast()">
+          <img id="podThumbImg" src="https://img.youtube.com/vi/fk2A5N-7sVI/maxresdefault.jpg" alt="">
+          <div class="pt-ring"><i class="fas fa-play"></i></div>
+          <div class="pt-lbl">Click to Play</div>
+          <div class="pt-title" id="podThumbTitle">Namrita's MDCAT Success Journey</div>
         </div>
-        <div class="landscape-grid">
-            <div class="video-card">
-                <div class="video-box landscape"><iframe data-src="https://www.youtube.com/embed/Qj-s_4y-D7w?autoplay=1&mute=1" allow="autoplay" src=""></iframe></div>
-                <div class="card-meta"><span class="tag">Live Stream</span><a href="https://www.youtube.com/live/Qj-s_4y-D7w" target="_blank">Watch <i class="fas fa-arrow-right"></i></a></div>
-            </div>
-            <div class="video-card">
-                <div class="video-box landscape"><iframe data-src="https://www.youtube.com/embed/SObTeDohyrw?autoplay=1&mute=1" allow="autoplay" src=""></iframe></div>
-                <div class="card-meta"><span class="tag">Live Stream</span><a href="https://www.youtube.com/live/SObTeDohyrw" target="_blank">Watch <i class="fas fa-arrow-right"></i></a></div>
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- 4. BASIC VIDEOS - HIDDEN -->
-    <!-- <div class="section-block">
-        <div class="section-header">
-            <div class="icon-wrap"><i class="fas fa-film"></i></div>
-            <div class="title-wrap">
-                <h2>Basic Videos</h2>
-                <p>Additional video editing work</p>
-            </div>
-        </div>
-        <div class="landscape-grid">
-            <div class="placeholder-card landscape"><i class="fas fa-plus-circle"></i><span>Add Video<small>Replace with YouTube embed</small></span></div>
-            <div class="placeholder-card landscape"><i class="fas fa-plus-circle"></i><span>Add Video<small>Replace with YouTube embed</small></span></div>
-            <div class="placeholder-card landscape"><i class="fas fa-plus-circle"></i><span>Add Video<small>Replace with YouTube embed</small></span></div>
-            <div class="placeholder-card landscape"><i class="fas fa-plus-circle"></i><span>Add Video<small>Replace with YouTube embed</small></span></div>
-        </div>
-    </div> -->
-
-    <!-- CTA STRIP -->
-    <div class="cta-strip">
-        <h2>Ready to work <span>together?</span></h2>
-        <p>Let's create high-impact content that gets results — reach out and let's talk.</p>
-        <div class="cta-strip-buttons">
-            <a href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20video%20editing%20project." target="_blank" class="btn-solid">
-                <i class="fab fa-whatsapp"></i> WhatsApp Me
-            </a>
-            <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank" class="btn-outline">
-                <i class="fab fa-linkedin"></i> LinkedIn
-            </a>
-        </div>
+  <!-- 3. LIVE STREAMING — new videos -->
+  <div class="sec-block rv d3">
+    <div class="sec-hdr">
+      <div class="sec-icon"><i class="fas fa-broadcast-tower"></i></div>
+      <div class="th">
+        <h2>Live Streaming &amp; Broadcasting</h2>
+        <p>Live stream recordings &amp; highlight cuts</p>
+      </div>
     </div>
+    <div class="vgrid">
+      <div class="vc">
+        <div class="vbox ls" style="position:relative">
+          <div class="play-ov" onclick="loadVid(this,'https://www.youtube-nocookie.com/embed/HITMV_OWkEM?autoplay=1&rel=0&modestbranding=1')">
+            <div class="pring"><i class="fas fa-play"></i></div>
+            <div class="plbl">Play Stream</div>
+          </div>
+          <iframe data-src="https://www.youtube-nocookie.com/embed/HITMV_OWkEM?rel=0&modestbranding=1" src="" allowfullscreen></iframe>
+        </div>
+        <div class="vc-ft">
+          <span class="tag">Live Stream</span>
+          <a href="https://www.youtube.com/live/HITMV_OWkEM" target="_blank">Watch <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="vc">
+        <div class="vbox ls" style="position:relative">
+          <div class="play-ov" onclick="loadVid(this,'https://www.youtube-nocookie.com/embed/AYdTJijMhPQ?autoplay=1&rel=0&modestbranding=1')">
+            <div class="pring"><i class="fas fa-play"></i></div>
+            <div class="plbl">Play Stream</div>
+          </div>
+          <iframe data-src="https://www.youtube-nocookie.com/embed/AYdTJijMhPQ?rel=0&modestbranding=1" src="" allowfullscreen></iframe>
+        </div>
+        <div class="vc-ft">
+          <span class="tag">Live Stream</span>
+          <a href="https://www.youtube.com/live/AYdTJijMhPQ" target="_blank">Watch <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-strip rv">
+    <h2>Ready to work <span>together?</span></h2>
+    <p>Let's create high-impact content that gets results — reach out and let's talk.</p>
+    <div class="cta-btns">
+      <a href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20video%20editing%20project." target="_blank" class="btn-blue">
+        <i class="fab fa-whatsapp"></i> WhatsApp Me
+      </a>
+      <a href="https://www.linkedin.com/in/usmankhan07/" target="_blank" class="btn-wire">
+        <i class="fab fa-linkedin"></i> LinkedIn
+      </a>
+    </div>
+  </div>
 
 </div>
 
 <footer>
-    © 2025 Usman Khan — Visual Artist &nbsp;·&nbsp; <a href="index.html
+  <div class="f-logo">UK<span>.</span></div>
+  <div class="f-copy">© 2025 Usman Khan — Visual Artist &nbsp;·&nbsp; <a href="index.html">Home</a></div>
+</footer>
+
+<script>
+// Particle canvas
+var canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d'),W,H,particles=[];
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+function Particle(){this.reset()}
+Particle.prototype.reset=function(){this.x=Math.random()*W;this.y=Math.random()*H;this.r=Math.random()*1.4+.4;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;this.alpha=Math.random()*.5+.1;this.col=Math.random()>.5?'0,210,255':'0,153,255'};
+Particle.prototype.update=function(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W||this.y<0||this.y>H)this.reset()};
+Particle.prototype.draw=function(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle='rgba('+this.col+','+this.alpha+')';ctx.fill()};
+for(var i=0;i<70;i++)particles.push(new Particle());
+function drawCanvas(){ctx.clearRect(0,0,W,H);for(var i=0;i<particles.length;i++){for(var j=i+1;j<particles.length;j++){var dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<110){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle='rgba(0,210,255,'+(0.07*(1-d/110))+')';ctx.lineWidth=.5;ctx.stroke()}}particles[i].draw();particles[i].update()}requestAnimationFrame(drawCanvas)}
+drawCanvas();
+
+// Nav scroll
+window.addEventListener('scroll',function(){document.getElementById('mainNav').classList.toggle('solid',window.scrollY>30)});
+
+document.addEventListener('DOMContentLoaded',function(){
+  // Reveal animations
+  var ro=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}})},{threshold:.1});
+  document.querySelectorAll('.rv').forEach(function(r){ro.observe(r)});
+
+  // Lazy load live stream iframes
+  var vo=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var f=e.target.querySelector('iframe[data-src]');if(f&&f.dataset.src){f.src=f.dataset.src;f.removeAttribute('data-src')}vo.unobserve(e.target)}})},{rootMargin:'80px',threshold:.2});
+  document.querySelectorAll('.vbox').forEach(function(v){vo.observe(v)});
+
+  // Playlist click — swap thumbnail, do NOT autoplay
+  var plItems=document.querySelectorAll('.pl-item');
+  plItems.forEach(function(item){
+    item.addEventListener('click',function(){
+      plItems.forEach(function(i){i.classList.remove('active')});
+      item.classList.add('active');
+      var vid=item.dataset.video,title=item.dataset.title;
+      // Reset player to blank
+      document.getElementById('mainPlayer').src='about:blank';
+      // Show thumbnail for new video
+      var thumb=document.getElementById('podThumb');
+      thumb.style.display='flex';
+      document.getElementById('podThumbImg').src='https://img.youtube.com/vi/'+vid+'/maxresdefault.jpg';
+      document.getElementById('podThumbTitle').textContent=title;
+    });
+  });
+});
+
+// Play podcast on thumbnail click
+function playPodcast(){
+  var active=document.querySelector('.pl-item.active');
+  var vid=active?active.dataset.video:'fk2A5N-7sVI';
+  document.getElementById('mainPlayer').src='https://www.youtube-nocookie.com/embed/'+vid+'?autoplay=1&rel=0&modestbranding=1';
+  document.getElementById('podThumb').style.display='none';
+}
+
+// Load live stream on play click
+function loadVid(overlay,src){
+  overlay.closest('.vbox').querySelector('iframe').src=src;
+  overlay.classList.add('gone');
+}
+</script>
+</body>
+</html>
