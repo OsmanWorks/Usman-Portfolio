@@ -30,24 +30,20 @@ body {
   overflow-x: hidden;
 }
 
-/* ── CANVAS ── */
 #canvas {
   position: fixed; inset: 0;
   z-index: 0; pointer-events: none;
   opacity: 0.5;
 }
 
-/* ── NOISE ── */
 .noise {
   position: fixed; inset: 0; z-index: 1; pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
   opacity: 0.5;
 }
 
-/* everything above bg */
 nav, .sidebar, .wrap, section, .marquee-wrap, .contact-section, footer { position: relative; z-index: 2; }
 
-/* ── SIDEBAR ── */
 .sidebar {
   position: fixed; left: 22px; top: 50%;
   transform: translateY(-50%);
@@ -65,7 +61,6 @@ nav, .sidebar, .wrap, section, .marquee-wrap, .contact-section, footer { positio
 }
 .sidebar a:hover { color:var(--blue); border-color:var(--blue); background:rgba(0,210,255,.08); transform:scale(1.15); }
 
-/* ── NAV ── */
 nav {
   position: fixed; top:0; left:0; right:0;
   height: 60px;
@@ -93,18 +88,9 @@ nav.solid {
   transition: all .25s;
 }
 .nav-links a:hover { color:var(--white); border-color:var(--border); background:rgba(255,255,255,.04); }
-.nav-store {
-  background: var(--blue) !important;
-  color: #000 !important;
-  font-weight: 800 !important;
-  border-color: var(--blue) !important;
-}
-.nav-store:hover { background: #33ddff !important; transform:translateY(-1px); box-shadow:0 6px 20px rgba(0,210,255,.3) !important; }
 
-/* ── WRAP ── */
 .wrap { max-width:1200px; margin:0 auto; padding:0 5%; }
 
-/* ── HERO ── */
 .hero {
   min-height: 100vh;
   display: flex; align-items:center;
@@ -124,7 +110,6 @@ nav.solid {
   width:100%; max-width:1200px; margin:0 auto;
 }
 
-/* animated slide-up lines */
 .hero-line { overflow:hidden; }
 .hero-line span {
   display:block;
@@ -165,7 +150,6 @@ nav.solid {
 
 @keyframes fadeUp { from{opacity:0;transform:translateY(14px);} to{opacity:1;transform:none;} }
 
-/* Buttons */
 .btn-blue {
   display:inline-flex; align-items:center; gap:8px;
   background:var(--blue); color:#000;
@@ -192,7 +176,6 @@ nav.solid {
 }
 .btn-wire:hover { border-color:var(--blue); color:var(--blue); background:rgba(0,210,255,.06); transform:translateY(-2px); }
 
-/* Hero photo */
 .hero-photo-col { animation: fadeUp .8s .4s both; }
 .hero-photo-wrap {
   position:relative; width:100%;
@@ -218,7 +201,6 @@ nav.solid {
   border-radius:2px; z-index:2;
 }
 
-/* hero stats */
 .hero-stats { display:flex; gap:10px; flex-wrap:wrap; margin-top:18px; }
 .hstat {
   background:var(--grey); border:1px solid var(--border);
@@ -229,7 +211,6 @@ nav.solid {
 .hstat-val { font-family:'Anton',sans-serif; font-size:1.6rem; color:var(--blue); line-height:1; }
 .hstat-lbl { font-size:.6rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--muted2); margin-top:3px; }
 
-/* scroll indicator */
 .scroll-ind {
   position:absolute; bottom:28px; left:50%; transform:translateX(-50%);
   display:flex; flex-direction:column; align-items:center; gap:8px;
@@ -239,7 +220,6 @@ nav.solid {
 .scroll-bar { width:1px; height:40px; background:linear-gradient(to bottom,var(--blue),transparent); animation:scrollPulse 2s ease-in-out infinite; }
 @keyframes scrollPulse { 0%,100%{opacity:1;transform:scaleY(1)} 50%{opacity:.3;transform:scaleY(.4)} }
 
-/* ── MARQUEE ── */
 .marquee-wrap {
   background:var(--blue); padding:13px 0;
   overflow:hidden; border-top:1px solid rgba(255,255,255,.1); border-bottom:1px solid rgba(255,255,255,.1);
@@ -252,7 +232,6 @@ nav.solid {
 }
 .marquee-item::after { content:'✦'; opacity:.5; font-size:.65rem; }
 
-/* ── SECTION ── */
 .section { padding:90px 0; }
 
 .sec-label { display:flex; align-items:center; gap:16px; margin-bottom:44px; }
@@ -260,7 +239,6 @@ nav.solid {
 .sec-title { font-family:'Anton',sans-serif; font-size:clamp(2rem,4vw,3.2rem); letter-spacing:1px; line-height:1; }
 .sec-rule  { flex:1; height:1px; background:var(--border); }
 
-/* ── SHOWREEL ── */
 .sr-wrap {
   position:relative; border-radius:10px; overflow:hidden;
   border:1px solid var(--borderb);
@@ -276,13 +254,11 @@ nav.solid {
 }
 .sr-badge-dot { width:6px; height:6px; border-radius:50%; background:#fff; animation:blink 1.5s infinite; }
 
-/* video boxes */
 .vbox { background:#000; }
 .vbox.ls { aspect-ratio:16/9; }
 .vbox.pt { aspect-ratio:9/16; }
 .vbox iframe { width:100%; height:100%; border:none; display:block; }
 
-/* ── PORTFOLIO ── */
 .pg4 { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:12px; }
 .pg2 { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
 
@@ -300,7 +276,6 @@ nav.solid {
 }
 .vc:hover::before { transform:scaleX(1); }
 
-/* play overlay */
 .play-ov {
   position:absolute; inset:0; z-index:5;
   display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
@@ -331,7 +306,6 @@ nav.solid {
 }
 .vc-ft a:hover { color:var(--blue); }
 
-/* ── SEE MORE ── */
 .see-more { display:flex; flex-direction:column; align-items:center; gap:14px; padding:50px 0 0; text-align:center; }
 .sm-line  { width:1px; height:40px; background:linear-gradient(to bottom,transparent,rgba(0,210,255,.4)); }
 .sm-btn   {
@@ -347,7 +321,6 @@ nav.solid {
 .sm-btn:hover .sm-arr { background:rgba(0,210,255,.22); transform:translateX(3px); }
 .sm-sub { font-size:.65rem; color:var(--muted); letter-spacing:.1em; }
 
-/* ── ABOUT ── */
 .about-wrap {
   display:grid; grid-template-columns:1fr 1fr;
   border:1px solid var(--border); border-radius:10px; overflow:hidden;
@@ -368,7 +341,6 @@ nav.solid {
 }
 .atag:hover { background:var(--blue); color:#000; }
 
-/* ── CONTACT ── */
 .contact-section { padding:0 5% 90px; max-width:1200px; margin:0 auto; }
 .contact-inner { display:grid; grid-template-columns:1fr 1fr; border:1px solid var(--border); border-radius:10px; overflow:hidden; }
 .contact-left {
@@ -389,7 +361,6 @@ nav.solid {
 .cbtn-li { background:rgba(0,119,181,.1); color:#4da6d4; border-color:rgba(0,119,181,.2); }
 .cbtn-li:hover { background:#0077b5; color:#fff; transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,119,181,.3); }
 
-/* ── FOOTER ── */
 footer {
   border-top:1px solid var(--border);
   padding:24px 5%;
@@ -399,12 +370,10 @@ footer {
 .f-logo span { color:var(--blue); }
 .f-copy { font-size:.7rem; color:var(--muted); letter-spacing:.06em; }
 
-/* ── REVEAL ── */
 .rv { opacity:0; transform:translateY(28px); transition:opacity .7s cubic-bezier(.4,0,.2,1), transform .7s cubic-bezier(.4,0,.2,1); }
 .rv.in { opacity:1; transform:none; }
 .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s}
 
-/* ── RESPONSIVE ── */
 @media(max-width:1024px){
   .hero-inner { grid-template-columns:1fr; gap:40px; text-align:center; }
   .hero-desc  { margin:0 auto 36px; }
@@ -439,7 +408,6 @@ footer {
 <canvas id="canvas"></canvas>
 <div class="noise"></div>
 
-<!-- SIDEBAR -->
 <div class="sidebar">
   <div class="sb-line"></div>
   <a href="mailto:usmankhan@email.com" title="Email"><i class="fas fa-envelope"></i></a>
@@ -448,23 +416,18 @@ footer {
   <div class="sb-line-b"></div>
 </div>
 
-<!-- NAV -->
 <nav id="mainNav">
   <a class="nav-logo" href="#">UK<span>.</span></a>
   <div class="nav-links">
     <a href="#about">About</a>
     <a href="all-projects.html">Portfolio</a>
     <a href="#contact">Contact</a>
-    <a href="store.html" class="nav-store"><i class="fas fa-store"></i> Store</a>
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero" id="about">
   <div class="hero-bg-num">4</div>
   <div class="hero-inner">
-
-    <!-- LEFT -->
     <div>
       <div class="hero-tag">
         <div class="tag-dot"></div>
@@ -479,8 +442,6 @@ footer {
         <a href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20video%20editing%20project." target="_blank" class="btn-wire"><i class="fab fa-whatsapp"></i> Hire Me</a>
       </div>
     </div>
-
-    <!-- RIGHT -->
     <div class="hero-photo-col">
       <div class="hero-photo-wrap">
         <img src="my-picture.png" alt="Usman Khan">
@@ -500,7 +461,6 @@ footer {
         </div>
       </div>
     </div>
-
   </div>
   <div class="scroll-ind">
     <span>Scroll</span>
@@ -508,7 +468,6 @@ footer {
   </div>
 </section>
 
-<!-- MARQUEE -->
 <div class="marquee-wrap">
   <div class="marquee-track">
     <span class="marquee-item">Video Editing</span>
@@ -530,7 +489,6 @@ footer {
   </div>
 </div>
 
-<!-- SHOWREEL -->
 <div class="wrap">
   <section class="section" id="showreel">
     <div class="sec-label rv">
@@ -547,7 +505,6 @@ footer {
   </section>
 </div>
 
-<!-- PORTFOLIO -->
 <div class="wrap">
   <section class="section" id="work">
     <div class="sec-label rv">
@@ -556,7 +513,6 @@ footer {
       <div class="sec-rule"></div>
     </div>
 
-    <!-- 4 portrait reels -->
     <div class="pg4">
       <div class="vc rv">
         <div class="vbox pt" style="position:relative">
@@ -564,7 +520,7 @@ footer {
             <div class="pring"><i class="fas fa-play"></i></div>
             <div class="plbl">Play Reel</div>
           </div>
-          <iframe src="" allowfullscreen></iframe>
+          <iframe data-src="https://www.youtube.com/embed/qvABBZOzxIA?autoplay=1" src="" allowfullscreen></iframe>
         </div>
         <div class="vc-ft"><a href="https://youtube.com/shorts/qvABBZOzxIA" target="_blank">Watch Reel &nbsp;<i class="fas fa-arrow-up-right-from-square"></i></a></div>
       </div>
@@ -574,7 +530,7 @@ footer {
             <div class="pring"><i class="fas fa-play"></i></div>
             <div class="plbl">Play Reel</div>
           </div>
-          <iframe src="" allowfullscreen></iframe>
+          <iframe data-src="https://www.youtube.com/embed/ahxMFjt9bKk?autoplay=1" src="" allowfullscreen></iframe>
         </div>
         <div class="vc-ft"><a href="https://youtube.com/shorts/ahxMFjt9bKk" target="_blank">Watch Reel &nbsp;<i class="fas fa-arrow-up-right-from-square"></i></a></div>
       </div>
@@ -584,7 +540,7 @@ footer {
             <div class="pring"><i class="fas fa-play"></i></div>
             <div class="plbl">Play Reel</div>
           </div>
-          <iframe src="" allowfullscreen></iframe>
+          <iframe data-src="https://www.youtube.com/embed/PxtZWx0hAaI?autoplay=1" src="" allowfullscreen></iframe>
         </div>
         <div class="vc-ft"><a href="https://youtube.com/shorts/PxtZWx0hAaI" target="_blank">Watch Reel &nbsp;<i class="fas fa-arrow-up-right-from-square"></i></a></div>
       </div>
@@ -594,13 +550,12 @@ footer {
             <div class="pring"><i class="fas fa-play"></i></div>
             <div class="plbl">Play Reel</div>
           </div>
-          <iframe src="" allowfullscreen></iframe>
+          <iframe data-src="https://www.youtube.com/embed/jTZZndniYVc?autoplay=1" src="" allowfullscreen></iframe>
         </div>
         <div class="vc-ft"><a href="https://youtube.com/shorts/jTZZndniYVc" target="_blank">Watch Reel &nbsp;<i class="fas fa-arrow-up-right-from-square"></i></a></div>
       </div>
     </div>
 
-    <!-- 2 landscape -->
     <div class="pg2">
       <div class="vc rv">
         <div class="vbox ls" style="position:relative">
@@ -608,7 +563,7 @@ footer {
             <div class="pring"><i class="fas fa-play"></i></div>
             <div class="plbl">Play Video</div>
           </div>
-          <iframe src="" allowfullscreen></iframe>
+          <iframe data-src="https://www.youtube.com/embed/jL-qLryhBs0?autoplay=1" src="" allowfullscreen></iframe>
         </div>
         <div class="vc-ft"><a href="https://youtu.be/jL-qLryhBs0" target="_blank">Watch Full Video &nbsp;<i class="fas fa-arrow-up-right-from-square"></i></a></div>
       </div>
@@ -618,13 +573,12 @@ footer {
             <div class="pring"><i class="fas fa-play"></i></div>
             <div class="plbl">Play Video</div>
           </div>
-          <iframe src="" allowfullscreen></iframe>
+          <iframe data-src="https://www.youtube.com/embed/Dz7SG_VWSd8?autoplay=1" src="" allowfullscreen></iframe>
         </div>
         <div class="vc-ft"><a href="https://youtu.be/Dz7SG_VWSd8" target="_blank">Watch Full Video &nbsp;<i class="fas fa-arrow-up-right-from-square"></i></a></div>
       </div>
     </div>
 
-    <!-- See More -->
     <div class="see-more rv">
       <div class="sm-line"></div>
       <a href="all-projects.html" class="sm-btn">
@@ -636,7 +590,6 @@ footer {
   </section>
 </div>
 
-<!-- ABOUT -->
 <div class="wrap">
   <section class="section" id="about-me">
     <div class="sec-label rv">
@@ -650,9 +603,9 @@ footer {
         <div class="about-left-ov"></div>
       </div>
       <div class="about-right">
-        <p>Hi, I'm <strong>Muhammad Usman Khan</strong>, a Video Editor with <strong>4+ years of experience</strong> in digital and educational media.</p>
-        <p>I create social media ads, YouTube videos, reels, podcasts, and promotional content using <strong>Adobe Premiere Pro</strong> and <strong>After Effects</strong>. I handle complete workflows including editing, green screen work, and content optimization.</p>
-        <p>Currently working at <strong>Chaajao</strong> and also serving freelance clients, helping brands and creators produce <strong>high-performing video content</strong>.</p>
+        <p>Hi, I'm <strong>Muhammad Usman Khan</strong>, a Video Editor with 4+ years of experience in digital and educational media.</p>
+        <p>I create social media ads, YouTube videos, reels, podcasts, and promotional content using Adobe Premiere Pro and After Effects. I handle complete workflows including editing, green screen work, and content optimization.</p>
+        <p>Currently working at Chaajao and also serving freelance clients, helping brands and creators produce high-performing video content.</p>
         <p>My focus is on delivering clean, engaging, and result-driven visuals.</p>
         <div class="about-tags">
           <span class="atag">Premiere Pro</span>
@@ -667,7 +620,6 @@ footer {
   </section>
 </div>
 
-<!-- CONTACT -->
 <div class="contact-section" id="contact">
   <div class="sec-label rv" style="max-width:1200px;margin:0 auto 30px;">
     <span class="sec-num">04</span>
@@ -687,26 +639,22 @@ footer {
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <div class="f-logo">UK<span>.</span></div>
   <div class="f-copy">© 2025 Usman Khan — Visual Artist. All rights reserved.</div>
 </footer>
 
 <script>
-/* ── PLAY VIDEO ON CLICK ── */
 function loadVid(overlay, src) {
   var box = overlay.closest('.vbox');
   box.querySelector('iframe').src = src;
   overlay.classList.add('gone');
 }
 
-/* ── NAV SCROLL ── */
 window.addEventListener('scroll', function() {
   document.getElementById('mainNav').classList.toggle('solid', window.scrollY > 60);
 });
 
-/* ── PARTICLE CANVAS ── */
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var W, H, particles = [];
@@ -764,7 +712,6 @@ function drawCanvas() {
 }
 drawCanvas();
 
-/* ── COUNTER ── */
 document.addEventListener('DOMContentLoaded', function() {
   var counters = document.querySelectorAll('[data-target]');
   var co = new IntersectionObserver(function(entries) {
@@ -785,13 +732,26 @@ document.addEventListener('DOMContentLoaded', function() {
   }, { threshold: 0.5 });
   counters.forEach(function(c) { co.observe(c); });
 
-  /* ── SCROLL REVEAL ── */
   var ro = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
       if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); }
     });
   }, { threshold: 0.1 });
   document.querySelectorAll('.rv').forEach(function(r) { ro.observe(r); });
+
+  var videoObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        var iframe = e.target.querySelector('iframe[data-src]');
+        if (iframe && iframe.dataset.src) {
+          iframe.src = iframe.dataset.src;
+          iframe.removeAttribute('data-src');
+        }
+        videoObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.vc').forEach(function(v) { videoObserver.observe(v); });
 });
 </script>
 </body>
