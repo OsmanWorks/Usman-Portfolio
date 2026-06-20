@@ -28,8 +28,16 @@ nav{position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:cen
 nav.solid{background:rgba(9,9,11,.96);backdrop-filter:blur(12px);border-bottom-color:var(--border);}
 .nav-logo{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--fg);text-decoration:none;}
 .nav-logo span{color:var(--accent);}
-.back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--muted-fg);text-decoration:none;font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:8px 18px;border:2px solid var(--border);transition:all .2s;}
-.back-btn:hover{color:var(--accent-fg);background:var(--accent);border-color:var(--accent);}
+.nav-links { display: flex; align-items: center; gap: 2px; }
+.nav-links a {
+  color: var(--muted-fg); text-decoration: none;
+  font-size: .72rem; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  padding: 8px 16px;
+  border: 2px solid transparent;
+  transition: color .2s, border-color .2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--accent); border-color: var(--accent); }
 
 /* SIDEBAR */
 .sidebar{position:fixed;left:20px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:14px;z-index:500;}
@@ -65,12 +73,13 @@ nav.solid{background:rgba(9,9,11,.96);backdrop-filter:blur(12px);border-bottom-c
 .carousel-area{position:relative;}
 .carousel-viewport{width:260px;margin:0 auto;position:relative;}
 .carousel-track{position:relative;height:460px;}
-.carousel-slide{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .35s;}
+.carousel-slide{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .35s;background:#000;}
 .carousel-slide.active{opacity:1;pointer-events:auto;}
 .carousel-slide iframe{width:100%;height:100%;border:none;display:block;border:2px solid var(--border);}
-.carousel-slide .play-cover{position:absolute;inset:0;background:rgba(9,9,11,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;z-index:10;transition:background .2s;}
+.carousel-slide .c-thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border:2px solid var(--border);}
+.carousel-slide .play-cover{position:absolute;inset:0;background:rgba(9,9,11,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;z-index:10;transition:background .2s;}
 .carousel-slide .play-cover.gone{display:none;}
-.carousel-slide .play-cover:hover{background:rgba(9,9,11,.3);}
+.carousel-slide .play-cover:hover{background:rgba(9,9,11,.25);}
 .c-pring{width:60px;height:60px;border:2px solid var(--accent);background:rgba(223,225,4,.1);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:1.1rem;padding-left:3px;transition:all .25s;}
 .carousel-slide .play-cover:hover .c-pring{background:var(--accent);color:var(--accent-fg);transform:scale(1.08);}
 .c-plbl{font-size:.6rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:rgba(250,250,250,.55);}
@@ -217,6 +226,8 @@ footer{border-top:2px solid var(--border);padding:28px 5%;display:flex;align-ite
 }
 @media(max-width:640px){
   nav{height:auto;padding:10px 5%;flex-wrap:wrap;gap:8px;}
+  .nav-links { width: 100%; justify-content: center; flex-wrap: wrap; }
+  .nav-links a { font-size: .65rem; padding: 6px 10px; }
   .carousel-viewport{width:180px;}
   .carousel-track{height:320px;}
   .ba-row{grid-template-columns:1fr;grid-template-rows:auto 2px auto;}
@@ -255,7 +266,12 @@ footer{border-top:2px solid var(--border);padding:28px 5%;display:flex;align-ite
 
 <nav id="mainNav">
   <a class="nav-logo" href="index.html">UK<span>.</span></a>
-  <a href="index.html" class="back-btn"><i class="fas fa-arrow-left" aria-hidden="true"></i>&nbsp; Back to Home</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="all-projects.html" class="active">Portfolio</a>
+    <a href="shop.html">Shop</a>
+    <a href="packages.html">Packages</a>
+  </div>
 </nav>
 
 <!-- PAGE HERO -->
@@ -365,14 +381,14 @@ footer{border-top:2px solid var(--border);padding:28px 5%;display:flex;align-ite
         <div class="ba-side">
           <span class="ba-lbl before">Before</span>
           <div class="ba-vid">
-            <iframe src="https://www.youtube-nocookie.com/embed/iNxi8hB739s?mute=1&loop=1&playlist=iNxi8hB739s&rel=0&modestbranding=1" allow="autoplay" allowfullscreen title="Before edit"></iframe>
+            <iframe data-src="https://www.youtube-nocookie.com/embed/iNxi8hB739s?autoplay=1&mute=1&loop=1&playlist=iNxi8hB739s&rel=0&modestbranding=1" allow="autoplay" allowfullscreen title="Before edit" loading="lazy"></iframe>
           </div>
         </div>
         <div class="ba-div"></div>
         <div class="ba-side">
           <span class="ba-lbl after">After</span>
           <div class="ba-vid">
-            <iframe src="https://www.youtube-nocookie.com/embed/mVAVkV9FzxY?mute=1&loop=1&playlist=mVAVkV9FzxY&rel=0&modestbranding=1" allow="autoplay" allowfullscreen title="After edit"></iframe>
+            <iframe data-src="https://www.youtube-nocookie.com/embed/mVAVkV9FzxY?autoplay=1&mute=1&loop=1&playlist=mVAVkV9FzxY&rel=0&modestbranding=1" allow="autoplay" allowfullscreen title="After edit" loading="lazy"></iframe>
           </div>
         </div>
       </div>
@@ -420,7 +436,7 @@ footer{border-top:2px solid var(--border);padding:28px 5%;display:flex;align-ite
       <div class="pod-player">
         <iframe id="mainPlayer" src="about:blank" allow="autoplay; fullscreen" allowfullscreen title="Podcast player"></iframe>
         <div class="pod-thumb" id="podThumb" onclick="playPodcast()">
-          <img id="podThumbImg" src="https://img.youtube.com/vi/fk2A5N-7sVI/maxresdefault.jpg" alt="Podcast thumbnail">
+          <img id="podThumbImg" src="https://i.ytimg.com/vi/fk2A5N-7sVI/hqdefault.jpg" alt="Podcast thumbnail" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/fk2A5N-7sVI/0.jpg';">
           <div class="pt-ring"><i class="fas fa-play" aria-hidden="true"></i></div>
           <div class="pt-lbl">Click to Play</div>
           <div class="pt-title" id="podThumbTitle">Namrita's MDCAT Success Journey</div>
@@ -447,7 +463,7 @@ footer{border-top:2px solid var(--border);padding:28px 5%;display:flex;align-ite
             <div class="pring"><i class="fas fa-play" aria-hidden="true"></i></div>
             <div class="plbl">Play Reel</div>
           </div>
-          <iframe data-src="https://www.youtube.com/embed/qvABBZOzxIA?autoplay=1" src="" allowfullscreen title="Reel 1"></iframe>
+          <iframe data-src="https://www.youtube-nocookie.com/embed/qvABBZOzxIA" src="" allowfullscreen title="Reel 1"></iframe>
         </div>
         <div class="vc-ft"><span class="tag">Reel</span><a href="https://youtube.com/shorts/qvABBZOzxIA" target="_blank">Watch <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></div>
       </div>
@@ -457,7 +473,7 @@ footer{border-top:2px solid var(--border);padding:28px 5%;display:flex;align-ite
             <div class="pring"><i class="fas fa-play" aria-hidden="true"></i></div>
             <div class="plbl">Play Reel</div>
           </div>
-          <iframe data-src="https://www.youtube.com/embed/ahxMFjt9bKk?autoplay=1" src="" allowfullscreen title="Reel 2"></iframe>
+          <iframe data-src="https://www.youtube-nocookie.com/embed/ahxMFjt9bKk" src="" allowfullscreen title="Reel 2"></iframe>
         </div>
         <div class="vc-ft"><span class="tag">Reel</span><a href="https://youtube.com/shorts/ahxMFjt9bKk" target="_blank">Watch <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></div>
       </div>
@@ -467,7 +483,7 @@ footer{border-top:2px solid var(--border);padding:28px 5%;display:flex;align-ite
             <div class="pring"><i class="fas fa-play" aria-hidden="true"></i></div>
             <div class="plbl">Play Reel</div>
           </div>
-          <iframe data-src="https://www.youtube.com/embed/PxtZWx0hAaI?autoplay=1" src="" allowfullscreen title="Reel 3"></iframe>
+          <iframe data-src="https://www.youtube-nocookie.com/embed/PxtZWx0hAaI" src="" allowfullscreen title="Reel 3"></iframe>
         </div>
         <div class="vc-ft"><span class="tag">Reel</span><a href="https://youtube.com/shorts/PxtZWx0hAaI" target="_blank">Watch <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></div>
       </div>
@@ -477,7 +493,7 @@ footer{border-top:2px solid var(--border);padding:28px 5%;display:flex;align-ite
             <div class="pring"><i class="fas fa-play" aria-hidden="true"></i></div>
             <div class="plbl">Play Reel</div>
           </div>
-          <iframe data-src="https://www.youtube.com/embed/jTZZndniYVc?autoplay=1" src="" allowfullscreen title="Reel 4"></iframe>
+          <iframe data-src="https://www.youtube-nocookie.com/embed/jTZZndniYVc" src="" allowfullscreen title="Reel 4"></iframe>
         </div>
         <div class="vc-ft"><span class="tag">Reel</span><a href="https://youtube.com/shorts/jTZZndniYVc" target="_blank">Watch <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></div>
       </div>
@@ -489,7 +505,7 @@ footer{border-top:2px solid var(--border);padding:28px 5%;display:flex;align-ite
             <div class="pring"><i class="fas fa-play" aria-hidden="true"></i></div>
             <div class="plbl">Play Video</div>
           </div>
-          <iframe data-src="https://www.youtube.com/embed/jL-qLryhBs0?autoplay=1" src="" allowfullscreen title="Long form 1"></iframe>
+          <iframe data-src="https://www.youtube-nocookie.com/embed/jL-qLryhBs0" src="" allowfullscreen title="Long form 1"></iframe>
         </div>
         <div class="vc-ft"><span class="tag">Long-form</span><a href="https://youtu.be/jL-qLryhBs0" target="_blank">Watch <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></div>
       </div>
@@ -499,7 +515,7 @@ footer{border-top:2px solid var(--border);padding:28px 5%;display:flex;align-ite
             <div class="pring"><i class="fas fa-play" aria-hidden="true"></i></div>
             <div class="plbl">Play Video</div>
           </div>
-          <iframe data-src="https://www.youtube.com/embed/Dz7SG_VWSd8?autoplay=1" src="" allowfullscreen title="Long form 2"></iframe>
+          <iframe data-src="https://www.youtube-nocookie.com/embed/Dz7SG_VWSd8" src="" allowfullscreen title="Long form 2"></iframe>
         </div>
         <div class="vc-ft"><span class="tag">Long-form</span><a href="https://youtu.be/Dz7SG_VWSd8" target="_blank">Watch <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></div>
       </div>
@@ -577,11 +593,12 @@ viralIds.forEach(function(id, i) {
   var slide = document.createElement('div');
   slide.className = 'carousel-slide' + (i === 0 ? ' active' : '');
   slide.innerHTML =
+    '<img class="c-thumb" src="https://i.ytimg.com/vi/' + id + '/hqdefault.jpg" alt="Reel thumbnail" loading="lazy">' +
     '<div class="play-cover" onclick="activateSlide(this,\'' + id + '\')">' +
       '<div class="c-pring"><i class="fas fa-play" aria-hidden="true"></i></div>' +
       '<div class="c-plbl">Play Reel</div>' +
     '</div>' +
-    '<iframe src="" data-id="' + id + '" allowfullscreen title="Viral reel ' + (i+1) + '"></iframe>';
+    '<iframe src="" data-id="' + id + '" allowfullscreen title="Viral reel ' + (i+1) + '" loading="lazy"></iframe>';
   track.appendChild(slide);
 
   var dot = document.createElement('div');
@@ -618,7 +635,8 @@ document.getElementById('prevBtn').addEventListener('click', function() { goTo(c
 document.getElementById('nextBtn').addEventListener('click', function() { goTo(curSlide + 1); });
 
 function activateSlide(cover, id) {
-  var iframe = cover.nextElementSibling;
+  var slide = cover.closest('.carousel-slide');
+  var iframe = slide.querySelector('iframe');
   iframe.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1';
   cover.classList.add('gone');
 }
@@ -646,7 +664,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }, { rootMargin: '80px', threshold: .2 });
-  document.querySelectorAll('.vbox').forEach(function(v) { vo.observe(v); });
+  document.querySelectorAll('.vbox, .ba-vid').forEach(function(v) { vo.observe(v); });
 
   // Playlist
   document.querySelectorAll('.pl-item').forEach(function(item) {
@@ -655,7 +673,9 @@ document.addEventListener('DOMContentLoaded', function() {
       item.classList.add('active');
       document.getElementById('mainPlayer').src = 'about:blank';
       document.getElementById('podThumb').style.display = 'flex';
-      document.getElementById('podThumbImg').src = 'https://img.youtube.com/vi/' + item.dataset.video + '/maxresdefault.jpg';
+      var thumbImg = document.getElementById('podThumbImg');
+      thumbImg.onerror = function() { this.onerror = null; this.src = 'https://i.ytimg.com/vi/' + item.dataset.video + '/0.jpg'; };
+      thumbImg.src = 'https://i.ytimg.com/vi/' + item.dataset.video + '/hqdefault.jpg';
       document.getElementById('podThumbTitle').textContent = item.dataset.title;
     });
   });
