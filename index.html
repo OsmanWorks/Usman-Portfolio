@@ -67,7 +67,7 @@ nav.solid {
   border: 2px solid transparent;
   transition: color .2s, border-color .2s;
 }
-.nav-links a:hover { color: var(--accent); border-color: var(--accent); }
+.nav-links a:hover, .nav-links a.active { color: var(--accent); border-color: var(--accent); }
 
 /* ── SIDEBAR ── */
 .sidebar {
@@ -566,9 +566,10 @@ footer {
 <nav id="mainNav" role="navigation" aria-label="Main navigation">
   <a class="nav-logo" href="#">UK<span>.</span></a>
   <div class="nav-links">
-    <a href="#about">About</a>
+    <a href="index.html" class="active">Home</a>
     <a href="all-projects.html">Portfolio</a>
-    <a href="#contact">Contact</a>
+    <a href="shop.html">Shop</a>
+    <a href="packages.html">Packages</a>
   </div>
 </nav>
 
@@ -649,8 +650,8 @@ footer {
     </div>
     <div class="sr-wrap rv d1">
       <div class="sr-badge"><div class="sr-badge-dot" aria-hidden="true"></div> SHOWREEL 2025</div>
-      <div class="vbox ls">
-        <iframe src="https://www.youtube.com/embed/P0OZp1dbb0g?autoplay=1&mute=1&loop=1&playlist=P0OZp1dbb0g" allow="autoplay" allowfullscreen title="Usman Khan Showreel 2025"></iframe>
+      <div class="vbox ls" id="showreelBox">
+        <iframe data-src="https://www.youtube-nocookie.com/embed/P0OZp1dbb0g?autoplay=1&mute=1&loop=1&playlist=P0OZp1dbb0g&rel=0" allow="autoplay; fullscreen" allowfullscreen title="Usman Khan Showreel 2025" loading="lazy"></iframe>
       </div>
     </div>
   </section>
@@ -784,6 +785,22 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }, { threshold: 0.3 });
   document.querySelectorAll('.vc').forEach(function(v) { videoObserver.observe(v); });
+
+  // Showreel: autoplay only once it scrolls into view (not on page load)
+  var showreelObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        var iframe = e.target.querySelector('iframe[data-src]');
+        if (iframe && iframe.dataset.src) {
+          iframe.src = iframe.dataset.src;
+          iframe.removeAttribute('data-src');
+        }
+        showreelObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  var showreelBox = document.getElementById('showreelBox');
+  if (showreelBox) showreelObserver.observe(showreelBox);
 });
 </script>
 </body>
