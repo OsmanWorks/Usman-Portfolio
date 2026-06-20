@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium PC Games | Usman Khan</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --bg:      #09090B;
+  --fg:      #FAFAFA;
+  --muted:   #27272A;
+  --muted-fg:#A1A1AA;
+  --accent:  #DFE104;
+  --accent-fg:#000000;
+  --border:  #3F3F46;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Space Grotesk', sans-serif;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--accent); color: var(--accent-fg); }
+
+/* ── NOISE ── */
+.noise {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  opacity: 0.03; mix-blend-mode: overlay;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5%;
+  border-bottom: 2px solid transparent;
+  transition: background .3s, border-color .3s;
+  background: rgba(9,9,11,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom-color: var(--border);
+}
+.nav-logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.3rem; font-weight: 700;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--fg); text-decoration: none;
+}
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; align-items: center; gap: 2px; }
+.nav-links a {
+  color: var(--muted-fg); text-decoration: none;
+  font-size: .72rem; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  padding: 8px 16px;
+  border: 2px solid transparent;
+  transition: color .2s, border-color .2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--accent); border-color: var(--accent); }
+
+/* ── HERO ── */
+.shop-hero {
+  padding: 140px 5% 60px;
+  position: relative; overflow: hidden;
+  border-bottom: 2px solid var(--border);
+}
+.hero-bg-num {
+  position: absolute; right: -3%; top: -5%;
+  font-size: clamp(8rem, 22vw, 26rem);
+  font-weight: 700; letter-spacing: -8px; text-transform: uppercase;
+  color: var(--muted); line-height: 1;
+  pointer-events: none; user-select: none; z-index: 0;
+}
+.shop-hero-inner { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 10px;
+  border: 2px solid var(--accent);
+  padding: 6px 16px; margin-bottom: 24px;
+}
+.tag-dot { width: 7px; height: 7px; background: var(--accent); animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+.hero-tag span {
+  font-size: .68rem; font-weight: 700;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--accent);
+}
+.shop-title {
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 700; line-height: .92;
+  letter-spacing: -3px; text-transform: uppercase;
+}
+.shop-title .accent { color: var(--accent); display: block; }
+.shop-desc {
+  color: var(--muted-fg); font-size: 1.05rem; line-height: 1.75;
+  max-width: 620px; margin: 24px 0 36px; font-weight: 400;
+}
+.feat-grid {
+  display: grid; grid-template-columns: repeat(5,1fr);
+  border: 2px solid var(--border);
+}
+.feat-item {
+  padding: 18px 14px; text-align: center;
+  border-right: 2px solid var(--border);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.feat-item:last-child { border-right: none; }
+.feat-item i { color: var(--accent); font-size: 1.1rem; }
+.feat-item span {
+  font-size: .62rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted-fg);
+}
+
+/* ── SECTIONS ── */
+.wrap { max-width: 1280px; margin: 0 auto; padding: 0 5%; }
+.section { padding: 90px 0; border-top: 2px solid var(--border); }
+.sec-label { display: flex; align-items: baseline; gap: 20px; margin-bottom: 48px; }
+.sec-num { font-size: .7rem; font-weight: 700; letter-spacing: .25em; color: var(--accent); }
+.sec-title {
+  font-size: clamp(2.2rem, 5vw, 4.5rem);
+  font-weight: 700; letter-spacing: -2px;
+  text-transform: uppercase; line-height: .95;
+}
+.sec-rule { flex: 1; height: 2px; background: var(--border); }
+
+/* ── GAME GRID ── */
+.game-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+}
+.game-card {
+  border: 2px solid var(--border);
+  background: var(--bg);
+  transition: border-color .25s, transform .25s;
+  display: flex; flex-direction: column;
+}
+.game-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+
+.vbox { background: #000; position: relative; }
+.vbox.ls { aspect-ratio: 16/9; }
+.vbox iframe { width: 100%; height: 100%; border: none; display: block; }
+
+.gc-body { padding: 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.gc-title { font-size: 1.15rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+.gc-platform {
+  font-size: .62rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--muted-fg); display: flex; align-items: center; gap: 6px;
+}
+.gc-platform i { color: var(--accent); }
+.gc-price-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 4px; padding-top: 14px; border-top: 2px solid var(--border);
+}
+.gc-price { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+.gc-price-old { font-size: .8rem; color: var(--muted-fg); text-decoration: line-through; margin-right: 6px; }
+.gc-buy {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--accent); color: var(--accent-fg);
+  font-size: .72rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 14px; margin-top: 4px;
+  border: 2px solid var(--accent);
+  text-decoration: none;
+  transition: transform .2s, box-shadow .2s;
+}
+.gc-buy:hover { transform: scale(1.03); box-shadow: 0 10px 28px rgba(223,225,4,.25); }
+.gc-buy:active { transform: scale(.97); }
+
+/* ── BUNDLES ── */
+.bundle-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; }
+.bundle-card {
+  border: 2px solid var(--border); padding: 36px;
+  display: flex; flex-direction: column; gap: 16px;
+  position: relative; transition: border-color .25s;
+}
+.bundle-card.pro { border-color: var(--accent); background: rgba(223,225,4,0.04); }
+.bundle-badge {
+  position: absolute; top: -14px; left: 32px;
+  background: var(--accent); color: var(--accent-fg);
+  font-size: .62rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase;
+  padding: 5px 14px;
+}
+.bundle-name { font-size: 1.6rem; font-weight: 700; text-transform: uppercase; }
+.bundle-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin: 6px 0; }
+.bundle-list li {
+  font-size: .88rem; color: var(--muted-fg);
+  display: flex; align-items: center; gap: 10px;
+}
+.bundle-list li i { color: var(--accent); font-size: .8rem; }
+.bundle-price-row { display: flex; align-items: baseline; gap: 8px; margin-top: 8px; }
+.bundle-price { font-size: 2.2rem; font-weight: 700; color: var(--accent); }
+.bundle-sub { font-size: .68rem; color: var(--muted-fg); letter-spacing: .08em; text-transform: uppercase; }
+
+/* ── FAQ ── */
+.faq-list { display: flex; flex-direction: column; gap: 0; border: 2px solid var(--border); }
+.faq-item { border-bottom: 2px solid var(--border); }
+.faq-item:last-child { border-bottom: none; }
+.faq-q {
+  width: 100%; background: none; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 24px; text-align: left;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: .95rem; font-weight: 700; color: var(--fg);
+  text-transform: uppercase; letter-spacing: .5px;
+}
+.faq-q i { color: var(--accent); transition: transform .25s; flex-shrink: 0; margin-left: 16px; }
+.faq-item.open .faq-q i { transform: rotate(45deg); }
+.faq-a {
+  max-height: 0; overflow: hidden; transition: max-height .3s ease;
+  padding: 0 24px;
+}
+.faq-item.open .faq-a { max-height: 200px; padding-bottom: 22px; }
+.faq-a p { font-size: .88rem; color: var(--muted-fg); line-height: 1.7; }
+
+/* ── CONTACT STRIP ── */
+.contact-strip {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border: 2px solid var(--border);
+}
+.cs-left {
+  background: var(--accent); padding: 56px 44px;
+  display: flex; flex-direction: column; justify-content: center; gap: 14px;
+}
+.cs-h { font-size: clamp(1.6rem,3vw,2.4rem); font-weight: 700; text-transform: uppercase; color: var(--accent-fg); line-height: 1.1; }
+.cs-s { font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(0,0,0,.55); }
+.cs-right {
+  background: var(--muted); padding: 56px 44px;
+  display: flex; flex-direction: column; justify-content: center; gap: 12px;
+  border-left: 2px solid var(--border);
+}
+.cbtn {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 16px 28px;
+  font-size: .8rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  text-decoration: none; border: 2px solid transparent;
+  transition: all .2s;
+}
+.cbtn-wa { background: rgba(37,211,102,.1); color: #25d366; border-color: rgba(37,211,102,.3); }
+.cbtn-wa:hover { background: #25d366; color: #000; border-color: #25d366; }
+.cbtn-em { background: rgba(250,250,250,.06); color: var(--fg); border-color: var(--border); }
+.cbtn-em:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 2px solid var(--border);
+  padding: 28px 5%;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+}
+.f-logo { font-size: 1.2rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--fg); }
+.f-logo span { color: var(--accent); }
+.f-copy { font-size: .68rem; color: var(--muted-fg); letter-spacing: .08em; text-transform: uppercase; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .game-grid { grid-template-columns: repeat(2,1fr); }
+  .bundle-grid { grid-template-columns: 1fr; }
+  .contact-strip { grid-template-columns: 1fr; }
+  .feat-grid { grid-template-columns: repeat(3,1fr); }
+  .feat-item:nth-child(3) { border-right: none; }
+}
+@media(max-width:640px){
+  nav { height: auto; padding: 10px 5%; flex-wrap: wrap; gap: 6px; }
+  .nav-links { width: 100%; justify-content: center; flex-wrap: wrap; }
+  .nav-links a { font-size: .65rem; padding: 6px 10px; }
+  .shop-hero { padding: 100px 5% 40px; }
+  .game-grid { grid-template-columns: 1fr; }
+  .feat-grid { grid-template-columns: repeat(2,1fr); }
+  .feat-item:nth-child(2n) { border-right: none; }
+  .feat-item { border-bottom: 2px solid var(--border); }
+  .cs-left, .cs-right { padding: 40px 28px; }
+  footer { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="noise" aria-hidden="true"></div>
+
+<nav role="navigation" aria-label="Main navigation">
+  <a class="nav-logo" href="index.html">UK<span>.</span></a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="all-projects.html">Portfolio</a>
+    <a href="shop.html" class="active">Shop</a>
+    <a href="packages.html">Packages</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="shop-hero">
+  <div class="hero-bg-num" aria-hidden="true">PC</div>
+  <div class="shop-hero-inner">
+    <div class="hero-tag">
+      <div class="tag-dot" aria-hidden="true"></div>
+      <span>Digital Store</span>
+    </div>
+    <h1 class="shop-title">PREMIUM PC<span class="accent">GAMES</span></h1>
+    <p class="shop-desc">Clean installation files, no antivirus hassle, lifetime access. Browse official trailers below and order directly on WhatsApp.</p>
+    <div class="feat-grid" role="list">
+      <div class="feat-item" role="listitem"><i class="fas fa-shield-alt"></i><span>Win 10 &amp; 11</span></div>
+      <div class="feat-item" role="listitem"><i class="fas fa-ban"></i><span>No AV Hassle</span></div>
+      <div class="feat-item" role="listitem"><i class="fas fa-infinity"></i><span>Lifetime Access</span></div>
+      <div class="feat-item" role="listitem"><i class="fas fa-bolt"></i><span>Fast Delivery</span></div>
+      <div class="feat-item" role="listitem"><i class="fab fa-whatsapp"></i><span>WA Support</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <!-- ── GAMES ── -->
+  <section class="section" id="games">
+    <div class="sec-label">
+      <span class="sec-num">01</span>
+      <h2 class="sec-title">GAMES</h2>
+      <div class="sec-rule" aria-hidden="true"></div>
+    </div>
+    <div class="game-grid">
+
+      <div class="game-card">
+        <div class="vbox ls">
+          <iframe data-src="https://www.youtube-nocookie.com/embed/QkkoHAzjnUs" title="GTA V Official Trailer" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="gc-body">
+          <h3 class="gc-title">Grand Theft Auto V</h3>
+          <span class="gc-platform"><i class="fab fa-windows"></i> Windows 10 / 11</span>
+          <div class="gc-price-row">
+            <span class="gc-price">Rs. 799</span>
+          </div>
+          <a class="gc-buy" href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20want%20to%20buy%20GTA%20V." target="_blank">Buy Now</a>
+        </div>
+      </div>
+
+      <div class="game-card">
+        <div class="vbox ls">
+          <iframe data-src="https://www.youtube-nocookie.com/embed/FYH9n37B7Yk" title="Forza Horizon 5 Official Trailer" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="gc-body">
+          <h3 class="gc-title">Forza Horizon 5</h3>
+          <span class="gc-platform"><i class="fab fa-windows"></i> Windows 10 / 11</span>
+          <div class="gc-price-row">
+            <span class="gc-price">Rs. 999</span>
+          </div>
+          <a class="gc-buy" href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20want%20to%20buy%20Forza%20Horizon%205." target="_blank">Buy Now</a>
+        </div>
+      </div>
+
+      <div class="game-card">
+        <div class="vbox ls">
+          <iframe data-src="https://www.youtube-nocookie.com/embed/gmA6MrX81z4" title="Red Dead Redemption 2 Official Trailer" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="gc-body">
+          <h3 class="gc-title">Red Dead Redemption 2</h3>
+          <span class="gc-platform"><i class="fab fa-windows"></i> Windows 10 / 11</span>
+          <div class="gc-price-row">
+            <span class="gc-price">Rs. 1,199</span>
+          </div>
+          <a class="gc-buy" href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20want%20to%20buy%20Red%20Dead%20Redemption%202." target="_blank">Buy Now</a>
+        </div>
+      </div>
+
+      <div class="game-card">
+        <div class="vbox ls">
+          <iframe data-src="https://www.youtube-nocookie.com/embed/8VyMtafFFvQ" title="EA FC 26 Official Trailer" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="gc-body">
+          <h3 class="gc-title">EA FC 26</h3>
+          <span class="gc-platform"><i class="fab fa-windows"></i> Windows 10 / 11</span>
+          <div class="gc-price-row">
+            <span class="gc-price">Rs. 899</span>
+          </div>
+          <a class="gc-buy" href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20want%20to%20buy%20EA%20FC%2026." target="_blank">Buy Now</a>
+        </div>
+      </div>
+
+      <div class="game-card">
+        <div class="vbox ls">
+          <iframe data-src="https://www.youtube-nocookie.com/embed/8X2kIfS6fb8" title="Cyberpunk 2077 Official Trailer" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="gc-body">
+          <h3 class="gc-title">Cyberpunk 2077</h3>
+          <span class="gc-platform"><i class="fab fa-windows"></i> Windows 10 / 11</span>
+          <div class="gc-price-row">
+            <span class="gc-price">Rs. 799</span>
+          </div>
+          <a class="gc-buy" href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20want%20to%20buy%20Cyberpunk%202077." target="_blank">Buy Now</a>
+        </div>
+      </div>
+
+      <div class="game-card">
+        <div class="vbox ls">
+          <iframe data-src="https://www.youtube-nocookie.com/embed/EZsjB1RcfsM" title="God of War Ragnarok Official Trailer" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="gc-body">
+          <h3 class="gc-title">God of War Ragnarök</h3>
+          <span class="gc-platform"><i class="fab fa-windows"></i> Windows 10 / 11</span>
+          <div class="gc-price-row">
+            <span class="gc-price">Rs. 999</span>
+          </div>
+          <a class="gc-buy" href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20want%20to%20buy%20God%20of%20War%20Ragnarok." target="_blank">Buy Now</a>
+        </div>
+      </div>
+
+      <div class="game-card">
+        <div class="vbox ls">
+          <iframe data-src="https://www.youtube-nocookie.com/embed/v9rOe_aRpyA" title="Spider-Man 2 Official Trailer" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="gc-body">
+          <h3 class="gc-title">Spider-Man 2</h3>
+          <span class="gc-platform"><i class="fab fa-windows"></i> Windows 10 / 11</span>
+          <div class="gc-price-row">
+            <span class="gc-price">Rs. 899</span>
+          </div>
+          <a class="gc-buy" href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20want%20to%20buy%20Spider-Man%202." target="_blank">Buy Now</a>
+        </div>
+      </div>
+
+      <div class="game-card">
+        <div class="vbox ls">
+          <iframe data-src="https://www.youtube-nocookie.com/embed/kQjkkBd4kbI" title="Black Myth Wukong Official Trailer" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="gc-body">
+          <h3 class="gc-title">Black Myth: Wukong</h3>
+          <span class="gc-platform"><i class="fab fa-windows"></i> Windows 10 / 11</span>
+          <div class="gc-price-row">
+            <span class="gc-price">Rs. 1,099</span>
+          </div>
+          <a class="gc-buy" href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20want%20to%20buy%20Black%20Myth%20Wukong." target="_blank">Buy Now</a>
+        </div>
+      </div>
+
+      <div class="game-card">
+        <div class="vbox ls">
+          <iframe data-src="https://www.youtube-nocookie.com/embed/E3Huy2cdih0" title="Elden Ring Official Trailer" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="gc-body">
+          <h3 class="gc-title">Elden Ring</h3>
+          <span class="gc-platform"><i class="fab fa-windows"></i> Windows 10 / 11</span>
+          <div class="gc-price-row">
+            <span class="gc-price">Rs. 1,199</span>
+          </div>
+          <a class="gc-buy" href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20want%20to%20buy%20Elden%20Ring." target="_blank">Buy Now</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── FAQ ── -->
+  <section class="section" id="faq">
+    <div class="sec-label">
+      <span class="sec-num">02</span>
+      <h2 class="sec-title">FAQ</h2>
+      <div class="sec-rule" aria-hidden="true"></div>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q">Do I need to turn off my antivirus?<i class="fas fa-plus"></i></button>
+        <div class="faq-a"><p>Step-by-step instructions are included in the installation guide. If you need help, we're available on WhatsApp too.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How long does delivery take?<i class="fas fa-plus"></i></button>
+        <div class="faq-a"><p>Once payment is confirmed, the download link is usually sent on WhatsApp within a few hours.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Are updates free?<i class="fas fa-plus"></i></button>
+        <div class="faq-a"><p>Major updates for purchased games are provided free. Just message us on WhatsApp when a new update is available.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How do I install the game?<i class="fas fa-plus"></i></button>
+        <div class="faq-a"><p>Every game comes with a step-by-step installation guide. WhatsApp support is available if you run into any issue.</p></div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /wrap -->
+
+<!-- ── CONTACT ── -->
+<div class="contact-section" id="contact" style="padding:0 5% 100px;max-width:1280px;margin:0 auto;">
+  <div class="contact-strip">
+    <div class="cs-left">
+      <h2 class="cs-h">Contact Us to Purchase Games</h2>
+      <p class="cs-s">Message us on WhatsApp to place your order</p>
+    </div>
+    <div class="cs-right">
+      <a href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20want%20to%20know%20more%20about%20the%20games%20store." target="_blank" class="cbtn cbtn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      <a href="mailto:osman.chaajao@gmail.com" class="cbtn cbtn-em"><i class="fas fa-envelope"></i> Email</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="f-logo">UK<span>.</span></div>
+  <div class="f-copy">© 2025 Usman Khan — Premium PC Games. All rights reserved.</div>
+</footer>
+
+<script>
+// Lazy-load trailer iframes only when card scrolls into view (keeps page light)
+document.addEventListener('DOMContentLoaded', function () {
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        var iframe = entry.target.querySelector('iframe[data-src]');
+        if (iframe) {
+          iframe.src = iframe.dataset.src;
+          iframe.removeAttribute('data-src');
+        }
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2, rootMargin: '200px' });
+  document.querySelectorAll('.vbox').forEach(function (v) { io.observe(v); });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var item = btn.closest('.faq-item');
+      var wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(function (i) { i.classList.remove('open'); });
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+});
+</script>
+</body>
+</html>
