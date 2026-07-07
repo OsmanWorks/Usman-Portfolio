@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Media Packages | Usman Khan</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --bg:      #09090B;
+  --fg:      #FAFAFA;
+  --muted:   #27272A;
+  --muted-fg:#A1A1AA;
+  --accent:  #DFE104;
+  --accent-fg:#000000;
+  --border:  #3F3F46;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;line-height:1.5;overflow-x:hidden;width:100%;}
+::selection{background:var(--accent);color:var(--accent-fg);}
+
+.noise{position:fixed;inset:0;z-index:1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");opacity:.03;mix-blend-mode:overlay;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 5%;border-bottom:2px solid var(--border);background:rgba(9,9,11,.96);backdrop-filter:blur(12px);z-index:900;}
+.nav-logo{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--fg);text-decoration:none;}
+.nav-logo span{color:var(--accent);}
+.nav-links{display:flex;align-items:center;gap:2px;}
+.nav-links a{color:var(--muted-fg);text-decoration:none;font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:8px 16px;border:2px solid transparent;transition:color .2s,border-color .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--accent);border-color:var(--accent);}
+
+/* BACK LINK */
+.back-link{display:inline-flex;align-items:center;gap:8px;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-fg);text-decoration:none;margin-bottom:20px;transition:color .2s;}
+.back-link:hover{color:var(--accent);}
+
+/* HERO */
+.pk-hero{padding:130px 6% 40px;position:relative;overflow:hidden;border-bottom:2px solid var(--border);}
+.hero-bg-num{position:absolute;right:-3%;top:-5%;font-size:clamp(4.5rem,20vw,22rem);font-weight:700;letter-spacing:-6px;text-transform:uppercase;color:var(--muted);line-height:1;pointer-events:none;user-select:none;z-index:0;opacity:.7;}
+.pk-hero-inner{position:relative;z-index:1;max-width:1280px;margin:0 auto;}
+.hero-tag{display:inline-flex;align-items:center;gap:10px;border:2px solid var(--accent);padding:6px 14px;margin-bottom:22px;}
+.tag-dot{width:7px;height:7px;background:var(--accent);flex-shrink:0;animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.hero-tag span{font-size:.64rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);}
+.pk-title{font-size:clamp(2.1rem,7.5vw,6rem);font-weight:700;line-height:.96;letter-spacing:-1.5px;text-transform:uppercase;word-break:break-word;}
+.pk-title .accent{color:var(--accent);display:block;}
+.pk-desc{color:var(--muted-fg);font-size:1rem;line-height:1.7;max-width:620px;margin:20px 0 8px;font-weight:400;}
+.pk-sub{color:var(--muted-fg);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+.pk-sub span{color:var(--accent);}
+
+.platform-strip{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;}
+.pf-pill{display:flex;align-items:center;gap:7px;border:2px solid var(--border);padding:7px 13px;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted-fg);}
+.pf-pill i{color:var(--accent);}
+
+.wrap{max-width:1280px;margin:0 auto;padding:0 6%;}
+.section{padding:52px 0;border-top:2px solid var(--border);}
+.sec-label{display:flex;align-items:baseline;gap:16px;margin-bottom:28px;flex-wrap:wrap;}
+.sec-num{font-size:.68rem;font-weight:700;letter-spacing:.22em;color:var(--accent);}
+.sec-title{font-size:clamp(1.5rem,4.8vw,4rem);font-weight:700;letter-spacing:-1.5px;text-transform:uppercase;line-height:.98;}
+.sec-sub{color:var(--muted-fg);font-size:.85rem;margin-top:10px;max-width:560px;}
+.sec-rule{flex:1;height:2px;background:var(--border);min-width:20px;}
+
+/* PRICING CARDS */
+.price-grid{display:grid;grid-template-columns:1fr;gap:16px;}
+@media(min-width:560px){.price-grid{grid-template-columns:1fr 1fr;}}
+@media(min-width:1024px){.price-grid{grid-template-columns:repeat(4,1fr);}}
+
+.price-card{
+  border:2px solid var(--border);background:var(--bg);
+  display:flex;flex-direction:column;position:relative;
+  transition:border-color .2s,transform .2s;
+  min-width:0;
+}
+.price-card.popular{border-color:var(--accent);background:rgba(223,225,4,.04);}
+.price-badge{
+  position:absolute;top:-13px;left:20px;
+  background:var(--accent);color:var(--accent-fg);
+  font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding:5px 12px;
+}
+.pc-head{padding:24px 20px 18px;border-bottom:2px solid var(--border);}
+.pc-name{font-size:1.15rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.pc-tag{font-size:.76rem;color:var(--muted-fg);line-height:1.5;}
+.pc-price-block{padding:18px 20px;border-bottom:2px solid var(--border);}
+.pc-price-label{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-fg);margin-bottom:6px;}
+.pc-price{font-size:1.65rem;font-weight:700;color:var(--accent);line-height:1;word-break:break-word;}
+.pc-price small{font-size:.85rem;color:var(--muted-fg);font-weight:400;}
+.pc-count{font-size:.7rem;color:var(--muted-fg);margin-top:8px;}
+.pc-count b{color:var(--fg);}
+.pc-body{padding:20px;flex:1;display:flex;flex-direction:column;gap:8px;}
+.pc-group-label{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:10px 0 4px;}
+.pc-group-label:first-child{margin-top:0;}
+.pc-feat{display:flex;align-items:flex-start;gap:8px;font-size:.78rem;color:var(--fg);}
+.pc-feat i{color:var(--accent);font-size:.68rem;margin-top:4px;flex-shrink:0;}
+.pc-feat.off{color:var(--muted-fg);}
+.pc-feat.off i{color:var(--muted-fg);}
+.pc-foot{padding:18px 20px 24px;}
+.pc-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--accent);color:var(--accent-fg);
+  font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:14px;text-decoration:none;border:2px solid var(--accent);
+  transition:transform .15s;
+}
+.pc-btn:active{transform:scale(.97);}
+.price-card.popular .pc-btn{background:var(--fg);border-color:var(--fg);}
+
+/* PROCESS STEPS */
+.steps{display:grid;grid-template-columns:1fr;gap:12px;}
+@media(min-width:600px){.steps{grid-template-columns:1fr 1fr;}}
+@media(min-width:900px){.steps{grid-template-columns:repeat(4,1fr);}}
+.step{border:2px solid var(--border);padding:20px 18px;}
+.step-num{font-size:.64rem;font-weight:700;letter-spacing:.12em;color:var(--accent);margin-bottom:8px;}
+.step-t{font-size:.9rem;font-weight:700;text-transform:uppercase;margin-bottom:6px;}
+.step-d{font-size:.76rem;color:var(--muted-fg);line-height:1.55;}
+
+/* GOOD TO KNOW */
+.terms-grid{display:grid;grid-template-columns:1fr;gap:12px;}
+@media(min-width:600px){.terms-grid{grid-template-columns:1fr 1fr;}}
+.term-card{border:2px solid var(--border);padding:18px;display:flex;gap:14px;align-items:flex-start;}
+.term-icon{width:36px;height:36px;flex-shrink:0;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:.82rem;}
+.term-t{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.02em;margin-bottom:4px;}
+.term-d{font-size:.78rem;color:var(--muted-fg);line-height:1.55;}
+
+.terms-cta{margin-top:16px;border:2px solid var(--accent);background:rgba(223,225,4,.05);padding:22px;display:flex;flex-direction:column;gap:14px;}
+@media(min-width:640px){.terms-cta{flex-direction:row;align-items:center;justify-content:space-between;gap:24px;}}
+.terms-cta p{font-size:.85rem;color:var(--fg);line-height:1.6;max-width:520px;}
+.terms-cta p b{color:var(--accent);}
+.terms-cta .pc-btn{white-space:nowrap;flex-shrink:0;padding:14px 22px;}
+
+/* CONTACT STRIP */
+.contact-strip{display:grid;grid-template-columns:1fr;border:2px solid var(--border);}
+.cs-left{background:var(--accent);padding:32px 22px;display:flex;flex-direction:column;justify-content:center;gap:10px;}
+.cs-h{font-size:clamp(1.3rem,4.5vw,2.4rem);font-weight:700;text-transform:uppercase;color:var(--accent-fg);line-height:1.1;}
+.cs-s{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(0,0,0,.6);}
+.cs-right{background:var(--muted);padding:26px 22px;display:flex;flex-direction:column;justify-content:center;gap:12px;border-top:2px solid var(--border);}
+.cbtn{display:inline-flex;align-items:center;gap:12px;justify-content:center;padding:15px 22px;font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border:2px solid transparent;transition:all .2s;}
+.cbtn-wa{background:rgba(37,211,102,.1);color:#25d366;border-color:rgba(37,211,102,.3);}
+.cbtn-wa:hover{background:#25d366;color:#000;border-color:#25d366;}
+.cbtn-em{background:rgba(250,250,250,.06);color:var(--fg);border-color:var(--border);}
+.cbtn-em:hover{background:var(--fg);color:var(--bg);border-color:var(--fg);}
+@media(min-width:640px){
+  .contact-strip{grid-template-columns:1fr 1fr;}
+  .cs-left,.cs-right{padding:52px 40px;}
+  .cs-right{border-top:none;border-left:2px solid var(--border);}
+}
+
+footer{border-top:2px solid var(--border);padding:20px 6%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;text-align:center;}
+.f-logo{font-size:1.05rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--fg);}
+.f-logo span{color:var(--accent);}
+.f-copy{font-size:.6rem;color:var(--muted-fg);letter-spacing:.05em;text-transform:uppercase;}
+
+@media(max-width:640px){
+  nav{height:auto;padding:10px 5%;flex-wrap:wrap;gap:6px;}
+  .nav-links{width:100%;justify-content:center;flex-wrap:wrap;}
+  .nav-links a{font-size:.6rem;padding:6px 8px;}
+  .pk-hero{padding:92px 6% 28px;}
+  .section{padding:40px 0;}
+  footer{flex-direction:column;}
+}
+@media(max-width:480px){
+  .hero-bg-num{display:none;}
+  .pk-desc{font-size:.92rem;}
+  .terms-cta .pc-btn{width:100%;}
+}
+</style>
+</head>
+<body>
+
+<div class="noise" aria-hidden="true"></div>
+
+<nav role="navigation" aria-label="Main navigation">
+  <a class="nav-logo" href="index.html">UK<span>.</span></a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="all-projects.html">Portfolio</a>
+    <a href="shop.html">Shop</a>
+    <a href="packages.html" class="active">Packages</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="pk-hero">
+  <div class="hero-bg-num" aria-hidden="true">GROW</div>
+  <div class="pk-hero-inner">
+    <a href="packages.html" class="back-link"><i class="fas fa-arrow-left"></i> All Packages</a>
+    <div class="hero-tag">
+      <div class="tag-dot" aria-hidden="true"></div>
+      <span>Social Media Management</span>
+    </div>
+    <h1 class="pk-title">SOCIAL MEDIA<span class="accent">MANAGEMENT</span></h1>
+    <p class="pk-desc">Hand over your account and we run it end to end — content, captions, hashtags, scheduling and posting, every single month. You focus on your business, we keep your feed active and on-brand.</p>
+    <p class="pk-sub">Pricing shown in <span>PKR</span> · Billed monthly</p>
+    <div class="platform-strip">
+      <div class="pf-pill"><i class="fab fa-instagram"></i> Instagram</div>
+      <div class="pf-pill"><i class="fab fa-facebook"></i> Facebook</div>
+      <div class="pf-pill"><i class="fab fa-tiktok"></i> TikTok</div>
+      <div class="pf-pill"><i class="fab fa-linkedin"></i> LinkedIn</div>
+      <div class="pf-pill"><i class="fab fa-youtube"></i> YouTube</div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <!-- PRICING -->
+  <section class="section" id="pricing" style="border-top:none;padding-top:44px;">
+    <div class="sec-label">
+      <span class="sec-num">01</span>
+      <h2 class="sec-title">CHOOSE A PLAN</h2>
+      <div class="sec-rule" aria-hidden="true"></div>
+    </div>
+    <div class="price-grid" id="priceGrid"></div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" id="process">
+    <div class="sec-label">
+      <span class="sec-num">02</span>
+      <h2 class="sec-title">HOW IT WORKS</h2>
+      <div class="sec-rule" aria-hidden="true"></div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">STEP 01</div>
+        <div class="step-t">Onboarding Call</div>
+        <div class="step-d">We learn your brand, audience and goals, then agree on a content direction.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">STEP 02</div>
+        <div class="step-t">Content Calendar</div>
+        <div class="step-d">You get a full month planned out in advance — approve it before anything goes live.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">STEP 03</div>
+        <div class="step-t">Create & Schedule</div>
+        <div class="step-d">Graphics, reels, captions and hashtags are made and queued up for you.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">STEP 04</div>
+        <div class="step-t">Post & Report</div>
+        <div class="step-d">Everything goes live on schedule, followed by a monthly performance report.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GOOD TO KNOW -->
+  <section class="section" id="terms">
+    <div class="sec-label">
+      <span class="sec-num">03</span>
+      <h2 class="sec-title">GOOD TO KNOW</h2>
+      <div class="sec-rule" aria-hidden="true"></div>
+    </div>
+    <div class="terms-grid">
+      <div class="term-card">
+        <div class="term-icon"><i class="fas fa-calendar-check"></i></div>
+        <div>
+          <div class="term-t">Billed Monthly</div>
+          <div class="term-d">Plans are billed in PKR at the start of each month — no hidden charges along the way.</div>
+        </div>
+      </div>
+      <div class="term-card">
+        <div class="term-icon"><i class="fas fa-key"></i></div>
+        <div>
+          <div class="term-t">Just Share Access</div>
+          <div class="term-d">Account access, brand assets and a bit of product info is all we need to get moving.</div>
+        </div>
+      </div>
+      <div class="term-card">
+        <div class="term-icon"><i class="fas fa-handshake"></i></div>
+        <div>
+          <div class="term-t">Simple Payment Split</div>
+          <div class="term-d">50% advance to onboard, balance mid-month. EasyPaisa, JazzCash or bank transfer.</div>
+        </div>
+      </div>
+      <div class="term-card">
+        <div class="term-icon"><i class="fas fa-arrow-up-right-dots"></i></div>
+        <div>
+          <div class="term-t">Grow As You Go</div>
+          <div class="term-d">Upgrade your plan anytime; downgrades simply apply from the next billing cycle.</div>
+        </div>
+      </div>
+      <div class="term-card">
+        <div class="term-icon"><i class="fas fa-bullhorn"></i></div>
+        <div>
+          <div class="term-t">Ad Spend Is Separate</div>
+          <div class="term-d">Boosting posts or running paid campaigns is billed apart from the management fee.</div>
+        </div>
+      </div>
+      <div class="term-card">
+        <div class="term-icon"><i class="fas fa-calendar-days"></i></div>
+        <div>
+          <div class="term-t">1-Month Minimum</div>
+          <div class="term-d">We ask for a 1-month minimum commitment so the content can actually build momentum.</div>
+        </div>
+      </div>
+    </div>
+    <div class="terms-cta">
+      <p>Every business is a little different. <b>Message us on WhatsApp</b> with what you need and we'll build a plan — and price — around it.</p>
+      <a class="pc-btn" href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20want%20a%20quote%20for%20social%20media%20management." target="_blank"><i class="fab fa-whatsapp"></i> Chat On WhatsApp</a>
+    </div>
+  </section>
+
+</div><!-- /wrap -->
+
+<!-- CONTACT -->
+<div class="contact-section" style="padding:0 6% 70px;max-width:1280px;margin:0 auto;">
+  <div class="contact-strip">
+    <div class="cs-left">
+      <h2 class="cs-h">Not Sure Which Plan?</h2>
+      <p class="cs-s">Send your business details on WhatsApp for a free custom quote</p>
+    </div>
+    <div class="cs-right">
+      <a href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20want%20a%20quote%20for%20social%20media%20management." target="_blank" class="cbtn cbtn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      <a href="mailto:osman.chaajao@gmail.com" class="cbtn cbtn-em"><i class="fas fa-envelope"></i> Email</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="f-logo">UK<span>.</span></div>
+  <div class="f-copy">© 2026 Usman Khan — Visual Artist. All rights reserved.</div>
+</footer>
+
+<script>
+const WA = "923072969303";
+
+// ── Social media plan data (sample pricing — update freely, rest builds itself) ──
+const plans = [
+  {
+    id: "essentials",
+    name: "Essentials",
+    tag: "A steady, active presence for a business just starting out",
+    popular: false,
+    price: 25000,
+    postsPerMonth: 12,
+    platforms: "1 platform",
+    features: {
+      "Content": {
+        "Graphic design posts": "8 / mo",
+        "Reels / short videos": "4 / mo",
+        "Hashtag research": true,
+        "Caption copywriting": true
+      },
+      "Planning": {
+        "Monthly content calendar": true,
+        "Calendar review call": false,
+        "Competitor research": false
+      },
+      "Management": {
+        "Scheduling & posting": true,
+        "Comment / DM replies": false,
+        "Performance report": false
+      }
+    }
+  },
+  {
+    id: "growth",
+    name: "Growth",
+    tag: "More content and light community management to build momentum",
+    popular: false,
+    price: 45000,
+    postsPerMonth: 20,
+    platforms: "2 platforms",
+    features: {
+      "Content": {
+        "Graphic design posts": "14 / mo",
+        "Reels / short videos": "6 / mo",
+        "Hashtag research": true,
+        "Caption copywriting": true
+      },
+      "Planning": {
+        "Monthly content calendar": true,
+        "Calendar review call": true,
+        "Competitor research": false
+      },
+      "Management": {
+        "Scheduling & posting": true,
+        "Comment / DM replies": "Basic",
+        "Performance report": "Monthly"
+      }
+    }
+  },
+  {
+    id: "premium",
+    name: "Premium",
+    tag: "Full content + community management across three platforms",
+    popular: true,
+    price: 75000,
+    postsPerMonth: 30,
+    platforms: "3 platforms",
+    features: {
+      "Content": {
+        "Graphic design posts": "20 / mo",
+        "Reels / short videos": "10 / mo",
+        "Hashtag research": true,
+        "Caption copywriting": true
+      },
+      "Planning": {
+        "Monthly content calendar": true,
+        "Calendar review call": true,
+        "Competitor research": true
+      },
+      "Management": {
+        "Scheduling & posting": true,
+        "Comment / DM replies": "Full",
+        "Performance report": "Monthly"
+      }
+    }
+  },
+  {
+    id: "agency",
+    name: "Agency",
+    tag: "A dedicated, full-service team running every platform for you",
+    popular: false,
+    price: 120000,
+    postsPerMonth: "40+",
+    platforms: "Unlimited",
+    features: {
+      "Content": {
+        "Graphic design posts": "Custom",
+        "Reels / short videos": "Custom",
+        "Hashtag research": true,
+        "Caption copywriting": true
+      },
+      "Planning": {
+        "Monthly content calendar": true,
+        "Calendar review call": "Weekly",
+        "Competitor research": true
+      },
+      "Management": {
+        "Scheduling & posting": true,
+        "Comment / DM replies": "Full",
+        "Performance report": "Bi-weekly"
+      }
+    }
+  }
+];
+
+// ── Render pricing cards ──
+const priceGrid = document.getElementById('priceGrid');
+plans.forEach(p => {
+  const waMsg = encodeURIComponent(`Hi Usman, I'm interested in the ${p.name} social media package.`);
+  const card = document.createElement('div');
+  card.className = 'price-card' + (p.popular ? ' popular' : '');
+
+  let bodyHtml = '';
+  Object.keys(p.features).forEach(group => {
+    bodyHtml += `<div class="pc-group-label">${group}</div>`;
+    Object.entries(p.features[group]).forEach(([label, val]) => {
+      const isOff = val === false;
+      const icon = isOff ? 'fa-xmark' : 'fa-check';
+      const display = (val === true || val === false) ? label : `${label} (${val})`;
+      bodyHtml += `<div class="pc-feat${isOff ? ' off' : ''}"><i class="fas ${icon}"></i>${display}</div>`;
+    });
+  });
+
+  card.innerHTML = `
+    ${p.popular ? '<div class="price-badge">Most Popular</div>' : ''}
+    <div class="pc-head">
+      <div class="pc-name">${p.name}</div>
+      <div class="pc-tag">${p.tag}</div>
+    </div>
+    <div class="pc-price-block">
+      <div class="pc-price-label">Per Month</div>
+      <div class="pc-price">PKR ${p.price.toLocaleString()}</div>
+      <div class="pc-count"><b>${p.postsPerMonth} posts/mo</b> · ${p.platforms}</div>
+    </div>
+    <div class="pc-body">${bodyHtml}</div>
+    <div class="pc-foot">
+      <a class="pc-btn" href="https://wa.me/${WA}?text=${waMsg}" target="_blank"><i class="fab fa-whatsapp"></i> Select ${p.name}</a>
+    </div>
+  `;
+  priceGrid.appendChild(card);
+});
+</script>
+</body>
+</html>
