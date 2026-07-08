@@ -651,7 +651,7 @@ footer {
     <div class="sr-wrap rv d1">
       <div class="sr-badge"><div class="sr-badge-dot" aria-hidden="true"></div> SHOWREEL 2025</div>
       <div class="vbox ls" id="showreelBox">
-        <iframe data-src="https://www.youtube-nocookie.com/embed/P0OZp1dbb0g?autoplay=1&mute=1&loop=1&playlist=P0OZp1dbb0g&rel=0" allow="autoplay; fullscreen" allowfullscreen title="Usman Khan Showreel 2025" loading="lazy"></iframe>
+        <iframe id="showreelIframe" data-src="https://www.youtube-nocookie.com/embed/P0OZp1dbb0g?autoplay=1&mute=1&loop=1&playlist=P0OZp1dbb0g&rel=0&controls=0&disablekb=1&modestbranding=1&fs=0&iv_load_policy=3&playsinline=1&enablejsapi=1" allow="autoplay" title="Usman Khan Showreel 2025" loading="lazy"></iframe>
       </div>
     </div>
   </section>
@@ -801,6 +801,19 @@ document.addEventListener('DOMContentLoaded', function() {
   }, { threshold: 0.4 });
   var showreelBox = document.getElementById('showreelBox');
   if (showreelBox) showreelObserver.observe(showreelBox);
+
+  // ── Showreel: force-mute enforcement (mobile/iPhone included) ──
+  var srFrame = document.getElementById('showreelIframe');
+  if (srFrame) {
+    function forceMuteShowreel() {
+      try {
+        srFrame.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute', args: [] }), '*');
+      } catch (err) {}
+    }
+    // Keep re-sending mute command periodically so audio can never turn on
+    setInterval(forceMuteShowreel, 1000);
+    srFrame.addEventListener('load', forceMuteShowreel);
+  }
 });
 </script>
 </body>
