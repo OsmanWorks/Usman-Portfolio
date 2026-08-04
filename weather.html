@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pakistan Weather Radar — Live Doppler &amp; Forecasts</title>
+<meta name="description" content="Real-time weather radar for Pakistan with a live Karachi command panel, bilingual Urdu/English interface, and hyperlocal forecasts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root{
+  --bg:#09090B; --bg-panel:#0F0F11; --bg-card:#17171A; --bg-card-2:#1E1E22;
+  --border:#3F3F46; --border-strong:#52525B;
+  --text:#FAFAFA; --text-dim:#A1A1AA; --text-faint:#71717A;
+  --cyan:#DFE104; --blue:#3B82F6; --amber:#F59E0B; --red:#EF4444;
+  --green:#22C55E; --purple:#A855F7; --yellow:#EAB308; --orange:#F97316;
+  --accent:#DFE104; --accent-fg:#000000;
+  --font-display:'Space Grotesk',sans-serif; --font-ui:'Space Grotesk',sans-serif;
+  --font-mono:'JetBrains Mono',monospace; --font-ur:'Noto Nastaliq Urdu',serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;height:100%;background:var(--bg);color:var(--text);font-family:var(--font-ui);-webkit-tap-highlight-color:transparent;}
+body.urdu{font-family:var(--font-ur);}
+#app{position:fixed;inset:0;overflow:hidden;}
+button,select,input{font-family:inherit;}
+button{cursor:pointer;}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.hidden{display:none !important;}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms !important;transition-duration:.001ms !important;}}
+
+#map{position:fixed;inset:0;background:#060a0e;}
+.leaflet-control-attribution{background:rgba(9,9,11,.75) !important;color:var(--text-faint) !important;font-family:var(--font-mono);font-size:9px !important;}
+.leaflet-control-attribution a{color:var(--text-dim) !important;}
+.leaflet-control-zoom a{background:var(--bg-card) !important;color:var(--text) !important;border-color:var(--border) !important;border-radius:0 !important;}
+.leaflet-tooltip{background:var(--bg-card);color:var(--text);border:2px solid var(--border-strong);border-radius:0;font-family:var(--font-ui);font-size:12px;box-shadow:0 4px 14px rgba(0,0,0,.4);}
+.leaflet-popup-content-wrapper{background:var(--bg-card);color:var(--text);border-radius:0;border:2px solid var(--border-strong);}
+.leaflet-popup-tip{background:var(--bg-card);}
+.pin-popup b{font-family:var(--font-ui);font-size:13px;text-transform:uppercase;letter-spacing:.05em;}
+.pin-row{font-family:var(--font-mono);font-size:12px;margin-top:4px;color:var(--text-dim);}
+.temp-pin span{display:inline-flex;align-items:center;justify-content:center;width:38px;height:22px;border-radius:0;font-family:var(--font-mono);font-size:11px;font-weight:700;color:#09090B;border:1.5px solid rgba(255,255,255,.55);}
+
+#topbar{position:fixed;top:0;left:0;right:0;height:64px;z-index:900;display:flex;align-items:center;gap:14px;padding:0 16px;background:rgba(9,9,11,.92);backdrop-filter:blur(10px);border-bottom:2px solid var(--border);}
+.brand{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.brand-text{display:flex;flex-direction:column;line-height:1.15;}
+.brand-title{font-family:var(--font-display);font-size:14px;letter-spacing:2px;font-weight:700;text-transform:uppercase;}
+.brand-sub{font-family:var(--font-ui);font-size:10px;color:var(--text-faint);letter-spacing:.08em;text-transform:uppercase;}
+body.urdu .brand-title,body.urdu .brand-sub{font-family:var(--font-ur);}
+#search-wrap{position:relative;flex:1;max-width:340px;}
+#search-input{width:100%;background:var(--bg-card);border:2px solid var(--border);color:var(--text);border-radius:0;padding:9px 12px;font-family:var(--font-ui);font-size:13px;}
+body.urdu #search-input{font-family:var(--font-ur);}
+#search-results{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--bg-card);border:2px solid var(--border-strong);border-radius:0;overflow:hidden;display:none;z-index:950;box-shadow:0 10px 30px rgba(0,0,0,.5);}
+#search-results.open{display:block;}
+.sr-item{display:flex;justify-content:space-between;width:100%;background:none;border:0;color:var(--text);padding:10px 12px;font-family:var(--font-ui);font-size:13px;text-align:left;}
+.sr-item:hover{background:var(--bg-card-2);color:var(--accent);}
+.sr-prov{color:var(--text-faint);font-size:11px;}
+.sr-empty{padding:10px 12px;color:var(--text-faint);font-size:12px;}
+.topbar-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.icon-btn{width:34px;height:34px;border-radius:0;background:var(--bg-card);border:2px solid var(--border);color:var(--text-dim);font-size:15px;display:flex;align-items:center;justify-content:center;transition:border-color .2s,color .2s;}
+.icon-btn:hover{border-color:var(--accent);color:var(--accent);}
+#home-link{width:auto;padding:0 12px;gap:6px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;}
+#lang-toggle{display:flex;background:var(--bg-card);border:2px solid var(--border);border-radius:0;overflow:hidden;padding:2px;}
+.lang-opt{padding:6px 10px;font-size:11px;font-family:var(--font-mono);color:var(--text-faint);border-radius:0;}
+.lang-opt.active{background:var(--accent);color:var(--accent-fg);font-weight:700;}
+
+#alert-stack{position:fixed;top:74px;left:16px;right:16px;z-index:850;display:flex;flex-direction:column;gap:8px;pointer-events:none;max-width:520px;}
+.alert-banner{pointer-events:auto;display:flex;align-items:center;gap:10px;background:var(--bg-card);border:2px solid var(--amber);border-left:4px solid var(--amber);border-radius:0;padding:10px 12px;font-size:12px;box-shadow:0 8px 22px rgba(0,0,0,.4);animation:slideIn .3s ease;}
+.alert-banner.sev-severe{border-color:var(--red);border-left-color:var(--red);}
+.alert-icon{font-size:15px;}
+.alert-text{flex:1;font-family:var(--font-ui);}
+.alert-dismiss{background:none;border:0;color:var(--text-faint);font-size:13px;padding:4px;}
+@keyframes slideIn{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+
+#map-controls{position:fixed;top:76px;right:16px;z-index:400;display:flex;flex-direction:column;gap:8px;align-items:flex-end;}
+.control-card{background:rgba(15,15,17,.92);backdrop-filter:blur(8px);border:2px solid var(--border-strong);border-radius:0;padding:4px;display:flex;gap:2px;}
+.layer-btn,.scheme-btn{display:flex;align-items:center;gap:6px;background:none;border:0;color:var(--text-dim);font-family:var(--font-ui);font-size:11px;font-weight:600;padding:7px 9px;border-radius:0;white-space:nowrap;text-transform:uppercase;letter-spacing:.05em;}
+.layer-btn .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.layer-btn.active,.scheme-btn.active{background:var(--accent);color:var(--accent-fg);}
+#scheme-switcher{font-size:10px;}
+
+#legend{position:fixed;left:16px;bottom:96px;z-index:400;background:rgba(15,15,17,.92);backdrop-filter:blur(8px);border:2px solid var(--border-strong);border-radius:0;padding:8px 12px;font-size:10px;color:var(--text-dim);max-width:230px;}
+.legend-title{font-family:var(--font-ui);color:var(--text);display:block;margin-bottom:5px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;}
+.legend-bar{height:6px;border-radius:0;margin-top:4px;}
+.radar-bar{background:linear-gradient(90deg,#0b3d91,#1e88e5,#29D6E8,#7CFFCB,#FFEA00,#FF7A00,#E53935);}
+.temp-bar{background:linear-gradient(90deg,#3B82F6,#29D6E8,#22C55E,#F59E0B,#F97316,#EF4444);}
+.legend-ends{display:flex;justify-content:space-between;margin-top:3px;font-family:var(--font-mono);font-size:9px;}
+.legend-chip{display:inline-flex;align-items:center;gap:5px;margin:2px 6px 2px 0;font-family:var(--font-ui);}
+.legend-chip i{width:8px;height:8px;border-radius:50%;display:inline-block;}
+
+#scrubber{position:fixed;left:50%;transform:translateX(-50%);bottom:96px;z-index:400;display:flex;align-items:center;gap:10px;background:rgba(15,15,17,.95);backdrop-filter:blur(8px);border:2px solid var(--border-strong);border-radius:0;padding:8px 16px;min-width:280px;}
+#scrub-play{width:30px;height:30px;border-radius:0;background:var(--accent);color:var(--accent-fg);border:0;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+#scrub-track{position:relative;flex:1;height:4px;background:var(--border-strong);border-radius:0;cursor:pointer;}
+#scrub-fill{position:absolute;left:0;top:0;bottom:0;background:var(--accent);border-radius:0;width:0%;pointer-events:none;}
+#scrub-handle{position:absolute;top:50%;left:0%;width:12px;height:12px;background:var(--accent);border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 3px rgba(223,225,4,.25);pointer-events:none;}
+#scrub-time{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);min-width:46px;text-align:right;flex-shrink:0;}
+
+#locate-btn{position:fixed;right:16px;bottom:96px;z-index:400;width:38px;height:38px;border-radius:0;background:rgba(15,15,17,.95);backdrop-filter:blur(8px);border:2px solid var(--border-strong);color:var(--text);font-size:15px;display:flex;align-items:center;justify-content:center;}
+
+#panel{position:fixed;right:16px;top:80px;bottom:16px;width:392px;z-index:800;background:rgba(9,9,11,.96);backdrop-filter:blur(10px);border:2px solid var(--border-strong);border-radius:0;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.5);}
+#panel-handle{display:none;}
+#panel-tabs{display:flex;border-bottom:2px solid var(--border);flex-shrink:0;}
+.panel-tab{flex:1;background:none;border:0;color:var(--text-faint);font-family:var(--font-ui);font-weight:700;font-size:12px;padding:14px;border-bottom:2px solid transparent;text-transform:uppercase;letter-spacing:.08em;}
+.panel-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+#panel-body{flex:1;overflow-y:auto;padding:16px;}
+#panel-body::-webkit-scrollbar{width:6px;}
+#panel-body::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:0;}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+
+.k-current{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+.k-current-main{display:flex;align-items:center;gap:10px;}
+.k-icon{font-size:38px;}
+.k-temp{font-family:var(--font-display);font-size:44px;font-weight:700;line-height:1;}
+.k-current-meta{text-align:right;font-size:12px;color:var(--text-dim);display:flex;flex-direction:column;gap:4px;font-family:var(--font-ui);}
+body.urdu .k-current-meta{text-align:left;font-family:var(--font-ur);}
+#k-desc{color:var(--text);font-weight:600;}
+#k-feels-val{font-family:var(--font-mono);color:var(--text);}
+
+.k-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+.k-stat{background:var(--bg-card);border:2px solid var(--border);border-radius:0;padding:9px 10px;}
+.k-stat-label{display:block;font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
+body.urdu .k-stat-label{text-transform:none;font-family:var(--font-ur);font-size:11px;}
+.k-stat-val{display:block;font-family:var(--font-mono);font-size:14px;font-weight:600;}
+
+.k-aqi-card{background:var(--bg-card);border:2px solid var(--border);border-radius:0;padding:14px;margin-bottom:16px;}
+.k-aqi-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.k-aqi-val{font-family:var(--font-display);font-size:26px;font-weight:700;}
+.k-aqi-badge{font-family:var(--font-ui);font-size:10px;font-weight:700;padding:4px 9px;border-radius:0;text-transform:uppercase;letter-spacing:.05em;}
+body.urdu .k-aqi-badge{font-family:var(--font-ur);}
+.k-aqi-guidance{font-size:12px;color:var(--text-dim);line-height:1.5;margin:0 0 8px;}
+.k-aqi-sub{display:flex;gap:16px;font-size:11px;color:var(--text-faint);font-family:var(--font-ui);}
+.k-aqi-sub b{font-family:var(--font-mono);color:var(--text-dim);}
+
+.k-section-head{display:flex;justify-content:space-between;align-items:center;margin:18px 0 10px;font-family:var(--font-ui);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-dim);border-left:3px solid var(--accent);padding-left:10px;}
+body.urdu .k-section-head{text-transform:none;font-family:var(--font-ur);font-size:13px;}
+.k-section-head button{background:var(--bg-card);border:2px solid var(--border);color:var(--accent);font-size:10px;padding:5px 10px;border-radius:0;text-transform:none;letter-spacing:0;font-family:var(--font-ui);}
+
+.h-strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent;}
+.h-strip::-webkit-scrollbar{height:5px;}
+.h-strip::-webkit-scrollbar-track{background:transparent;}
+.h-strip::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:0;}
+.h-card{flex:0 0 auto;width:58px;background:var(--bg-card);border:2px solid var(--border);border-radius:0;padding:9px 4px;display:flex;flex-direction:column;align-items:center;gap:5px;}
+.h-time{font-family:var(--font-mono);font-size:9px;color:var(--text-faint);}
+.h-icon{font-size:16px;}
+.h-temp{font-family:var(--font-mono);font-size:12px;font-weight:700;}
+.h-precip{font-family:var(--font-mono);font-size:9px;color:var(--blue);}
+.k-chart-wrap{height:180px;margin-top:12px;background:var(--bg-card);border:2px solid var(--border);border-radius:0;padding:10px;}
+.d-card{flex:0 0 auto;width:66px;background:var(--bg-card);border:2px solid var(--border);border-radius:0;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:5px;}
+.d-day{font-family:var(--font-ui);font-size:10px;color:var(--text-dim);font-weight:700;text-transform:uppercase;}
+body.urdu .d-day{font-family:var(--font-ur);text-transform:none;}
+.d-icon{font-size:17px;}
+.d-hi{font-family:var(--font-mono);font-size:12px;font-weight:700;}
+.d-lo{font-family:var(--font-mono);font-size:11px;color:var(--text-faint);}
+
+.k-sun-row{display:flex;justify-content:space-between;margin-top:18px;background:var(--bg-card);border:2px solid var(--border);border-radius:0;padding:12px;}
+.k-sun-item{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9px;color:var(--text-faint);font-family:var(--font-ui);text-transform:uppercase;letter-spacing:.05em;}
+body.urdu .k-sun-item{font-family:var(--font-ur);font-size:11px;text-transform:none;}
+.k-sun-item b{font-family:var(--font-mono);color:var(--text);font-size:13px;}
+.k-updated{margin-top:14px;font-size:10px;color:var(--text-faint);font-family:var(--font-mono);text-align:center;}
+
+.cities-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:12px;color:var(--text-dim);font-family:var(--font-ui);text-transform:uppercase;letter-spacing:.05em;}
+body.urdu .cities-toolbar{font-family:var(--font-ur);text-transform:none;}
+#sort-select{background:var(--bg-card);border:2px solid var(--border);color:var(--text);border-radius:0;padding:6px 8px;font-family:var(--font-ui);font-size:12px;flex:1;}
+.city-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.city-card{background:var(--bg-card);border:2px solid var(--border);border-radius:0;padding:12px;text-align:left;color:var(--text);display:flex;flex-direction:column;gap:8px;transition:border-color .2s;}
+body.urdu .city-card{text-align:right;}
+.city-card.pinned{border-color:var(--accent);}
+.city-card:hover{border-color:var(--border-strong);}
+.cc-top{display:flex;justify-content:space-between;align-items:center;}
+.cc-name{font-family:var(--font-ui);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+body.urdu .cc-name{font-family:var(--font-ur);font-size:14px;text-transform:none;}
+.cc-mid{display:flex;align-items:center;gap:6px;}
+.cc-icon{font-size:20px;}
+.cc-temp{font-family:var(--font-mono);font-size:18px;font-weight:700;}
+.cc-bottom{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;}
+.cc-skeleton{height:34px;border-radius:0;background:linear-gradient(90deg,var(--bg-card),var(--bg-card-2),var(--bg-card));background-size:200% 100%;animation:shimmer 1.4s infinite;}
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
+#about-modal{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:20px;}
+.modal-card{background:var(--bg-panel);border:2px solid var(--border-strong);border-radius:0;padding:24px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;position:relative;}
+.modal-card h2{font-family:var(--font-ui);font-size:17px;margin:0 0 12px;text-transform:uppercase;letter-spacing:.05em;border-left:3px solid var(--accent);padding-left:12px;}
+body.urdu .modal-card h2{font-family:var(--font-ur);border-left:none;border-right:3px solid var(--accent);padding-left:0;padding-right:12px;}
+.modal-card h3{font-family:var(--font-ui);font-size:12px;color:var(--accent);margin:20px 0 8px;text-transform:uppercase;letter-spacing:.1em;}
+body.urdu .modal-card h3{font-family:var(--font-ur);text-transform:none;}
+.source-list,.limit-list{margin:0;padding-left:18px;font-size:12px;color:var(--text-dim);line-height:1.7;font-family:var(--font-ui);}
+body.urdu .source-list,body.urdu .limit-list{padding-left:0;padding-right:18px;font-family:var(--font-ur);font-size:13px;}
+#about-close{position:absolute;top:14px;right:14px;}
+body.urdu #about-close{right:auto;left:14px;}
+
+@media (max-width:900px){
+  #panel{left:0;right:0;top:auto;bottom:0;width:auto;border-radius:0;height:76px;transition:height .32s cubic-bezier(.32,.72,0,1);}
+  #panel.expanded{height:72vh;}
+  #panel-handle{display:flex;justify-content:center;padding:9px 0 4px;flex-shrink:0;}
+  .handle-bar{width:38px;height:4px;border-radius:0;background:var(--border-strong);}
+  #panel-body{padding:14px;padding-bottom:26px;}
+  #scrubber{bottom:92px;min-width:0;left:12px;right:12px;transform:none;}
+  #legend{display:none;}
+  #map-controls{top:70px;right:10px;}
+  #locate-btn{bottom:172px;right:12px;}
+  #search-wrap{max-width:none;}
+  .brand-sub{display:none;}
+  #home-link span{display:none;}
+}
+@media (max-width:640px){
+  #topbar{gap:8px;padding:0 10px;}
+  .icon-btn{width:32px;height:32px;font-size:13px;}
+}
+@media (max-width:420px){
+  .k-stat-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <header id="topbar">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+        <circle cx="13" cy="13" r="11" stroke="#DFE104" stroke-width="1.2" opacity=".35"/>
+        <circle cx="13" cy="13" r="7" stroke="#DFE104" stroke-width="1.2" opacity=".55"/>
+        <circle cx="13" cy="13" r="1.6" fill="#DFE104"/>
+        <line x1="13" y1="13" x2="13" y2="2" stroke="#DFE104" stroke-width="1.4"/>
+      </svg>
+      <div class="brand-text">
+        <span class="brand-title" data-i18n="appTitle">Pakistan Weather Radar</span>
+        <span class="brand-sub" data-i18n="appSub">Live Doppler radar &amp; forecasts</span>
+      </div>
+    </div>
+    <div id="search-wrap">
+      <input id="search-input" type="text" autocomplete="off" data-i18n-placeholder="searchPlaceholder" placeholder="Search city or town…">
+      <div id="search-results"></div>
+    </div>
+    <div class="topbar-actions">
+      <a id="home-link" class="icon-btn" href="index.html" aria-label="Back to portfolio" title="Back to portfolio">← <span>Portfolio</span></a>
+      <button id="about-btn" class="icon-btn" aria-label="About &amp; data sources" title="About &amp; data sources">ⓘ</button>
+      <button id="lang-toggle" aria-label="Toggle language">
+        <span class="lang-opt active" data-lang="en">EN</span><span class="lang-opt" data-lang="ur">UR</span>
+      </button>
+    </div>
+  </header>
+
+  <div id="alert-stack" aria-live="polite"></div>
+
+  <main id="map" role="application" aria-label="Weather radar map"></main>
+
+  <div id="map-controls">
+    <div class="control-card" id="layer-switcher">
+      <button class="layer-btn active" data-layer="radar"><span class="dot" style="background:#DFE104"></span><span data-i18n="layerRadar">Radar</span></button>
+      <button class="layer-btn" data-layer="satellite"><span class="dot" style="background:#94A3B8"></span><span data-i18n="layerSatellite">Satellite</span></button>
+      <button class="layer-btn" data-layer="aqi"><span class="dot" style="background:#F97316"></span><span data-i18n="layerAqi">AQI</span></button>
+      <button class="layer-btn" data-layer="temp"><span class="dot" style="background:#F59E0B"></span><span data-i18n="layerTemp">Temp</span></button>
+    </div>
+    <div class="control-card" id="scheme-switcher">
+      <button class="scheme-btn active" data-scheme="2" data-i18n="schemeBlue">Blue (colorblind-safe)</button>
+      <button class="scheme-btn" data-scheme="4" data-i18n="schemeClassic">Classic</button>
+    </div>
+  </div>
+
+  <div id="legend"></div>
+
+  <div id="scrubber">
+    <button id="scrub-play" aria-label="Play radar animation">▶</button>
+    <div id="scrub-track"><div id="scrub-fill"></div><div id="scrub-handle"></div></div>
+    <span id="scrub-time">--:--</span>
+  </div>
+
+  <button id="locate-btn" aria-label="Use my location" title="Use my location">📍</button>
+
+  <section id="panel">
+    <div id="panel-handle"><span class="handle-bar"></span></div>
+    <div id="panel-tabs">
+      <button class="panel-tab active" data-tab="karachi" data-i18n="tabKarachi">Karachi</button>
+      <button class="panel-tab" data-tab="cities" data-i18n="tabCities">Cities</button>
+    </div>
+    <div id="panel-body">
+      <div id="tab-karachi" class="tab-pane active">
+        <div class="k-current">
+          <div class="k-current-main">
+            <span id="k-icon" class="k-icon">--</span>
+            <span id="k-temp" class="k-temp">--°</span>
+          </div>
+          <div class="k-current-meta">
+            <span id="k-desc">--</span>
+            <span><span data-i18n="feelsLike">Feels like</span> <span id="k-feels-val">--°</span></span>
+          </div>
+        </div>
+        <div class="k-stat-grid">
+          <div class="k-stat"><span class="k-stat-label" data-i18n="humidity">Humidity</span><span class="k-stat-val" id="k-humidity">--%</span></div>
+          <div class="k-stat"><span class="k-stat-label" data-i18n="wind">Wind</span><span class="k-stat-val" id="k-wind">-- km/h</span></div>
+          <div class="k-stat"><span class="k-stat-label" data-i18n="gusts">Gusts</span><span class="k-stat-val" id="k-gusts">-- km/h</span></div>
+          <div class="k-stat"><span class="k-stat-label" data-i18n="pressure">Pressure</span><span class="k-stat-val" id="k-pressure">-- hPa</span></div>
+          <div class="k-stat"><span class="k-stat-label" data-i18n="cloudCover">Cloud cover</span><span class="k-stat-val" id="k-cloud">--%</span></div>
+          <div class="k-stat"><span class="k-stat-label" data-i18n="visibility">Visibility</span><span class="k-stat-val" id="k-visibility">-- km</span></div>
+        </div>
+        <div class="k-aqi-card" id="k-aqi-card">
+          <div class="k-aqi-head">
+            <span data-i18n="aqi" style="font-family:var(--font-ui);font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em;">Air Quality Index</span>
+            <span id="k-aqi-val" class="k-aqi-val">--</span>
+            <span id="k-aqi-label" class="k-aqi-badge">--</span>
+          </div>
+          <p id="k-aqi-guidance" class="k-aqi-guidance">--</p>
+          <div class="k-aqi-sub">
+            <span>PM2.5 <b id="k-pm25">--</b></span>
+            <span>PM10 <b id="k-pm10">--</b></span>
+          </div>
+        </div>
+        <div class="k-section-head">
+          <span data-i18n="hourly">Hourly</span>
+          <button id="k-chart-toggle" data-i18n="viewChart">View chart</button>
+        </div>
+        <div id="k-hourly-strip" class="h-strip"></div>
+        <div id="k-chart-wrap" class="k-chart-wrap hidden"><canvas id="k-chart"></canvas></div>
+        <div class="k-section-head"><span data-i18n="sevenDay">7-Day Forecast</span></div>
+        <div id="k-daily-strip" class="h-strip"></div>
+        <div class="k-sun-row">
+          <div class="k-sun-item"><span>🌅</span><span data-i18n="sunrise">Sunrise</span><b id="k-sunrise">--:--</b></div>
+          <div class="k-sun-item"><span>🌇</span><span data-i18n="sunset">Sunset</span><b id="k-sunset">--:--</b></div>
+          <div class="k-sun-item"><span>☀️</span><span data-i18n="uvIndex">UV Index</span><b id="k-uv">--</b></div>
+        </div>
+        <p class="k-updated" id="k-updated" data-i18n="lastUpdated">Last updated --</p>
+      </div>
+      <div id="tab-cities" class="tab-pane">
+        <div class="cities-toolbar">
+          <span data-i18n="sortBy">Sort by</span>
+          <select id="sort-select">
+            <option value="name" data-i18n="sortName">Name</option>
+            <option value="temp" data-i18n="sortTemp">Temperature</option>
+            <option value="aqi" data-i18n="sortAqi">AQI</option>
+            <option value="rain" data-i18n="sortRain">Rain chance</option>
+          </select>
+        </div>
+        <div id="city-grid" class="city-grid"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="about-modal" class="hidden">
+  <div class="modal-card">
+    <button id="about-close" class="icon-btn" aria-label="Close">✕</button>
+    <h2 data-i18n="aboutTitle">Data Sources &amp; Limitations</h2>
+    <ul class="source-list">
+      <li><b>Open-Meteo</b> — <span data-i18n="srcOpenMeteo">Forecast &amp; air quality. Free, keyless, updated hourly.</span></li>
+      <li><b>RainViewer</b> — <span data-i18n="srcRainviewer">Live radar mosaic, past 2 hours, 10-min steps.</span></li>
+      <li><b>NASA GIBS</b> — <span data-i18n="srcGibs">Satellite true-colour imagery, most recent available daily pass.</span></li>
+      <li><b>CARTO / OpenStreetMap</b> — <span data-i18n="srcCarto">Base map tiles.</span></li>
+    </ul>
+    <h3 data-i18n="limitTitle">Known limitations of this prototype</h3>
+    <ul class="limit-list">
+      <li data-i18n="limit1">PMD official radar feeds and NDMA advisories are not yet integrated — this needs a formal data-sharing arrangement.</li>
+      <li data-i18n="limit2">Lightning strikes, storm-cell tracking and animated wind-particle layers are phase-2 items.</li>
+      <li data-i18n="limit3">Push notifications, offline PWA caching and a native app all need a real backend and hosting that a single front-end file can't provide.</li>
+    </ul>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"></script>
+<script>
+'use strict';
+/* ===== CONFIG ===== */
+var RAINVIEWER_API = 'https://api.rainviewer.com/public/weather-maps.json';
+var FORECAST_API = 'https://api.open-meteo.com/v1/forecast';
+var AQ_API = 'https://air-quality-api.open-meteo.com/v1/air-quality';
+var GIBS_LAYER = 'VIIRS_SNPP_CorrectedReflectance_TrueColor';
+var PK_BOUNDS = [[23.0,60.5],[37.5,77.5]];
+
+var CITIES = [
+  {id:'karachi',en:'Karachi',ur:'کراچی',lat:24.8607,lon:67.0011,prov:'Sindh',pinned:true},
+  {id:'lahore',en:'Lahore',ur:'لاہور',lat:31.5497,lon:74.3436,prov:'Punjab'},
+  {id:'islamabad',en:'Islamabad',ur:'اسلام آباد',lat:33.6844,lon:73.0479,prov:'ICT'},
+  {id:'rawalpindi',en:'Rawalpindi',ur:'راولپنڈی',lat:33.5651,lon:73.0169,prov:'Punjab'},
+  {id:'faisalabad',en:'Faisalabad',ur:'فیصل آباد',lat:31.4504,lon:73.1350,prov:'Punjab'},
+  {id:'multan',en:'Multan',ur:'ملتان',lat:30.1575,lon:71.5249,prov:'Punjab'},
+  {id:'peshawar',en:'Peshawar',ur:'پشاور',lat:34.0151,lon:71.5249,prov:'KP'},
+  {id:'quetta',en:'Quetta',ur:'کوئٹہ',lat:30.1798,lon:66.9750,prov:'Balochistan'},
+  {id:'hyderabad',en:'Hyderabad',ur:'حیدرآباد',lat:25.3960,lon:68.3578,prov:'Sindh'},
+  {id:'gujranwala',en:'Gujranwala',ur:'گوجرانوالہ',lat:32.1877,lon:74.1945,prov:'Punjab'},
+  {id:'sialkot',en:'Sialkot',ur:'سیالکوٹ',lat:32.4945,lon:74.5229,prov:'Punjab'},
+  {id:'bahawalpur',en:'Bahawalpur',ur:'بہاولپور',lat:29.3956,lon:71.6836,prov:'Punjab'},
+  {id:'sargodha',en:'Sargodha',ur:'سرگودھا',lat:32.0836,lon:72.6711,prov:'Punjab'},
+  {id:'sukkur',en:'Sukkur',ur:'سکھر',lat:27.7052,lon:68.8574,prov:'Sindh'},
+  {id:'larkana',en:'Larkana',ur:'لاڑکانہ',lat:27.5590,lon:68.2120,prov:'Sindh'},
+  {id:'gilgit',en:'Gilgit',ur:'گلگت',lat:35.9208,lon:74.3144,prov:'Gilgit-Baltistan'},
+  {id:'skardu',en:'Skardu',ur:'سکردو',lat:35.2971,lon:75.6333,prov:'Gilgit-Baltistan'},
+  {id:'muzaffarabad',en:'Muzaffarabad',ur:'مظفرآباد',lat:34.3700,lon:73.4711,prov:'AJK'},
+  {id:'abbottabad',en:'Abbottabad',ur:'ایبٹ آباد',lat:34.1463,lon:73.2116,prov:'KP'},
+  {id:'mardan',en:'Mardan',ur:'مردان',lat:34.1986,lon:72.0404,prov:'KP'},
+  {id:'sahiwal',en:'Sahiwal',ur:'ساہیوال',lat:30.6682,lon:73.1114,prov:'Punjab'},
+  {id:'dgkhan',en:'Dera Ghazi Khan',ur:'ڈیرہ غازی خان',lat:30.0561,lon:70.6350,prov:'Punjab'},
+  {id:'rykhan',en:'Rahim Yar Khan',ur:'رحیم یار خان',lat:28.4212,lon:70.2989,prov:'Punjab'},
+  {id:'nawabshah',en:'Nawabshah',ur:'نواب شاہ',lat:26.2442,lon:68.4100,prov:'Sindh'}
+];
+
+var WMO = {
+  0:{i:'☀️',en:'Clear sky',ur:'صاف آسمان'}, 1:{i:'🌤️',en:'Mainly clear',ur:'زیادہ تر صاف'},
+  2:{i:'⛅',en:'Partly cloudy',ur:'جزوی ابر آلود'}, 3:{i:'☁️',en:'Overcast',ur:'بادل چھائے ہوئے'},
+  45:{i:'🌫️',en:'Fog',ur:'دھند'}, 48:{i:'🌫️',en:'Rime fog',ur:'برفیلی دھند'},
+  51:{i:'🌦️',en:'Light drizzle',ur:'ہلکی بوندا باندی'}, 53:{i:'🌦️',en:'Drizzle',ur:'بوندا باندی'},
+  55:{i:'🌧️',en:'Dense drizzle',ur:'گھنی بوندا باندی'}, 56:{i:'🌧️',en:'Freezing drizzle',ur:'منجمد بوندا باندی'},
+  57:{i:'🌧️',en:'Dense freezing drizzle',ur:'گھنی منجمد بوندا باندی'}, 61:{i:'🌧️',en:'Light rain',ur:'ہلکی بارش'},
+  63:{i:'🌧️',en:'Rain',ur:'بارش'}, 65:{i:'🌧️',en:'Heavy rain',ur:'تیز بارش'},
+  66:{i:'🌧️',en:'Freezing rain',ur:'منجمد بارش'}, 67:{i:'🌧️',en:'Heavy freezing rain',ur:'تیز منجمد بارش'},
+  71:{i:'❄️',en:'Light snow',ur:'ہلکی برف باری'}, 73:{i:'❄️',en:'Snow',ur:'برف باری'},
+  75:{i:'❄️',en:'Heavy snow',ur:'تیز برف باری'}, 77:{i:'❄️',en:'Snow grains',ur:'برفانی ذرات'},
+  80:{i:'🌦️',en:'Light showers',ur:'ہلکی بوچھاڑ'}, 81:{i:'🌧️',en:'Showers',ur:'بوچھاڑ'},
+  82:{i:'⛈️',en:'Violent showers',ur:'شدید بوچھاڑ'}, 85:{i:'🌨️',en:'Snow showers',ur:'برفانی بوچھاڑ'},
+  86:{i:'🌨️',en:'Heavy snow showers',ur:'تیز برفانی بوچھاڑ'}, 95:{i:'⛈️',en:'Thunderstorm',ur:'گرج چمک'},
+  96:{i:'⛈️',en:'Thunderstorm, hail',ur:'گرج چمک، اولے'}, 99:{i:'⛈️',en:'Severe thunderstorm',ur:'شدید طوفان'}
+};
+
+var AQI_CATS = [
+  {max:50,en:'Good',ur:'اچھا',color:'#22C55E',dark:true,gEn:'Air quality is satisfactory. Enjoy your usual outdoor activities.',gUr:'ہوا کا معیار تسلی بخش ہے۔ بیرونی سرگرمیاں معمول کے مطابق جاری رکھیں۔'},
+  {max:100,en:'Moderate',ur:'درمیانہ',color:'#EAB308',dark:true,gEn:'Acceptable air quality. Unusually sensitive people should consider reducing prolonged outdoor exertion.',gUr:'ہوا کا معیار قابلِ قبول ہے۔ حساس افراد طویل بیرونی مشقت میں کمی کریں۔'},
+  {max:150,en:'Unhealthy for Sensitive Groups',ur:'حساس گروہوں کے لیے نقصان دہ',color:'#F97316',dark:true,gEn:'Sensitive groups (children, elderly, respiratory or heart conditions) should limit prolonged outdoor exertion.',gUr:'حساس گروہ (بچے، بزرگ، سانس یا دل کے مریض) طویل بیرونی مشقت محدود کر دیں۔'},
+  {max:200,en:'Unhealthy',ur:'نقصان دہ',color:'#EF4444',dark:false,gEn:'Everyone may begin to experience health effects. Limit prolonged outdoor exertion.',gUr:'ہر فرد کو صحت پر اثرات محسوس ہو سکتے ہیں۔ بیرونی مشقت محدود رکھیں۔'},
+  {max:300,en:'Very Unhealthy',ur:'انتہائی نقصان دہ',color:'#A855F7',dark:false,gEn:'Health alert: everyone may experience more serious health effects. Avoid outdoor exertion.',gUr:'صحت کا انتباہ: سنگین اثرات ممکن ہیں۔ بیرونی سرگرمیوں سے گریز کریں۔'},
+  {max:99999,en:'Hazardous',ur:'خطرناک',color:'#7F1D1D',dark:false,gEn:'Health emergency. Everyone should avoid all outdoor exertion.',gUr:'صحت کی ایمرجنسی۔ تمام بیرونی سرگرمیوں سے مکمل گریز کریں۔'}
+];
+
+var I18N = {
+  en:{
+    appTitle:'Pakistan Weather Radar', appSub:'Live Doppler radar & forecasts',
+    searchPlaceholder:'Search city or town…',
+    layerRadar:'Radar', layerSatellite:'Satellite', layerAqi:'AQI', layerTemp:'Temp',
+    schemeBlue:'Blue (colorblind-safe)', schemeClassic:'Classic',
+    tabKarachi:'Karachi', tabCities:'Cities',
+    feelsLike:'Feels like', humidity:'Humidity', wind:'Wind', gusts:'Gusts',
+    pressure:'Pressure', cloudCover:'Cloud cover', visibility:'Visibility',
+    aqi:'Air Quality Index', hourly:'Hourly', viewChart:'View chart', hideChart:'Hide chart',
+    sevenDay:'7-Day Forecast', sunrise:'Sunrise', sunset:'Sunset', uvIndex:'UV Index',
+    lastUpdated:'Last updated', sortBy:'Sort by', sortName:'Name', sortTemp:'Temperature',
+    sortAqi:'AQI', sortRain:'Rain chance', aboutTitle:'Data Sources & Limitations',
+    srcOpenMeteo:'Live forecast & air quality — free, keyless, updated hourly.',
+    srcRainviewer:'Real radar mosaic — past 2 hours in 10-minute steps.',
+    srcGibs:'Satellite true-colour imagery — most recent available daily pass.',
+    srcCarto:'Base map tiles.',
+    limitTitle:'Known limitations of this prototype',
+    limit1:'PMD official radar feeds and NDMA advisories are not yet integrated — this needs a formal data-sharing arrangement, flagged in the original brief.',
+    limit2:'Lightning strikes, storm-cell tracking and animated wind-particle layers are phase-2 items — they need data sources beyond what runs safely in a browser-only build.',
+    limit3:"Push notifications, offline PWA caching and a native app all need a real backend and hosting, which a single front-end file can't provide.",
+    noResults:'No matches', alertHeatwave:'Heatwave Advisory', alertHeavyRain:'Heavy Rain Advisory',
+    alertDustStorm:'Dust Storm Risk', alertSmog:'Smog Advisory', dismiss:'Dismiss',
+    liveUnavailable:'Live data unavailable — retrying shortly.', youAreHere:'You are here'
+  },
+  ur:{
+    appTitle:'پاکستان موسمی ریڈار', appSub:'لائیو ڈوپلر ریڈار اور پیشگوئیاں',
+    searchPlaceholder:'شہر یا قصبہ تلاش کریں…',
+    layerRadar:'ریڈار', layerSatellite:'سیٹلائٹ', layerAqi:'ہوا کا معیار', layerTemp:'درجہ حرارت',
+    schemeBlue:'نیلا (کلر بلائنڈ کے لیے موزوں)', schemeClassic:'روایتی',
+    tabKarachi:'کراچی', tabCities:'شہر',
+    feelsLike:'محسوس ہو رہا ہے', humidity:'نمی', wind:'ہوا', gusts:'ہوا کے جھونکے',
+    pressure:'ہوا کا دباؤ', cloudCover:'ابر آلودگی', visibility:'مرئیت',
+    aqi:'ہوا کے معیار کا اشاریہ', hourly:'فی گھنٹہ', viewChart:'چارٹ دیکھیں', hideChart:'چارٹ چھپائیں',
+    sevenDay:'7 روزہ پیشگوئی', sunrise:'طلوعِ آفتاب', sunset:'غروبِ آفتاب', uvIndex:'یووی اشاریہ',
+    lastUpdated:'آخری اپ ڈیٹ', sortBy:'ترتیب', sortName:'نام', sortTemp:'درجہ حرارت',
+    sortAqi:'ہوا کا معیار', sortRain:'بارش کا امکان', aboutTitle:'ڈیٹا کے ماخذ اور حدود',
+    srcOpenMeteo:'لائیو پیشگوئی اور ہوا کا معیار — مفت، بغیر کسی کلید کے، ہر گھنٹے اپ ڈیٹ۔',
+    srcRainviewer:'حقیقی ریڈار موزیک — گزشتہ 2 گھنٹے، 10 منٹ کے وقفوں میں۔',
+    srcGibs:'سیٹلائٹ حقیقی رنگ تصویر — تازہ ترین دستیاب یومیہ گزر۔',
+    srcCarto:'بنیادی نقشہ ٹائلز۔',
+    limitTitle:'اس نمونے کی معلوم حدود',
+    limit1:'پی ایم ڈی کا سرکاری ریڈار ڈیٹا اور این ڈی ایم اے ایڈوائزریز ابھی شامل نہیں — اس کے لیے باضابطہ ڈیٹا شراکت درکار ہے۔',
+    limit2:'بجلی کی چمک، طوفان ٹریکنگ اور ہوا کے متحرک ذرات فیز 2 میں شامل ہوں گے۔',
+    limit3:'پش نوٹیفیکیشنز، آف لائن موڈ اور نیٹو ایپ کے لیے حقیقی بیک اینڈ اور ہوسٹنگ درکار ہے۔',
+    noResults:'کوئی نتیجہ نہیں', alertHeatwave:'ہیٹ ویو ایڈوائزری', alertHeavyRain:'شدید بارش ایڈوائزری',
+    alertDustStorm:'آندھی کا خطرہ', alertSmog:'اسموگ ایڈوائزری', dismiss:'برخاست کریں',
+    liveUnavailable:'لائیو ڈیٹا دستیاب نہیں — دوبارہ کوشش جاری ہے۔', youAreHere:'آپ یہاں ہیں'
+  }
+};
+
+var STATE = {
+  lang:'en', activeLayer:'radar', scheme:'2',
+  radarFrames:[], radarIndex:0, radarPlaying:false, radarTimer:null, layerCache:{},
+  cityData:{}, sortKey:'name', map:null, baseLayer:null, satLayer:null,
+  aqiGroup:null, tempGroup:null, dismissedAlerts:{}, lastFetch:null
+};
+
+function n(v,dec){ if(v===undefined||v===null||isNaN(v)) return '--'; return dec? v.toFixed(dec) : Math.round(v).toString(); }
+function cityName(city){ return STATE.lang==='ur'? city.ur : city.en; }
+function weatherInfo(code){ return WMO[code] || {i:'❔',en:'--',ur:'--'}; }
+function aqiCategory(aqi){ for(var i=0;i<AQI_CATS.length;i++){ if(aqi<=AQI_CATS[i].max) return AQI_CATS[i]; } return AQI_CATS[AQI_CATS.length-1]; }
+function tempColor(t){ if(t<15) return '#3B82F6'; if(t<25) return '#29D6E8'; if(t<32) return '#22C55E'; if(t<38) return '#F59E0B'; if(t<44) return '#F97316'; return '#EF4444'; }
+function findNowIndex(times){ var now=Date.now(); for(var i=0;i<times.length;i++){ if(new Date(times[i]).getTime()>=now) return i; } return Math.max(0,times.length-1); }
+function fmtHour(iso){ var d=new Date(iso); return d.toLocaleTimeString(STATE.lang==='ur'?'ur-PK':'en-PK',{hour:'2-digit',minute:'2-digit'}); }
+function fmtDay(iso,idx){ if(idx===0) return STATE.lang==='ur'?'آج':'Today'; var d=new Date(iso); return d.toLocaleDateString(STATE.lang==='ur'?'ur-PK':'en-PK',{weekday:'short'}); }
+
+/* ===== MAP & RADAR ===== */
+function initMap(){
+  STATE.map = L.map('map',{zoomControl:false,minZoom:4,maxZoom:11}).fitBounds(PK_BOUNDS);
+  L.control.zoom({position:'bottomright'}).addTo(STATE.map);
+  STATE.baseLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+    attribution:'&copy; OpenStreetMap contributors &copy; CARTO', subdomains:'abcd', maxZoom:20
+  }).addTo(STATE.map);
+  STATE.aqiGroup = L.layerGroup();
+  STATE.tempGroup = L.layerGroup();
+  buildCityPins();
+}
+
+function buildCityPins(){
+  CITIES.forEach(function(city){
+    var marker = L.circleMarker([city.lat,city.lon],{
+      radius: city.pinned?7:4, color:'#ffffff', weight:city.pinned?2:1,
+      fillColor: city.pinned?'#DFE104':'#8B98A6', fillOpacity:.9
+    }).addTo(STATE.map);
+    marker.bindTooltip(cityName(city),{direction:'top',offset:[0,-6]});
+    marker.on('click',function(){ openCityPopup(city); });
+    city._marker = marker;
+  });
+}
+
+function refreshCityPinLabels(){
+  CITIES.forEach(function(city){ if(city._marker) city._marker.setTooltipContent(cityName(city)); });
+}
+
+function openCityPopup(city){
+  STATE.map.flyTo([city.lat,city.lon], Math.max(STATE.map.getZoom(),7), {duration:0.6});
+  var data = STATE.cityData[city.id];
+  var html = '<div class="pin-popup"><b>'+cityName(city)+'</b>';
+  if(data && data.current){
+    var w = weatherInfo(data.current.weather_code);
+    html += '<div class="pin-row">'+w.i+' '+n(data.current.temperature_2m)+'°C — '+(STATE.lang==='ur'?w.ur:w.en)+'</div>';
+    if(data.aqi && data.aqi.current) html += '<div class="pin-row">'+I18N[STATE.lang].aqi+': '+n(data.aqi.current.us_aqi)+'</div>';
+  }
+  html += '</div>';
+  if(city._marker) city._marker.bindPopup(html).openPopup();
+}
+
+function loadRadar(){
+  fetch(RAINVIEWER_API).then(function(r){ return r.json(); }).then(function(data){
+    var past = (data.radar && data.radar.past) || [];
+    var nowcast = (data.radar && data.radar.nowcast) || [];
+    var frames = past.concat(nowcast).map(function(f,idx){
+      return {time:f.time, path:f.path, host:data.host, isForecast: idx>=past.length};
+    });
+    Object.keys(STATE.layerCache).forEach(function(k){ STATE.map.removeLayer(STATE.layerCache[k]); });
+    STATE.layerCache = {};
+    STATE.radarFrames = frames;
+    STATE.radarIndex = past.length? past.length-1 : 0;
+    if(STATE.activeLayer==='radar') showRadarFrame(STATE.radarIndex);
+    else updateScrubberUI();
+  }).catch(function(){ document.getElementById('scrub-time').textContent='--:--'; });
+}
+
+function radarTileUrl(frame){ return frame.host + frame.path + '/256/{z}/{x}/{y}/' + STATE.scheme + '/1_1.png'; }
+
+function showRadarFrame(index){
+  if(!STATE.radarFrames.length) return;
+  index = ((index % STATE.radarFrames.length)+STATE.radarFrames.length)%STATE.radarFrames.length;
+  STATE.radarIndex = index;
+  Object.keys(STATE.layerCache).forEach(function(k){ if(k!==String(index)) STATE.layerCache[k].setOpacity(0); });
+  if(STATE.layerCache[index]){
+    STATE.layerCache[index].setOpacity(0.75);
+  } else {
+    var frame = STATE.radarFrames[index];
+    var layer = L.tileLayer(radarTileUrl(frame),{opacity:0,zIndex:20,maxNativeZoom:7});
+    layer.addTo(STATE.map);
+    layer.once('load',function(){ if(STATE.radarIndex===index && STATE.activeLayer==='radar') layer.setOpacity(0.75); });
+    STATE.layerCache[index]=layer;
+  }
+  updateScrubberUI();
+}
+
+function rebuildRadarLayers(){
+  Object.keys(STATE.layerCache).forEach(function(k){ STATE.map.removeLayer(STATE.layerCache[k]); });
+  STATE.layerCache = {};
+  showRadarFrame(STATE.radarIndex);
+}
+
+function playPauseRadar(){
+  STATE.radarPlaying = !STATE.radarPlaying;
+  document.getElementById('scrub-play').textContent = STATE.radarPlaying? '⏸':'▶';
+  clearTimeout(STATE.radarTimer);
+  if(STATE.radarPlaying) stepRadar();
+}
+function stepRadar(){
+  if(!STATE.radarPlaying) return;
+  showRadarFrame(STATE.radarIndex+1);
+  STATE.radarTimer = setTimeout(stepRadar, 600);
+}
+
+function updateScrubberUI(){
+  var frame = STATE.radarFrames[STATE.radarIndex];
+  if(!frame){ document.getElementById('scrub-time').textContent='--:--'; return; }
+  var pct = STATE.radarFrames.length>1? (STATE.radarIndex/(STATE.radarFrames.length-1))*100:100;
+  document.getElementById('scrub-fill').style.width = pct+'%';
+  document.getElementById('scrub-handle').style.left = pct+'%';
+  var d = new Date(frame.time*1000);
+  var label = d.toLocaleTimeString(STATE.lang==='ur'?'ur-PK':'en-PK',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('scrub-time').textContent = (frame.isForecast? '+':'') + label;
+}
+
+function gibsDateStr(){ var d = new Date(Date.now()-86400000); return d.toISOString().slice(0,10); }
+function buildSatelliteLayer(){
+  var url = 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/'+GIBS_LAYER+'/default/'+gibsDateStr()+'/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg';
+  STATE.satLayer = L.tileLayer(url,{opacity:0,zIndex:15,maxNativeZoom:9});
+  STATE.satLayer.addTo(STATE.map);
+}
+
+function buildMarkerLayers(){
+  STATE.aqiGroup.clearLayers();
+  STATE.tempGroup.clearLayers();
+  CITIES.forEach(function(city){
+    var data = STATE.cityData[city.id];
+    if(!data) return;
+    var aqi = data.aqi && data.aqi.current ? data.aqi.current.us_aqi : null;
+    if(aqi!=null){
+      var cat = aqiCategory(aqi);
+      var m1 = L.circleMarker([city.lat,city.lon],{radius:9,color:'#ffffff',weight:1,fillColor:cat.color,fillOpacity:.85});
+      m1.bindTooltip(cityName(city)+' · AQI '+n(aqi));
+      m1.on('click',function(){ openCityPopup(city); });
+      STATE.aqiGroup.addLayer(m1);
+    }
+    var temp = data.current? data.current.temperature_2m : null;
+    if(temp!=null){
+      var icon = L.divIcon({className:'temp-pin',html:'<span style="background:'+tempColor(temp)+'">'+n(temp)+'°</span>',iconSize:[38,22],iconAnchor:[19,11]});
+      var m2 = L.marker([city.lat,city.lon],{icon:icon});
+      m2.on('click',function(){ openCityPopup(city); });
+      STATE.tempGroup.addLayer(m2);
+    }
+  });
+}
+
+function setActiveLayer(layer){
+  STATE.activeLayer = layer;
+  document.querySelectorAll('.layer-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.layer===layer); });
+  Object.keys(STATE.layerCache).forEach(function(k){ STATE.layerCache[k].setOpacity(0); });
+  if(STATE.satLayer) STATE.satLayer.setOpacity(0);
+  if(STATE.map.hasLayer(STATE.aqiGroup)) STATE.map.removeLayer(STATE.aqiGroup);
+  if(STATE.map.hasLayer(STATE.tempGroup)) STATE.map.removeLayer(STATE.tempGroup);
+  document.getElementById('scrubber').classList.toggle('hidden', layer!=='radar');
+  document.getElementById('scheme-switcher').classList.toggle('hidden', layer!=='radar');
+  if(layer==='radar'){ showRadarFrame(STATE.radarIndex); }
+  else if(layer==='satellite'){ if(STATE.satLayer) STATE.satLayer.setOpacity(0.85); }
+  else if(layer==='aqi'){ STATE.aqiGroup.addTo(STATE.map); }
+  else if(layer==='temp'){ STATE.tempGroup.addTo(STATE.map); }
+  renderLegend();
+}
+
+function renderLegend(){
+  var el = document.getElementById('legend');
+  var L_ = I18N[STATE.lang];
+  if(STATE.activeLayer==='radar'){
+    el.innerHTML = '<span class="legend-title">'+L_.layerRadar+'</span><div class="legend-bar radar-bar"></div><div class="legend-ends"><span>'+(STATE.lang==='ur'?'ہلکی':'Light')+'</span><span>'+(STATE.lang==='ur'?'شدید':'Heavy')+'</span></div>';
+  } else if(STATE.activeLayer==='aqi'){
+    el.innerHTML = '<span class="legend-title">'+L_.aqi+'</span>' + AQI_CATS.map(function(c){ return '<span class="legend-chip"><i style="background:'+c.color+'"></i>'+(STATE.lang==='ur'?c.ur:c.en)+'</span>'; }).join('');
+  } else if(STATE.activeLayer==='temp'){
+    el.innerHTML = '<span class="legend-title">'+L_.layerTemp+'</span><div class="legend-bar temp-bar"></div><div class="legend-ends"><span>15°C</span><span>45°C</span></div>';
+  } else {
+    el.innerHTML = '<span class="legend-title">'+L_.layerSatellite+'</span>';
+  }
+}
+
+/* ===== FORECAST FETCH & RENDER ===== */
+function fetchAllWeather(){
+  var lats = CITIES.map(function(c){return c.lat;}).join(',');
+  var lons = CITIES.map(function(c){return c.lon;}).join(',');
+  var fUrl = FORECAST_API+'?latitude='+lats+'&longitude='+lons+
+    '&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,cloud_cover,surface_pressure,wind_speed_10m,wind_gusts_10m,visibility,uv_index'+
+    '&hourly=temperature_2m,precipitation_probability,weather_code'+
+    '&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_probability_max'+
+    '&timezone=Asia%2FKarachi&forecast_days=7';
+  var aUrl = AQ_API+'?latitude='+lats+'&longitude='+lons+'&current=us_aqi,pm2_5,pm10,ozone,dust&timezone=Asia%2FKarachi';
+  return Promise.all([
+    fetch(fUrl).then(function(r){return r.json();}),
+    fetch(aUrl).then(function(r){return r.json();})
+  ]).then(function(results){
+    var fData=results[0], aData=results[1];
+    var fArr = Array.isArray(fData)? fData : [fData];
+    var aArr = Array.isArray(aData)? aData : [aData];
+    CITIES.forEach(function(city,i){
+      STATE.cityData[city.id] = Object.assign({}, fArr[i]||{}, {aqi: aArr[i]||null});
+    });
+    STATE.lastFetch = new Date();
+  });
+}
+
+var karachiChart = null;
+function renderChart(data){
+  if(!data.hourly || typeof Chart==='undefined') return;
+  var nowIdx = findNowIndex(data.hourly.time);
+  var labels=[], temps=[], precs=[];
+  for(var i=nowIdx;i<Math.min(nowIdx+24,data.hourly.time.length);i++){
+    labels.push(fmtHour(data.hourly.time[i]));
+    temps.push(data.hourly.temperature_2m[i]);
+    precs.push(data.hourly.precipitation_probability[i]);
+  }
+  var ctx = document.getElementById('k-chart').getContext('2d');
+  if(karachiChart) karachiChart.destroy();
+  karachiChart = new Chart(ctx,{
+    data:{ labels:labels, datasets:[
+      {type:'bar',label:'Precip %',data:precs,backgroundColor:'rgba(59,130,246,.55)',yAxisID:'y1',borderRadius:0,order:2},
+      {type:'line',label:'Temp °C',data:temps,borderColor:'#DFE104',backgroundColor:'rgba(223,225,4,.15)',tension:.35,fill:true,pointRadius:0,yAxisID:'y',order:1}
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{labels:{color:'#A1A1AA',font:{family:'Space Grotesk',size:11}}}},
+      scales:{
+        x:{ticks:{color:'#71717A',font:{family:'JetBrains Mono',size:10}},grid:{color:'rgba(255,255,255,.05)'}},
+        y:{position:'left',ticks:{color:'#DFE104',font:{family:'JetBrains Mono',size:10}},grid:{color:'rgba(255,255,255,.05)'}},
+        y1:{position:'right',min:0,max:100,ticks:{color:'#3B82F6',font:{family:'JetBrains Mono',size:10}},grid:{display:false}}
+      }
+    }
+  });
+}
+
+function renderKarachiPanel(){
+  var data = STATE.cityData.karachi;
+  var L_ = I18N[STATE.lang];
+  if(!data || !data.current){ document.getElementById('k-updated').textContent = L_.liveUnavailable; return; }
+  var c = data.current;
+  var w = weatherInfo(c.weather_code);
+  document.getElementById('k-icon').textContent = w.i;
+  document.getElementById('k-temp').textContent = n(c.temperature_2m)+'°';
+  document.getElementById('k-desc').textContent = STATE.lang==='ur'?w.ur:w.en;
+  document.getElementById('k-feels-val').textContent = n(c.apparent_temperature)+'°';
+  document.getElementById('k-humidity').textContent = n(c.relative_humidity_2m)+'%';
+  document.getElementById('k-wind').textContent = n(c.wind_speed_10m)+' km/h';
+  document.getElementById('k-gusts').textContent = n(c.wind_gusts_10m)+' km/h';
+  document.getElementById('k-pressure').textContent = n(c.surface_pressure)+' hPa';
+  document.getElementById('k-cloud').textContent = n(c.cloud_cover)+'%';
+  document.getElementById('k-visibility').textContent = (c.visibility!=null? (c.visibility/1000).toFixed(1):'--')+' km';
+
+  if(data.aqi && data.aqi.current){
+    var aqi = data.aqi.current.us_aqi;
+    var cat = aqiCategory(aqi);
+    var aqiValEl = document.getElementById('k-aqi-val');
+    var aqiLabelEl = document.getElementById('k-aqi-label');
+    aqiValEl.textContent = n(aqi); aqiValEl.style.color = cat.color;
+    aqiLabelEl.textContent = STATE.lang==='ur'?cat.ur:cat.en;
+    aqiLabelEl.style.background = cat.color; aqiLabelEl.style.color = cat.dark? '#09090B':'#fff';
+    document.getElementById('k-aqi-guidance').textContent = STATE.lang==='ur'?cat.gUr:cat.gEn;
+    document.getElementById('k-pm25').textContent = n(data.aqi.current.pm2_5)+' µg/m³';
+    document.getElementById('k-pm10').textContent = n(data.aqi.current.pm10)+' µg/m³';
+  }
+
+  var hstrip = document.getElementById('k-hourly-strip');
+  hstrip.innerHTML='';
+  if(data.hourly){
+    var nowIdx = findNowIndex(data.hourly.time);
+    for(var i=nowIdx;i<Math.min(nowIdx+24,data.hourly.time.length);i++){
+      var hw = weatherInfo(data.hourly.weather_code[i]);
+      var el = document.createElement('div');
+      el.className='h-card';
+      var timeLbl = i===nowIdx? (STATE.lang==='ur'?'ابھی':'Now') : fmtHour(data.hourly.time[i]);
+      el.innerHTML = '<span class="h-time">'+timeLbl+'</span><span class="h-icon">'+hw.i+'</span><span class="h-temp">'+n(data.hourly.temperature_2m[i])+'°</span><span class="h-precip">💧'+n(data.hourly.precipitation_probability[i])+'%</span>';
+      hstrip.appendChild(el);
+    }
+  }
+
+  var dstrip = document.getElementById('k-daily-strip');
+  dstrip.innerHTML='';
+  if(data.daily){
+    for(var j=0;j<data.daily.time.length;j++){
+      var dw = weatherInfo(data.daily.weather_code[j]);
+      var del = document.createElement('div');
+      del.className='d-card';
+      del.innerHTML = '<span class="d-day">'+fmtDay(data.daily.time[j],j)+'</span><span class="d-icon">'+dw.i+'</span><span class="d-hi">'+n(data.daily.temperature_2m_max[j])+'°</span><span class="d-lo">'+n(data.daily.temperature_2m_min[j])+'°</span>';
+      dstrip.appendChild(del);
+    }
+    document.getElementById('k-sunrise').textContent = fmtHour(data.daily.sunrise[0]);
+    document.getElementById('k-sunset').textContent = fmtHour(data.daily.sunset[0]);
+    document.getElementById('k-uv').textContent = n(data.daily.uv_index_max[0]);
+  }
+
+  document.getElementById('k-updated').textContent = L_.lastUpdated+' '+(STATE.lastFetch? STATE.lastFetch.toLocaleTimeString(STATE.lang==='ur'?'ur-PK':'en-PK',{hour:'2-digit',minute:'2-digit'}):'--');
+  renderChart(data);
+}
+
+function renderCityGrid(){
+  var grid = document.getElementById('city-grid');
+  var list = CITIES.slice();
+  list.sort(function(a,b){
+    var da=STATE.cityData[a.id], db=STATE.cityData[b.id];
+    if(STATE.sortKey==='temp'){
+      var ta = da&&da.current? da.current.temperature_2m : -999, tb = db&&db.current? db.current.temperature_2m : -999;
+      return tb-ta;
+    }
+    if(STATE.sortKey==='aqi'){
+      var qa = da&&da.aqi&&da.aqi.current? da.aqi.current.us_aqi : -999, qb = db&&db.aqi&&db.aqi.current? db.aqi.current.us_aqi : -999;
+      return qb-qa;
+    }
+    if(STATE.sortKey==='rain'){
+      var ra = da&&da.hourly? da.hourly.precipitation_probability[findNowIndex(da.hourly.time)] : 0;
+      var rb = db&&db.hourly? db.hourly.precipitation_probability[findNowIndex(db.hourly.time)] : 0;
+      return rb-ra;
+    }
+    return cityName(a).localeCompare(cityName(b));
+  });
+  grid.innerHTML='';
+  list.forEach(function(city){
+    var data = STATE.cityData[city.id];
+    var card = document.createElement('button');
+    card.className = 'city-card'+(city.pinned?' pinned':'');
+    if(data && data.current){
+      var w = weatherInfo(data.current.weather_code);
+      var aqi = data.aqi&&data.aqi.current? data.aqi.current.us_aqi : null;
+      var cat = aqi!=null? aqiCategory(aqi):null;
+      var rain = data.hourly? data.hourly.precipitation_probability[findNowIndex(data.hourly.time)] : null;
+      card.innerHTML =
+        '<div class="cc-top"><span class="cc-name">'+cityName(city)+'</span>'+(city.pinned?'<span class="cc-pin">📍</span>':'')+'</div>'+
+        '<div class="cc-mid"><span class="cc-icon">'+w.i+'</span><span class="cc-temp">'+n(data.current.temperature_2m)+'°</span></div>'+
+        '<div class="cc-bottom"><span class="cc-aqi" style="color:'+(cat?cat.color:'#71717A')+'">AQI '+n(aqi)+'</span><span class="cc-rain">💧'+n(rain)+'%</span></div>';
+    } else {
+      card.innerHTML = '<div class="cc-top"><span class="cc-name">'+cityName(city)+'</span></div><div class="cc-skeleton"></div>';
+    }
+    card.addEventListener('click',function(){ openCityPopup(city); });
+    grid.appendChild(card);
+  });
+}
+
+/* ===== LANGUAGE ===== */
+function applyLanguage(lang){
+  STATE.lang = lang;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang==='ur'?'rtl':'ltr';
+  document.body.classList.toggle('urdu', lang==='ur');
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var key = el.dataset.i18n;
+    if(I18N[lang][key]!=null) el.textContent = I18N[lang][key];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el){
+    var key = el.dataset.i18nPlaceholder;
+    if(I18N[lang][key]!=null) el.placeholder = I18N[lang][key];
+  });
+  document.querySelectorAll('.lang-opt').forEach(function(el){ el.classList.toggle('active', el.dataset.lang===lang); });
+  refreshCityPinLabels();
+  renderKarachiPanel();
+  renderCityGrid();
+  renderLegend();
+  updateScrubberUI();
+  renderAlerts();
+}
+
+/* ===== ALERTS ===== */
+function computeCityAlerts(city){
+  var data = STATE.cityData[city.id];
+  var out = [];
+  if(!data || !data.current) return out;
+  var c = data.current;
+  var aqi = data.aqi && data.aqi.current ? data.aqi.current.us_aqi : null;
+  if(c.temperature_2m>=45) out.push({key:'alertHeatwave',sev:'severe',city:city});
+  else if(c.temperature_2m>=40) out.push({key:'alertHeatwave',sev:'moderate',city:city});
+  if(c.precipitation>=10) out.push({key:'alertHeavyRain',sev:'moderate',city:city});
+  if(c.wind_gusts_10m>=45 && c.visibility!=null && c.visibility<5000) out.push({key:'alertDustStorm',sev:'moderate',city:city});
+  if(aqi!=null){
+    if(aqi>=201) out.push({key:'alertSmog',sev:'severe',city:city});
+    else if(aqi>=151) out.push({key:'alertSmog',sev:'moderate',city:city});
+  }
+  return out;
+}
+
+function renderAlerts(){
+  var stack = document.getElementById('alert-stack');
+  stack.innerHTML='';
+  var L_ = I18N[STATE.lang];
+  var all=[];
+  CITIES.forEach(function(city){ all = all.concat(computeCityAlerts(city)); });
+  all.forEach(function(a){
+    var id = a.key+'-'+a.city.id;
+    if(STATE.dismissedAlerts[id]) return;
+    var div = document.createElement('div');
+    div.className = 'alert-banner sev-'+a.sev;
+    div.innerHTML = '<span class="alert-icon">'+(a.sev==='severe'?'⚠️':'ℹ️')+'</span><span class="alert-text"><b>'+L_[a.key]+'</b> — '+cityName(a.city)+'</span><button class="alert-dismiss" aria-label="'+L_.dismiss+'">✕</button>';
+    div.querySelector('.alert-dismiss').addEventListener('click',function(){ STATE.dismissedAlerts[id]=true; div.remove(); });
+    stack.appendChild(div);
+  });
+}
+
+/* ===== SEARCH ===== */
+function wireSearch(){
+  var input = document.getElementById('search-input');
+  var results = document.getElementById('search-results');
+  input.addEventListener('input',function(){
+    var q = input.value.trim().toLowerCase();
+    var qRaw = input.value.trim();
+    results.innerHTML='';
+    if(!q){ results.classList.remove('open'); return; }
+    var matches = CITIES.filter(function(c){ return c.en.toLowerCase().indexOf(q)!==-1 || c.ur.indexOf(qRaw)!==-1; }).slice(0,6);
+    if(!matches.length){
+      results.innerHTML = '<div class="sr-empty">'+I18N[STATE.lang].noResults+'</div>';
+    } else {
+      matches.forEach(function(c){
+        var item = document.createElement('button');
+        item.className='sr-item';
+        item.innerHTML = '<span>'+cityName(c)+'</span><span class="sr-prov">'+c.prov+'</span>';
+        item.addEventListener('click',function(){ openCityPopup(c); results.classList.remove('open'); input.value=''; });
+        results.appendChild(item);
+      });
+    }
+    results.classList.add('open');
+  });
+  document.addEventListener('click',function(e){
+    if(!e.target.closest('#search-wrap')) results.classList.remove('open');
+  });
+}
+
+/* ===== PANEL / TABS / CHART TOGGLE ===== */
+function wirePanel(){
+  document.querySelectorAll('.panel-tab').forEach(function(tab){
+    tab.addEventListener('click',function(){
+      document.querySelectorAll('.panel-tab').forEach(function(t){ t.classList.remove('active'); });
+      tab.classList.add('active');
+      document.querySelectorAll('.tab-pane').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById('tab-'+tab.dataset.tab).classList.add('active');
+      document.getElementById('panel').classList.add('expanded');
+    });
+  });
+  document.getElementById('panel-handle').addEventListener('click',function(){
+    document.getElementById('panel').classList.toggle('expanded');
+  });
+}
+
+function wireChartToggle(){
+  document.getElementById('k-chart-toggle').addEventListener('click',function(){
+    var wrap = document.getElementById('k-chart-wrap');
+    var btn = document.getElementById('k-chart-toggle');
+    var hidden = wrap.classList.toggle('hidden');
+    btn.textContent = hidden? I18N[STATE.lang].viewChart : I18N[STATE.lang].hideChart;
+    btn.dataset.i18n = hidden?'viewChart':'hideChart';
+    if(!hidden && karachiChart) karachiChart.resize();
+  });
+}
+
+/* ===== LOCATE ===== */
+function wireLocate(){
+  document.getElementById('locate-btn').addEventListener('click',function(){
+    if(!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(function(pos){
+      var lat=pos.coords.latitude, lon=pos.coords.longitude;
+      var nearest=CITIES[0], best=Infinity;
+      CITIES.forEach(function(c){
+        var d=(c.lat-lat)*(c.lat-lat)+(c.lon-lon)*(c.lon-lon);
+        if(d<best){best=d;nearest=c;}
+      });
+      STATE.map.flyTo([lat,lon],9);
+      L.circleMarker([lat,lon],{radius:8,color:'#fff',weight:2,fillColor:'#DFE104',fillOpacity:1}).addTo(STATE.map).bindPopup(I18N[STATE.lang].youAreHere).openPopup();
+      openCityPopup(nearest);
+    });
+  });
+}
+
+/* ===== ABOUT MODAL ===== */
+function wireAbout(){
+  document.getElementById('about-btn').addEventListener('click',function(){ document.getElementById('about-modal').classList.remove('hidden'); });
+  document.getElementById('about-close').addEventListener('click',function(){ document.getElementById('about-modal').classList.add('hidden'); });
+  document.getElementById('about-modal').addEventListener('click',function(e){ if(e.target.id==='about-modal') document.getElementById('about-modal').classList.add('hidden'); });
+}
+
+/* ===== LANG TOGGLE / LAYER CONTROLS ===== */
+function wireLangToggle(){
+  document.getElementById('lang-toggle').addEventListener('click',function(){ applyLanguage(STATE.lang==='en'?'ur':'en'); });
+}
+
+function wireLayerControls(){
+  document.querySelectorAll('.layer-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){ setActiveLayer(btn.dataset.layer); });
+  });
+  document.querySelectorAll('.scheme-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      STATE.scheme = btn.dataset.scheme;
+      document.querySelectorAll('.scheme-btn').forEach(function(b){ b.classList.toggle('active', b===btn); });
+      rebuildRadarLayers();
+    });
+  });
+  document.getElementById('scrub-play').addEventListener('click', playPauseRadar);
+  document.getElementById('scrub-track').addEventListener('click',function(e){
+    if(!STATE.radarFrames.length) return;
+    var rect = e.currentTarget.getBoundingClientRect();
+    var pct = Math.min(1,Math.max(0,(e.clientX-rect.left)/rect.width));
+    var idx = Math.round(pct*(STATE.radarFrames.length-1));
+    STATE.radarPlaying=false; clearTimeout(STATE.radarTimer);
+    document.getElementById('scrub-play').textContent='▶';
+    showRadarFrame(idx);
+  });
+  document.getElementById('sort-select').addEventListener('change',function(e){ STATE.sortKey=e.target.value; renderCityGrid(); });
+}
+
+/* ===== INIT ===== */
+function init(){
+  initMap();
+  loadRadar();
+  buildSatelliteLayer();
+  wireSearch(); wirePanel(); wireChartToggle(); wireLocate(); wireAbout(); wireLangToggle(); wireLayerControls();
+  applyLanguage('en');
+  fetchAllWeather().then(function(){
+    renderKarachiPanel();
+    renderCityGrid();
+    buildMarkerLayers();
+    renderAlerts();
+  }).catch(function(err){
+    console.error('Weather fetch failed', err);
+    document.getElementById('k-updated').textContent = I18N[STATE.lang].liveUnavailable;
+  });
+  setInterval(function(){
+    fetchAllWeather().then(function(){
+      renderKarachiPanel(); renderCityGrid(); buildMarkerLayers(); renderAlerts();
+    });
+  }, 600000);
+  setInterval(loadRadar, 120000);
+}
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
