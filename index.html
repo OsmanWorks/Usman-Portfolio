@@ -61,19 +61,29 @@ nav.solid{
 .nav-logo{
   color:#fff;text-decoration:none;font-family:Manrope,sans-serif;
   font-size:1.35rem;font-weight:800;letter-spacing:.08em;
+  flex:0 0 auto;
 }
 .nav-logo span{color:var(--green)}
-.nav-links{display:flex;align-items:center;gap:4px}
+.nav-links{display:flex;align-items:center;gap:2px;flex-wrap:nowrap}
 .nav-links a{
+  position:relative;
   color:rgba(255,255,255,.72);text-decoration:none;
-  font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  padding:10px 14px;border:1px solid transparent;transition:.2s;
+  font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:9px 11px;border:1px solid transparent;transition:.2s;
+  white-space:nowrap;
 }
 .nav-links a:hover,.nav-links a.active{color:var(--green);border-color:var(--green)}
+.nav-links a[aria-disabled="true"]{opacity:.55;cursor:not-allowed}
+.nav-links a[aria-disabled="true"]:hover{color:rgba(255,255,255,.72);border-color:transparent}
+.soon-badge{
+  margin-left:6px;font-size:.52rem;font-weight:800;letter-spacing:.05em;
+  background:var(--pink);color:#fff;padding:2px 5px;border-radius:2px;vertical-align:middle;
+  text-transform:uppercase;
+}
 .nav-toggle{
   display:none;width:44px;height:44px;background:transparent;color:#fff;
   border:1px solid rgba(255,255,255,.35);align-items:center;justify-content:center;
-  cursor:pointer;font-size:1rem;
+  cursor:pointer;font-size:1rem;flex:0 0 auto;
 }
 .nav-toggle.open{background:var(--green);color:#000;border-color:var(--green)}
 .nav-toggle .fa-xmark{display:none}.nav-toggle.open .fa-bars{display:none}.nav-toggle.open .fa-xmark{display:inline}
@@ -248,6 +258,22 @@ footer{background:var(--ink);color:#fff;padding:32px 5%;display:flex;align-items
 .f-logo{font:800 1.3rem Manrope;letter-spacing:.08em}.f-logo span{color:var(--green)}
 .f-copy{font-size:.65rem;color:rgba(255,255,255,.45);letter-spacing:.06em;text-transform:uppercase;text-align:right}
 
+/* NAV RESPONSIVE — triggers earlier now that there are more nav items,
+   so the bar never breaks on laptops/tablets, only pure desktop keeps the full row */
+@media(max-width:1180px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:fixed;top:82px;left:16px;right:16px;
+    display:flex;flex-direction:column;align-items:stretch;
+    background:rgba(13,15,16,.98);backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,.2);padding:6px;
+    max-height:calc(100vh - 100px);overflow-y:auto;
+    opacity:0;visibility:hidden;transform:translateY(-8px);transition:.2s;
+  }
+  .nav-links.open{opacity:1;visibility:visible;transform:none}
+  .nav-links a{text-align:center;padding:14px;font-size:.72rem}
+}
+
 /* MOBILE */
 @media(max-width:1024px){
   .hero-inner,.featured,.about-grid,.contact-inner{grid-template-columns:1fr}
@@ -262,16 +288,7 @@ footer{background:var(--ink);color:#fff;padding:32px 5%;display:flex;align-items
 }
 @media(max-width:700px){
   nav{height:68px;padding:0 20px}
-  .nav-toggle{display:flex}
-  .nav-links{
-    position:fixed;top:68px;left:20px;right:20px;
-    display:flex;flex-direction:column;align-items:stretch;
-    background:rgba(13,15,16,.98);backdrop-filter:blur(16px);
-    border:1px solid rgba(255,255,255,.2);padding:6px;
-    opacity:0;visibility:hidden;transform:translateY(-8px);transition:.2s;
-  }
-  .nav-links.open{opacity:1;visibility:visible;transform:none}
-  .nav-links a{text-align:center;padding:14px}
+  .nav-links{top:68px;left:20px;right:20px}
   .hero{padding:95px 20px 65px}
   .hero h1{font-size:clamp(3.5rem,16vw,6rem)}
   .hero-kicker{font-size:1rem}
@@ -301,6 +318,18 @@ footer{background:var(--ink);color:#fff;padding:32px 5%;display:flex;align-items
   footer{padding:25px 20px;flex-direction:column;text-align:center}
   .f-copy{text-align:center}
 }
+/* EXTRA-SMALL PHONES */
+@media(max-width:380px){
+  .hero h1{font-size:clamp(2.9rem,17vw,4.3rem)}
+  .eyebrow{font-size:.6rem;padding:7px 10px}
+  .stat{padding:12px 6px}
+  .stat strong{font-size:clamp(1.2rem,7vw,1.7rem)}
+  .proof-grid{grid-template-columns:1fr}
+  .proof-item{border-right:0!important;border-bottom:1px solid rgba(0,0,0,.35)}
+  .proof-item:last-child{border-bottom:0}
+  .about-copy{padding:30px 18px}
+  .featured-copy{padding:26px 18px}
+}
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*:before,*:after{animation:none!important;transition:none!important}
@@ -325,6 +354,12 @@ footer{background:var(--ink);color:#fff;padding:32px 5%;display:flex;align-items
     <a href="packages.html">Packages</a>
     <a href="weather.html"><i class="fas fa-cloud-sun-rain" aria-hidden="true"></i> Weather</a>
     <a href="nearby.html"><i class="fas fa-tower-broadcast" aria-hidden="true"></i> Nearby</a>
+    <a href="#" aria-disabled="true" title="Coming soon" onclick="return false;"><i class="fas fa-clock" aria-hidden="true"></i> World Time<span class="soon-badge">Soon</span></a>
+    <a href="#" aria-disabled="true" title="Coming soon" onclick="return false;">Custom 1<span class="soon-badge">Soon</span></a>
+    <a href="#" aria-disabled="true" title="Coming soon" onclick="return false;">Custom 2<span class="soon-badge">Soon</span></a>
+    <a href="#" aria-disabled="true" title="Coming soon" onclick="return false;">Custom 3<span class="soon-badge">Soon</span></a>
+    <a href="#" aria-disabled="true" title="Coming soon" onclick="return false;">Custom 4<span class="soon-badge">Soon</span></a>
+    <a href="#" aria-disabled="true" title="Coming soon" onclick="return false;">Custom 5<span class="soon-badge">Soon</span></a>
   </div>
 </nav>
 
@@ -573,6 +608,7 @@ footer{background:var(--ink);color:#fff;padding:32px 5%;display:flex;align-items
     });
   }
   links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+    if(a.getAttribute('aria-disabled')==='true') return; // keep menu open for "coming soon" items
     links.classList.remove('open');
     toggle.classList.remove('open');
     toggle.setAttribute('aria-expanded','false');
