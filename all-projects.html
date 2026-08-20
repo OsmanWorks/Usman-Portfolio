@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>All Projects | Usman Khan — Visual Artist</title>
+<title>All Projects | Usman — Video Editor & Visual Artist</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
@@ -249,6 +249,198 @@ footer{border-top:2px solid var(--border);padding:28px 5%;display:flex;align-ite
   .marquee-track{animation:none;}
   .rv{opacity:1;transform:none;}
   .pg-dot{animation:none;}
+}
+</style>
+<style>
+:root{
+  --bg:#FFFFFF;
+  --fg:#1F1F1F;
+  --muted:#EFF8F4;
+  --muted-fg:#555555;
+  --accent:#25B684;
+  --accent-fg:#1F1F1F;
+  --border:#343434;
+  --yellow:#FBCB16;
+  --orange:#F76E2D;
+  --pink:#EF2267;
+  --grid:#E9ECEA;
+  --shadow:5px 5px 0;
+}
+*{border-radius:0 !important}
+body{
+  background-color:#fff;
+  background-image:
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:44px 44px;
+  color:var(--fg);
+  font-family:'Poppins','Space Grotesk',Arial,sans-serif;
+}
+::selection{background:var(--accent);color:#fff}
+.noise{display:none}
+nav{
+  background:#fff;
+  color:var(--fg);
+  height:78px;
+  border-bottom:1px solid #E9ECEA;
+  box-shadow:0 2px 8px rgba(0,0,0,.04);
+}
+nav.solid{background:rgba(255,255,255,.97);border-bottom-color:#E9ECEA}
+.nav-logo{color:var(--fg)}
+.nav-logo span{color:var(--accent)}
+.nav-links a{color:#333;border-color:transparent}
+.nav-links a:hover,.nav-links a.active{color:#1F1F1F;border-color:var(--accent);box-shadow:3px 3px 0 var(--yellow)}
+.sidebar a{border-color:#343434;color:#555;background:#fff}
+.sidebar a:hover{background:var(--accent);color:#fff;border-color:#343434}
+.sidebar .sb-line{background:#343434}
+.page-hero{
+  text-align:center;
+  padding-top:150px;
+}
+.pg-tag{
+  border:2px solid #343434;
+  background:#fff;
+  box-shadow:5px 5px 0 var(--accent);
+}
+.pg-tag span{color:#1F1F1F}
+.pg-dot{background:var(--accent)}
+.page-hero h1{
+  display:inline-block;
+  background:#fff;
+  border:2px solid #343434;
+  padding:.12em .28em;
+  box-shadow:7px 7px 0 var(--yellow);
+  color:#1F1F1F;
+  font-family:'Poppins','Space Grotesk',Arial,sans-serif;
+  font-weight:800;
+  letter-spacing:-.04em;
+}
+.page-hero h1 em{color:var(--accent)}
+.page-hero p{color:#555;margin-left:auto;margin-right:auto}
+.marquee-wrap{
+  margin-top:20px;
+  background:linear-gradient(90deg,#25B684 0 25%,#FBCB16 25% 50%,#F76E2D 50% 75%,#EF2267 75% 100%);
+  padding:6px 0;
+}
+.marquee-track{background:#fff;padding:10px 0}
+.marquee-item{color:#1F1F1F}
+.marquee-item::after{color:#25B684}
+.section{
+  padding:110px 0;
+  border-top:0;
+}
+.section:nth-child(odd){--section-accent:var(--green)}
+.sec-label{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  margin-bottom:48px;
+}
+.sec-num{
+  color:#1F1F1F;
+  background:#FBCB16;
+  border:2px solid #343434;
+  padding:8px 10px;
+  box-shadow:4px 4px 0 #343434;
+}
+.sec-title{
+  display:inline-block;
+  background:#fff;
+  border:2px solid #343434;
+  padding:.12em .28em;
+  box-shadow:5px 5px 0 var(--accent);
+  color:#1F1F1F;
+  font-weight:800;
+}
+.sec-sub{color:#666}
+.sec-rule{
+  height:6px;
+  background:linear-gradient(90deg,#25B684 0 25%,#FBCB16 25% 50%,#F76E2D 50% 75%,#EF2267 75% 100%);
+}
+.vr-kicker{color:var(--accent)}
+.vr-heading{color:#1F1F1F}
+.vr-heading em{color:var(--pink)}
+.vr-desc{color:#555}
+.vr-stats,.ba-wrap,.pod-wrap,.vgrid,.vgrid4,.vgrid2b,.cta-strip{
+  border:2px solid #343434;
+  box-shadow:5px 5px 0 var(--yellow);
+  background:#fff;
+}
+.vr-stat{
+  background:#fff;
+  border-color:#D9DDDB;
+}
+.vr-stat:hover{background:#EFF8F4}
+.vr-stat-val{color:var(--accent)}
+.vr-stat-lbl{color:#555}
+.vr-tag{background:#FBCB16;color:#1F1F1F;border:2px solid #343434;box-shadow:3px 3px 0 #343434}
+.carousel-slide,.pod-player,.vbox,.ba-vid{background:#1F1F1F}
+.carousel-slide iframe,.carousel-slide .c-thumb{border-color:#343434}
+.c-pring,.pt-ring,.pring{border-color:var(--accent);color:var(--accent);background:rgba(37,182,132,.12)}
+.carousel-slide .play-cover:hover .c-pring,.pod-thumb:hover .pt-ring,.play-ov:hover .pring{
+  background:var(--accent);color:#fff;
+}
+.c-btn{border-color:#343434;background:#fff;color:#1F1F1F;box-shadow:3px 3px 0 #343434}
+.c-btn:hover{background:var(--accent);color:#fff;border-color:#343434}
+.c-counter span,.vr-kicker{color:var(--accent)}
+.c-dot{background:#D9DDDB}
+.c-dot.active{background:var(--pink)}
+.ba-lbl.after{background:var(--accent);color:#fff}
+.ba-lbl.before{background:var(--pink)}
+.ba-div{background:#343434}
+.pl-side{border-color:#343434;background:#fff}
+.pl-head{background:#EFF8F4;border-color:#343434}
+.pl-head h3{color:#1F1F1F}
+.pl-item{border-color:#E0E4E1}
+.pl-item:hover,.pl-item.active{background:#EFF8F4}
+.pl-item.active{border-left-color:var(--accent)}
+.pl-icon{border-color:#343434}
+.pl-item.active .pl-icon{background:var(--accent);color:#fff;border-color:#343434}
+.pl-item h4{color:#1F1F1F}
+.pl-item span{color:#666}
+.vc{background:#fff}
+.vc:hover{background:#EFF8F4}
+.vc-ft{background:#EFF8F4;border-color:#343434}
+.vc-ft .tag,.vc-ft a{color:#333}
+.vc-ft a:hover{color:var(--accent)}
+.cta-strip::before{color:#EFF8F4}
+.cta-strip h2{color:#1F1F1F}
+.cta-strip h2 em{color:var(--pink)}
+.btn-accent{
+  background:var(--accent);
+  color:#fff;
+  border:2px solid #343434;
+  box-shadow:5px 5px 0 var(--yellow);
+}
+.btn-accent:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--yellow)}
+.btn-outline{
+  background:#fff;color:#1F1F1F;border:2px solid #343434;box-shadow:5px 5px 0 var(--pink)
+}
+.btn-outline:hover{background:#fff;color:#1F1F1F;border-color:#343434;transform:translate(-2px,-2px)}
+footer{
+  background:#fff;
+  border-top:0;
+  position:relative;
+}
+footer:before{
+  content:'';
+  position:absolute;left:0;right:0;top:0;height:6px;
+  background:linear-gradient(90deg,#25B684 0 25%,#FBCB16 25% 50%,#F76E2D 50% 75%,#EF2267 75% 100%);
+}
+.f-logo{color:#1F1F1F}
+.f-logo span{color:var(--accent)}
+.f-copy{color:#666}
+.f-copy a{color:var(--accent)}
+@media(max-width:640px){
+  body{background-size:32px 32px}
+  nav{height:68px}
+  .page-hero{padding-top:125px}
+  .page-hero h1{font-size:clamp(2.5rem,11vw,4rem)}
+  .section{padding:72px 0}
+  .sec-label{align-items:flex-start;flex-wrap:wrap}
+  .sec-rule{width:100%;order:3}
+  .sec-title{font-size:clamp(1.8rem,9vw,3rem)}
+  .marquee-wrap{margin-top:10px}
 }
 </style>
 </head>
@@ -554,7 +746,7 @@ footer{border-top:2px solid var(--border);padding:28px 5%;display:flex;align-ite
 
 <footer>
   <div class="f-logo">UK<span>.</span></div>
-  <div class="f-copy">© 2025 Usman Khan — Visual Artist &nbsp;·&nbsp; <a href="index.html">Home</a></div>
+  <div class="f-copy">© 2026 Usman — Video Editor & Visual Artist &nbsp;·&nbsp; <a href="index.html">Home</a></div>
 </footer>
 
 <script>
