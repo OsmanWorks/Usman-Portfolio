@@ -443,6 +443,146 @@ footer:before{
   .marquee-wrap{margin-top:10px}
 }
 </style>
+
+<style>
+/* Index-style global navigation for All Projects */
+#mainNav .nav-inner{
+  max-width:1280px;
+  margin:0 auto;
+  padding:0 32px;
+  height:78px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+}
+#mainNav .nav-logo{
+  font-size:24px;
+  font-weight:900;
+  letter-spacing:-.05em;
+  text-decoration:none;
+  white-space:nowrap;
+}
+#mainNav .nav-logo span{color:#25B684}
+#mainNav .nav-links{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  flex:1;
+}
+#mainNav .nav-links a{
+  padding:9px 12px;
+  color:#1F1F1F;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  border:2px solid transparent;
+  transition:.18s ease;
+}
+#mainNav .nav-links a:hover,
+#mainNav .nav-links a.active{
+  background:#EFF8F4;
+  border-color:#343434;
+  box-shadow:3px 3px 0 #FBCB16;
+  transform:translate(-1px,-1px);
+}
+#mainNav .nav-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+#mainNav .nav-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  padding:12px 17px;
+  background:#25B684;
+  color:#fff;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:800;
+  text-transform:uppercase;
+  border:2px solid #343434;
+  box-shadow:4px 4px 0 #FBCB16;
+  transition:.18s ease;
+}
+#mainNav .nav-cta:hover{
+  transform:translate(-2px,-2px);
+  box-shadow:6px 6px 0 #FBCB16;
+}
+#mainNav .nav-menu{
+  display:none;
+  width:44px;
+  height:44px;
+  border:2px solid #343434;
+  background:#fff;
+  color:#1F1F1F;
+  box-shadow:3px 3px 0 #EF2267;
+  cursor:pointer;
+}
+#mainNav .mobile-menu{display:none}
+
+@media(max-width:1050px){
+  #mainNav .nav-links{gap:0}
+  #mainNav .nav-links a{padding:8px 8px;font-size:11px}
+  #mainNav .nav-cta{padding:11px 13px}
+}
+@media(max-width:820px){
+  #mainNav .nav-inner{height:68px;padding:0 18px}
+  #mainNav .nav-links,
+  #mainNav .nav-cta{display:none}
+  #mainNav .nav-menu{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:17px;
+  }
+  #mainNav .mobile-menu{
+    position:absolute;
+    left:0;
+    right:0;
+    top:68px;
+    display:flex;
+    flex-direction:column;
+    gap:0;
+    background:#fff;
+    border-top:1px solid #E9ECEA;
+    border-bottom:2px solid #343434;
+    padding:10px 18px 18px;
+    transform:translateY(-12px);
+    opacity:0;
+    pointer-events:none;
+    transition:.18s ease;
+  }
+  #mainNav .mobile-menu.open{
+    transform:translateY(0);
+    opacity:1;
+    pointer-events:auto;
+  }
+  #mainNav .mobile-menu a{
+    padding:14px 10px;
+    border-bottom:1px solid #E9ECEA;
+    color:#1F1F1F;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:800;
+    text-transform:uppercase;
+  }
+  #mainNav .mobile-menu a.active{color:#25B684}
+  #mainNav .mobile-menu .mobile-cta{
+    margin-top:12px;
+    background:#25B684;
+    color:#fff;
+    border:2px solid #343434;
+    box-shadow:4px 4px 0 #FBCB16;
+    text-align:center;
+  }
+}
+</style>
+
 </head>
 <body>
 
@@ -456,15 +596,37 @@ footer:before{
   <div class="sb-line"></div>
 </div>
 
+
 <nav id="mainNav">
-  <a class="nav-logo" href="index.html">UK<span>.</span></a>
-  <div class="nav-links">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">USMAN<span>.</span></a>
+
+    <div class="nav-links" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#work">Services</a>
+      <a href="all-projects.html" class="active">All Projects</a>
+      <a href="index.html#journey">What I Edit</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+
+    <div class="nav-actions">
+      <a href="index.html#contact" class="nav-cta">Let's Talk <i class="fas fa-arrow-right"></i></a>
+      <button class="nav-menu" id="navMenu" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+
+  <div class="mobile-menu" id="mobileMenu">
     <a href="index.html">Home</a>
-    <a href="all-projects.html" class="active">Portfolio</a>
-    <a href="shop.html">Shop</a>
-    <a href="packages.html">Packages</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#work">Services</a>
+    <a href="all-projects.html" class="active">All Projects</a>
+    <a href="index.html#journey">What I Edit</a>
+    <a href="index.html#contact">Contact</a>
+    <a href="index.html#contact" class="mobile-cta">Let's Talk <i class="fas fa-arrow-right"></i></a>
   </div>
 </nav>
+
 
 <!-- PAGE HERO -->
 <div class="page-hero rv">
@@ -901,5 +1063,28 @@ function loadVid(overlay, src) {
   overlay.classList.add('gone');
 }
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const btn = document.getElementById('navMenu');
+  const menu = document.getElementById('mobileMenu');
+  if(!btn || !menu) return;
+
+  btn.addEventListener('click', function(){
+    menu.classList.toggle('open');
+    btn.innerHTML = menu.classList.contains('open')
+      ? '<i class="fas fa-times"></i>'
+      : '<i class="fas fa-bars"></i>';
+  });
+
+  menu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      menu.classList.remove('open');
+      btn.innerHTML = '<i class="fas fa-bars"></i>';
+    });
+  });
+});
+</script>
+
 </body>
 </html>
