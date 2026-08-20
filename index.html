@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Usman Khan — Video Editor & Visual Artist. High-impact reels, podcasts, YouTube videos, motion graphics and Ed-Tech content.">
-<title>Usman Khan | Video Editor & Visual Artist</title>
+<title>Usman | Video Editor & Visual Artist</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,24 +13,24 @@
 
 <style>
 :root{
-  --ink:#0D0F10;
-  --paper:#F3F0E8;
+  --ink:#111111;
+  --paper:#FFFFFF;
   --white:#FFFFFF;
   --muted:#73777A;
-  --line:#D8D4CB;
-  --green:#67E878;
-  --pink:#EC3272;
-  --orange:#FF7438;
-  --yellow:#F2CE3A;
+  --line:#111111;
+  --green:#25B684;
+  --pink:#EF2267;
+  --orange:#F76E2D;
+  --yellow:#FBCB16;
   --black:#090A0B;
   --max:1440px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
-  background:var(--paper);
+  background-color:var(--paper);
   color:var(--ink);
-  font-family:Inter,Arial,sans-serif;
+  font-family:Poppins,Inter,Arial,sans-serif;
   line-height:1.55;
   overflow-x:hidden;
 }
@@ -59,7 +59,7 @@ nav.solid{
   box-shadow:0 1px 0 rgba(255,255,255,.12);
 }
 .nav-logo{
-  color:#fff;text-decoration:none;font-family:Manrope,sans-serif;
+  color:#fff;text-decoration:none;font-family:Poppins,Inter,Arial,sans-serif;
   font-size:1.35rem;font-weight:800;letter-spacing:.08em;
   flex:0 0 auto;
 }
@@ -109,7 +109,7 @@ nav.solid{
 .dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:blink 2s infinite}
 @keyframes blink{50%{opacity:.25}}
 .hero h1{
-  font-family:Manrope,sans-serif;font-size:clamp(4rem,8.5vw,9.5rem);
+  font-family:Poppins,Inter,Arial,sans-serif;font-size:clamp(4rem,8.5vw,9.5rem);
   line-height:.9;letter-spacing:-.055em;font-weight:800;text-transform:uppercase;
 }
 .hero h1 .green{color:var(--green)}
@@ -173,7 +173,7 @@ nav.solid{
 .section-head{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:end;margin-bottom:58px}
 .section-no{font:700 .75rem Inter;color:var(--pink);letter-spacing:.12em}
 .section h2{
-  font-family:Manrope,sans-serif;font-size:clamp(3rem,6vw,6.5rem);
+  font-family:Poppins,Inter,Arial,sans-serif;font-size:clamp(3rem,6vw,6.5rem);
   line-height:.95;letter-spacing:-.055em;text-transform:uppercase;font-weight:800;
 }
 .section-intro{grid-column:2;max-width:620px;color:var(--muted);margin-top:2px;font-size:1rem}
@@ -232,7 +232,7 @@ nav.solid{
 .tag{background:var(--green);color:#000;padding:7px 11px;font-size:.62rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
 
 .reason-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
-.reason{background:var(--paper);padding:36px;min-height:240px}
+.reason{background-color:var(--paper);padding:36px;min-height:240px}
 .reason-no{font:800 2rem Manrope;color:var(--orange)}
 .reason h3{font:800 1.35rem Manrope;text-transform:uppercase;margin-top:26px}
 .reason p{color:var(--muted);font-size:.92rem;margin-top:10px}
@@ -336,6 +336,52 @@ footer{background:var(--ink);color:#fff;padding:32px 5%;display:flex;align-items
   .reveal{opacity:1;transform:none}
 }
 </style>
+<style>
+:root{
+  --shadow:5px 5px 0 #111;
+  --shadow-lg:8px 8px 0 #111;
+  --radius:0px;
+}
+body{
+  background-color:#fff;
+  background-image:
+    linear-gradient(rgba(17,17,17,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(17,17,17,.055) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+.section, .wrap{position:relative}
+.section{background:rgba(255,255,255,.94)}
+.btn,.contact-btn,.journey,.featured,.about-grid,.reason,.proof-grid,.hero-photo,.hero-stats{
+  border-radius:0 !important;
+}
+.section h2,.contact h2,.hero h1{
+  text-shadow:5px 5px 0 rgba(37,182,132,.28);
+}
+.journey:hover{
+  box-shadow:var(--shadow);
+  transform:translate(-2px,-2px);
+}
+.btn{
+  border:2px solid #111;
+  box-shadow:4px 4px 0 #111;
+}
+.btn-primary{background:var(--green)}
+.btn-primary:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 #111}
+.contact-btn{border:2px solid #111;box-shadow:4px 4px 0 #111}
+.contact-btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 #111}
+.badge,.tag{border:2px solid #111;box-shadow:3px 3px 0 #111}
+.proof-grid{box-shadow:var(--shadow)}
+.featured{box-shadow:var(--shadow-lg)}
+.about-grid{box-shadow:var(--shadow)}
+.reason-grid{box-shadow:var(--shadow)}
+.hero-photo{box-shadow:var(--shadow-lg)}
+.eyebrow{border-width:2px}
+.nav-links a:hover,.nav-links a.active{box-shadow:3px 3px 0 var(--green)}
+@media(max-width:700px){
+  body{background-size:20px 20px}
+  .section h2,.contact h2,.hero h1{text-shadow:3px 3px 0 rgba(37,182,132,.25)}
+}
+</style>
 </head>
 
 <body>
@@ -431,28 +477,28 @@ footer{background:var(--ink);color:#fff;padding:32px 5%;display:flex;align-items
         <div class="journey-no">01</div>
         <h3>Reels & Social</h3>
         <p>Fast-paced short-form edits, captions, hooks, sound design and platform-ready visuals built for retention.</p>
-        <a href="all-projects.html">Explore Work <i class="fas fa-arrow-right"></i></a>
+        <a href="all-projects.html?category=reels-social">Explore Work <i class="fas fa-arrow-right"></i></a>
       </article>
 
       <article class="journey reveal" style="--journey:var(--orange)">
         <div class="journey-no">02</div>
         <h3>YouTube & Long-form</h3>
         <p>Clean storytelling, pacing, b-roll, screen graphics and professional finishing for educational and informative videos.</p>
-        <a href="all-projects.html">Explore Work <i class="fas fa-arrow-right"></i></a>
+        <a href="all-projects.html?category=youtube-longform">Explore Work <i class="fas fa-arrow-right"></i></a>
       </article>
 
       <article class="journey reveal" style="--journey:var(--pink)">
         <div class="journey-no">03</div>
         <h3>Podcasts</h3>
         <p>Multi-camera podcast editing, social cutdowns, subtitles, audio cleanup and visual polish for complete episodes.</p>
-        <a href="all-projects.html">Explore Work <i class="fas fa-arrow-right"></i></a>
+        <a href="all-projects.html?category=podcasts">Explore Work <i class="fas fa-arrow-right"></i></a>
       </article>
 
       <article class="journey reveal" style="--journey:var(--yellow)">
         <div class="journey-no">04</div>
         <h3>Motion & Ed-Tech</h3>
         <p>Motion graphics, explainers, educational visuals, green-screen work and animated content that makes complex ideas easier to understand.</p>
-        <a href="all-projects.html">Explore Work <i class="fas fa-arrow-right"></i></a>
+        <a href="all-projects.html?category=motion-edtech">Explore Work <i class="fas fa-arrow-right"></i></a>
       </article>
     </div>
   </section>
