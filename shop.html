@@ -234,26 +234,40 @@ nav.solid{
 
 /* GAME DETAIL MODAL */
 .game-modal-inner{
-  width:100%;max-width:600px;max-height:88vh;overflow-y:auto;
+  width:100%;max-width:440px;aspect-ratio:auto;
   border:2px solid var(--ink);box-shadow:var(--shadow-lg);background:#fff;
-  aspect-ratio:auto;position:relative;
+  position:relative;
 }
-.game-modal-video{aspect-ratio:16/9;background:#111}
-.game-modal-video iframe{width:100%;height:100%;border:0;display:block}
-.game-modal-body{padding:24px}
-.game-modal-body h3{font:800 1.25rem Manrope;text-transform:uppercase;letter-spacing:-.01em;line-height:1.1}
-.game-modal-note{margin-top:16px;border:1px solid var(--line);background:rgba(251,203,22,.14);padding:14px 16px}
-.game-modal-note strong{display:block;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:6px}
-.game-modal-note p{font-size:.82rem;color:var(--ink);line-height:1.65}
-.game-modal-actions{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.game-modal-thumb{aspect-ratio:16/9;background:#111;position:relative;overflow:hidden;border-bottom:2px solid var(--ink)}
+.game-modal-thumb img{width:100%;height:100%;object-fit:cover;display:block;opacity:.85}
+.game-modal-thumb a.trailer-link{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:8px;
+  background:rgba(9,10,11,.35);text-decoration:none;color:#fff;
+  font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;transition:.15s;
+}
+.game-modal-thumb a.trailer-link:hover{background:rgba(9,10,11,.55)}
+.game-modal-thumb a.trailer-link i{
+  width:36px;height:36px;background:var(--pink);border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);
+  display:flex;align-items:center;justify-content:center;font-size:.65rem;
+}
+.game-modal-body{padding:20px}
+.game-modal-body h3{font:800 1.15rem Manrope;text-transform:uppercase;letter-spacing:-.01em;line-height:1.15;color:var(--ink)}
+.game-modal-note{margin-top:14px;border:2px solid var(--ink);background:var(--yellow);padding:12px 14px}
+.game-modal-note strong{display:block;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin-bottom:5px}
+.game-modal-note p{font-size:.78rem;color:var(--ink);line-height:1.55;font-weight:500}
+.game-modal-actions{display:flex;flex-direction:column;gap:9px;margin-top:16px}
 .modal-btn{
-  display:flex;align-items:center;justify-content:space-between;gap:10px;padding:15px 18px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;
   border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);text-decoration:none;font-weight:800;
-  font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);background:#fff;transition:.15s;
+  font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);background:#fff;transition:.15s;
 }
 .modal-btn:hover{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
-.modal-btn-primary{background:var(--green)}
-.modal-btn-wa{background:var(--yellow)}
+.modal-btn-primary{background:var(--green);color:#000}
+.modal-btn-wa{background:#fff;color:var(--ink)}
+@media(max-width:700px){
+  .game-modal-inner{max-width:92vw}
+  .game-modal-body{padding:16px}
+}
 
 /* FAQ */
 .faq-list{border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
@@ -514,14 +528,15 @@ footer{background:var(--ink);color:#fff;padding:32px 5%;display:flex;align-items
 <div class="video-modal" id="gameModal">
   <div class="video-modal-inner game-modal-inner">
     <button class="video-modal-close" id="gameModalClose" aria-label="Close">✕</button>
-    <div class="game-modal-video">
-      <iframe id="gameModalFrame" src="" title="Trailer" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+    <div class="game-modal-thumb">
+      <img id="gameModalThumb" src="" alt="">
+      <a id="gameModalTrailer" class="trailer-link" href="#" target="_blank" rel="noopener"><i class="fas fa-play"></i> Watch Trailer</a>
     </div>
     <div class="game-modal-body">
       <h3 id="gameModalTitle">Game Title</h3>
       <div class="game-modal-note">
         <strong>How To Install</strong>
-        <p>Download the file from Drive, extract the ZIP, then run <b>setup.exe</b> and follow the on-screen steps. A full written guide is included inside the folder — message us on WhatsApp if you get stuck at any step.</p>
+        <p>Download the file from Drive, extract the ZIP, then run <b>setup.exe</b> and follow the on-screen steps. WhatsApp us if you get stuck at any step.</p>
       </div>
       <div class="game-modal-actions">
         <a id="gameModalDownload" class="modal-btn modal-btn-primary" href="https://drive.google.com/drive/folders/1dF990efu6RnBWGep3oe_NeCXea7A29Rz?usp=drive_link" target="_blank" rel="noopener"><span><i class="fab fa-google-drive"></i> Download From Drive</span><i class="fas fa-arrow-right"></i></a>
@@ -633,14 +648,17 @@ games.forEach((g, i) => {
 // keep the "By the numbers" games count in sync with the real catalog
 document.getElementById('gameCountNum').dataset.target = games.length;
 
-// ── Game detail popup: trailer + download + how-to-install + WhatsApp ──
+// ── Game detail popup: thumbnail + download + how-to-install + WhatsApp ──
 const modal = document.getElementById('gameModal');
-const frame = document.getElementById('gameModalFrame');
+const modalThumb = document.getElementById('gameModalThumb');
+const modalTrailer = document.getElementById('gameModalTrailer');
 const modalTitle = document.getElementById('gameModalTitle');
 const modalWhatsapp = document.getElementById('gameModalWhatsapp');
 
 function openGameModal(game) {
-  frame.src = `https://www.youtube-nocookie.com/embed/${game.yt}?autoplay=1`;
+  modalThumb.src = `https://img.youtube.com/vi/${game.yt}/hqdefault.jpg`;
+  modalThumb.alt = game.title + ' trailer thumbnail';
+  modalTrailer.href = `https://www.youtube.com/watch?v=${game.yt}`;
   modalTitle.textContent = game.title;
   const waMsg = encodeURIComponent(`Hi Usman, I want the FREE download of "${game.title}".`);
   modalWhatsapp.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${waMsg}`;
@@ -648,7 +666,6 @@ function openGameModal(game) {
 }
 function closeGameModal() {
   modal.classList.remove('open');
-  frame.src = '';
 }
 
 grid.addEventListener('click', (e) => {
