@@ -3,163 +3,319 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Video editing packages by Usman Khan — reels, YouTube videos and social content, edited, colour graded and delivered fast.">
 <title>Video Editing Packages | Usman Khan</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <style>
-:root {
-  --bg:      #09090B;
-  --fg:      #FAFAFA;
-  --muted:   #27272A;
-  --muted-fg:#A1A1AA;
-  --accent:  #DFE104;
-  --accent-fg:#000000;
-  --border:  #3F3F46;
-  --green:   #22C55E;
+:root{
+  --ink:#111111;
+  --paper:#FFFFFF;
+  --white:#FFFFFF;
+  --muted:#73777A;
+  --line:#111111;
+  --green:#25B684;
+  --pink:#EF2267;
+  --orange:#F76E2D;
+  --yellow:#FBCB16;
+  --black:#090A0B;
+  --max:1440px;
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;line-height:1.5;overflow-x:hidden;width:100%;}
-::selection{background:var(--accent);color:var(--accent-fg);}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background-color:var(--paper);
+  color:var(--ink);
+  font-family:Poppins,Inter,Arial,sans-serif;
+  line-height:1.55;
+  overflow-x:hidden;
+}
+img,video,iframe{max-width:100%}
+a{color:inherit}
+::selection{background:var(--green);color:#000}
+button,a{-webkit-tap-highlight-color:transparent}
 
-.noise{position:fixed;inset:0;z-index:1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");opacity:.03;mix-blend-mode:overlay;}
+.noise{
+  position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 5%;border-bottom:2px solid var(--border);background:rgba(9,9,11,.96);backdrop-filter:blur(12px);z-index:900;}
-.nav-logo{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--fg);text-decoration:none;}
-.nav-logo span{color:var(--accent);}
-.nav-links{display:flex;align-items:center;gap:2px;}
-.nav-links a{color:var(--muted-fg);text-decoration:none;font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:8px 16px;border:2px solid transparent;transition:color .2s,border-color .2s;}
-.nav-links a:hover,.nav-links a.active{color:var(--accent);border-color:var(--accent);}
+/* HEADER */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  height:82px;padding:0 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  color:var(--white);
+  transition:.35s ease;
+}
+nav.solid{
+  background:rgba(13,15,16,.94);
+  backdrop-filter:blur(16px);
+  box-shadow:0 1px 0 rgba(255,255,255,.12);
+}
+.nav-logo{
+  color:#fff;text-decoration:none;font-family:Poppins,Inter,Arial,sans-serif;
+  font-size:1.35rem;font-weight:800;letter-spacing:.08em;
+  flex:0 0 auto;
+}
+.nav-logo span{color:var(--green)}
+.nav-links{display:flex;align-items:center;gap:2px;flex-wrap:nowrap}
+.nav-links a{
+  position:relative;
+  color:rgba(255,255,255,.72);text-decoration:none;
+  font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:9px 11px;border:1px solid transparent;transition:.2s;
+  white-space:nowrap;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--green);border-color:var(--green)}
+.nav-toggle{
+  display:none;width:44px;height:44px;background:transparent;color:#fff;
+  border:1px solid rgba(255,255,255,.35);align-items:center;justify-content:center;
+  cursor:pointer;font-size:1rem;flex:0 0 auto;
+}
+.nav-toggle.open{background:var(--green);color:#000;border-color:var(--green)}
+.nav-toggle .fa-xmark{display:none}.nav-toggle.open .fa-bars{display:none}.nav-toggle.open .fa-xmark{display:inline}
 
-/* BACK LINK */
-.back-link{display:inline-flex;align-items:center;gap:8px;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-fg);text-decoration:none;margin-bottom:20px;transition:color .2s;}
-.back-link:hover{color:var(--accent);}
+/* PAGE HERO */
+.pk-hero{
+  background:var(--ink);color:#fff;position:relative;overflow:hidden;
+  padding:150px 5% 90px;
+}
+.pk-hero:after{
+  content:"";position:absolute;width:42vw;height:42vw;right:-14vw;top:-14vw;
+  background:var(--green);opacity:.08;border-radius:50%;
+}
+.hero-bg-num{
+  position:absolute;right:2%;bottom:-6%;
+  font-family:Manrope,Poppins,sans-serif;font-weight:800;
+  font-size:clamp(5rem,18vw,16rem);letter-spacing:-.05em;text-transform:uppercase;
+  color:rgba(255,255,255,.05);line-height:1;pointer-events:none;user-select:none;z-index:0;
+}
+.pk-hero-inner{position:relative;z-index:2;max-width:var(--max);margin:auto}
+.back-link{
+  display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+  color:rgba(255,255,255,.55);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:26px;transition:.2s;
+}
+.back-link:hover{color:var(--green)}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;color:var(--green);
+  border:1px solid var(--green);padding:8px 13px;margin-bottom:22px;
+  font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+}
+.dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:blink 2s infinite}
+@keyframes blink{50%{opacity:.25}}
+.pk-title{
+  font-family:Poppins,Inter,Arial,sans-serif;font-size:clamp(2.9rem,7.5vw,7.2rem);
+  line-height:.9;letter-spacing:-.055em;font-weight:800;text-transform:uppercase;
+  text-shadow:5px 5px 0 rgba(37,182,132,.28);
+}
+.pk-title .accent{color:var(--green)}
+.pk-desc{margin-top:24px;max-width:620px;color:rgba(255,255,255,.65);font-size:1.05rem;line-height:1.65}
+.pk-sub{margin-top:14px;color:rgba(255,255,255,.4);font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.pk-sub span{color:var(--green)}
 
-/* HERO */
-.pk-hero{padding:130px 6% 40px;position:relative;overflow:hidden;border-bottom:2px solid var(--border);}
-.hero-bg-num{position:absolute;right:-3%;top:-5%;font-size:clamp(5rem,22vw,26rem);font-weight:700;letter-spacing:-6px;text-transform:uppercase;color:var(--muted);line-height:1;pointer-events:none;user-select:none;z-index:0;opacity:.7;}
-.pk-hero-inner{position:relative;z-index:1;max-width:1280px;margin:0 auto;}
-.hero-tag{display:inline-flex;align-items:center;gap:10px;border:2px solid var(--accent);padding:6px 14px;margin-bottom:22px;}
-.tag-dot{width:7px;height:7px;background:var(--accent);flex-shrink:0;animation:blink 2s infinite;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-.hero-tag span{font-size:.64rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);}
-.pk-title{font-size:clamp(2.2rem,8vw,7rem);font-weight:700;line-height:.94;letter-spacing:-2px;text-transform:uppercase;word-break:break-word;}
-.pk-title .accent{color:var(--accent);display:block;}
-.pk-desc{color:var(--muted-fg);font-size:1rem;line-height:1.7;max-width:600px;margin:20px 0 8px;font-weight:400;}
-.pk-sub{color:var(--muted-fg);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
-.pk-sub span{color:var(--accent);}
+/* TICKER */
+.ticker{overflow:hidden;white-space:nowrap;background:var(--green);color:#000;border-top:1px solid #000;border-bottom:1px solid #000}
+.ticker-track{display:flex;width:max-content;animation:ticker 26s linear infinite}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker-item{
+  padding:14px 28px;font-family:Manrope;font-size:.75rem;font-weight:800;
+  letter-spacing:.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:28px;
+}
+.ticker-item:after{content:"◆";opacity:.4;font-size:.55rem}
+@keyframes ticker{to{transform:translateX(-50%)}}
 
-.wrap{max-width:1280px;margin:0 auto;padding:0 6%;}
-.section{padding:52px 0;border-top:2px solid var(--border);}
-.sec-label{display:flex;align-items:baseline;gap:16px;margin-bottom:28px;flex-wrap:wrap;}
-.sec-num{font-size:.68rem;font-weight:700;letter-spacing:.22em;color:var(--accent);}
-.sec-title{font-size:clamp(1.6rem,5.5vw,4.5rem);font-weight:700;letter-spacing:-1.5px;text-transform:uppercase;line-height:.98;}
-.sec-rule{flex:1;height:2px;background:var(--border);min-width:20px;}
+/* COMMON */
+.wrap{max-width:var(--max);margin:auto;padding:0 5%}
+.section{padding:120px 0;border-bottom:1px solid var(--line)}
+.section-head{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:end;margin-bottom:58px}
+.section-no{font:700 .75rem Inter;color:var(--pink);letter-spacing:.12em}
+.section h2{
+  font-family:Poppins,Inter,Arial,sans-serif;font-size:clamp(2.5rem,5.2vw,5.2rem);
+  line-height:.95;letter-spacing:-.055em;text-transform:uppercase;font-weight:800;
+  text-shadow:5px 5px 0 rgba(37,182,132,.28);
+}
+.section-intro{grid-column:2;max-width:620px;color:var(--muted);margin-top:2px;font-size:1rem}
+.rule{height:1px;background:var(--line);align-self:center;margin-left:20px}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s,transform .8s}
+.reveal.in{opacity:1;transform:none}
 
-/* PRICING CARDS */
-.price-grid{display:grid;grid-template-columns:1fr;gap:16px;}
-@media(min-width:560px){.price-grid{grid-template-columns:1fr 1fr;}}
-@media(min-width:1024px){.price-grid{grid-template-columns:repeat(4,1fr);}}
+.btn{
+  min-height:52px;padding:0 24px;display:inline-flex;align-items:center;gap:10px;
+  text-decoration:none;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  border:2px solid #111;background:#fff;color:#111;box-shadow:4px 4px 0 #111;transition:.2s;
+}
+.btn-primary{background:var(--green);color:#000}
+.btn-primary:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 #111}
 
+/* PRICING */
+.price-grid{border-top:1px solid var(--line);border-left:1px solid var(--line);display:grid;grid-template-columns:1fr}
+@media(min-width:640px){.price-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:1180px){.price-grid{grid-template-columns:repeat(4,1fr)}}
 .price-card{
-  border:2px solid var(--border);background:var(--bg);
-  display:flex;flex-direction:column;position:relative;
-  transition:border-color .2s,transform .2s;
-  min-width:0;
+  position:relative;border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+  background:var(--paper);display:flex;flex-direction:column;transition:.25s;
 }
-.price-card.popular{border-color:var(--accent);background:rgba(223,225,4,.04);}
-.price-badge{
-  position:absolute;top:-13px;left:20px;
-  background:var(--accent);color:var(--accent-fg);
-  font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  padding:5px 12px;
+.price-card:before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--tier,var(--green))}
+.price-card:hover{transform:translate(-2px,-2px);box-shadow:var(--shadow)}
+.price-card.popular{background:rgba(37,182,132,.05)}
+.plan-badge{
+  position:absolute;top:14px;right:14px;background:var(--pink);color:#fff;
+  font-size:.58rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:5px 9px;
+  border:2px solid #111;box-shadow:3px 3px 0 #111;
 }
-.pc-head{padding:24px 20px 18px;border-bottom:2px solid var(--border);}
-.pc-name{font-size:1.2rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
-.pc-tag{font-size:.78rem;color:var(--muted-fg);line-height:1.5;}
-.pc-price-block{padding:18px 20px;border-bottom:2px solid var(--border);}
-.pc-price-label{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-fg);margin-bottom:6px;}
-.pc-price{font-size:1.75rem;font-weight:700;color:var(--accent);line-height:1;word-break:break-word;}
-.pc-price small{font-size:.85rem;color:var(--muted-fg);font-weight:400;}
-.pc-bundle{font-size:.72rem;color:var(--muted-fg);margin-top:8px;}
-.pc-bundle b{color:var(--fg);}
-.pc-body{padding:20px;flex:1;display:flex;flex-direction:column;gap:8px;}
-.pc-group-label{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:10px 0 4px;}
-.pc-group-label:first-child{margin-top:0;}
-.pc-feat{display:flex;align-items:flex-start;gap:8px;font-size:.79rem;color:var(--fg);}
-.pc-feat i{color:var(--accent);font-size:.68rem;margin-top:4px;flex-shrink:0;}
-.pc-feat.off{color:var(--muted-fg);}
-.pc-feat.off i{color:var(--muted-fg);}
-.pc-foot{padding:18px 20px 24px;}
-.pc-btn{
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  background:var(--accent);color:var(--accent-fg);
-  font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  padding:14px;text-decoration:none;border:2px solid var(--accent);
-  transition:transform .15s;
-}
-.pc-btn:active{transform:scale(.97);}
-.price-card.popular .pc-btn{background:var(--fg);border-color:var(--fg);}
+.plan-no{font:800 2.4rem Manrope;color:var(--tier,var(--green));line-height:1;padding:30px 22px 0}
+.pc-head{padding:14px 22px 20px;border-bottom:1px solid var(--line)}
+.pc-name{font:800 1.2rem Manrope;text-transform:uppercase;letter-spacing:-.01em;margin-bottom:8px}
+.pc-tag{font-size:.82rem;color:var(--muted);line-height:1.5}
+.pc-price-block{padding:20px 22px;border-bottom:1px solid var(--line)}
+.pc-price-label{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.pc-price{font:800 1.9rem Manrope;color:var(--ink)}
+.pc-bundle{font-size:.72rem;color:var(--muted);margin-top:8px}
+.pc-bundle b{color:var(--ink)}
+.pc-body{padding:20px 22px;flex:1;display:flex;flex-direction:column;gap:8px}
+.pc-group-label{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tier,var(--green));margin:10px 0 4px}
+.pc-group-label:first-child{margin-top:0}
+.pc-feat{display:flex;align-items:flex-start;gap:8px;font-size:.8rem;color:var(--ink)}
+.pc-feat i{color:var(--tier,var(--green));font-size:.68rem;margin-top:4px;flex-shrink:0}
+.pc-feat.off{color:var(--muted)}
+.pc-feat.off i{color:#c9c9c9}
+.pc-foot{padding:18px 22px 26px}
+.pc-foot .btn{width:100%;justify-content:center}
 
 /* GOOD TO KNOW */
-.terms-grid{display:grid;grid-template-columns:1fr;gap:12px;}
-@media(min-width:600px){.terms-grid{grid-template-columns:1fr 1fr;}}
-.term-card{border:2px solid var(--border);padding:18px;display:flex;gap:14px;align-items:flex-start;}
-.term-icon{width:36px;height:36px;flex-shrink:0;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:.82rem;}
-.term-t{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.02em;margin-bottom:4px;}
-.term-d{font-size:.78rem;color:var(--muted-fg);line-height:1.55;}
+.terms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.term{background-color:var(--paper);padding:34px;min-height:200px}
+.term-icon{width:40px;height:40px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--orange);font-size:.95rem;margin-bottom:18px}
+.term h3{font:800 1.1rem Manrope;text-transform:uppercase;letter-spacing:-.01em}
+.term p{color:var(--muted);font-size:.88rem;margin-top:10px}
 
-.terms-cta{margin-top:16px;border:2px solid var(--accent);background:rgba(223,225,4,.05);padding:22px;display:flex;flex-direction:column;gap:14px;}
-@media(min-width:640px){.terms-cta{flex-direction:row;align-items:center;justify-content:space-between;gap:24px;}}
-.terms-cta p{font-size:.85rem;color:var(--fg);line-height:1.6;max-width:520px;}
-.terms-cta p b{color:var(--accent);}
-.terms-cta .pc-btn{white-space:nowrap;flex-shrink:0;padding:14px 22px;}
-
-/* CONTACT STRIP */
-.contact-strip{display:grid;grid-template-columns:1fr;border:2px solid var(--border);}
-.cs-left{background:var(--accent);padding:32px 22px;display:flex;flex-direction:column;justify-content:center;gap:10px;}
-.cs-h{font-size:clamp(1.3rem,4.5vw,2.4rem);font-weight:700;text-transform:uppercase;color:var(--accent-fg);line-height:1.1;}
-.cs-s{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(0,0,0,.6);}
-.cs-right{background:var(--muted);padding:26px 22px;display:flex;flex-direction:column;justify-content:center;gap:12px;border-top:2px solid var(--border);}
-.cbtn{display:inline-flex;align-items:center;gap:12px;justify-content:center;padding:15px 22px;font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border:2px solid transparent;transition:all .2s;}
-.cbtn-wa{background:rgba(37,211,102,.1);color:#25d366;border-color:rgba(37,211,102,.3);}
-.cbtn-wa:hover{background:#25d366;color:#000;border-color:#25d366;}
-.cbtn-em{background:rgba(250,250,250,.06);color:var(--fg);border-color:var(--border);}
-.cbtn-em:hover{background:var(--fg);color:var(--bg);border-color:var(--fg);}
-@media(min-width:640px){
-  .contact-strip{grid-template-columns:1fr 1fr;}
-  .cs-left,.cs-right{padding:52px 40px;}
-  .cs-right{border-top:none;border-left:2px solid var(--border);}
+.terms-cta{
+  margin-top:1px;border:1px solid var(--line);background:rgba(37,182,132,.06);
+  padding:30px;display:flex;flex-direction:column;gap:18px;
 }
+@media(min-width:700px){.terms-cta{flex-direction:row;align-items:center;justify-content:space-between}}
+.terms-cta p{font-size:.95rem;color:var(--ink);max-width:560px}
+.terms-cta p b{color:var(--green)}
 
-footer{border-top:2px solid var(--border);padding:20px 6%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;text-align:center;}
-.f-logo{font-size:1.05rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--fg);}
-.f-logo span{color:var(--accent);}
-.f-copy{font-size:.6rem;color:var(--muted-fg);letter-spacing:.05em;text-transform:uppercase;}
-
-@media(max-width:640px){
-  nav{height:auto;padding:10px 5%;flex-wrap:wrap;gap:6px;}
-  .nav-links{width:100%;justify-content:center;flex-wrap:wrap;}
-  .nav-links a{font-size:.6rem;padding:6px 8px;}
-  .pk-hero{padding:92px 6% 28px;}
-  .section{padding:40px 0;}
-  footer{flex-direction:column;}
+/* CONTACT */
+.contact{background:var(--yellow);color:#000;padding:130px 5%;position:relative;overflow:hidden}
+.contact-inner{max-width:var(--max);margin:auto;display:grid;grid-template-columns:1.15fr .85fr;gap:70px;align-items:center}
+.contact h2{font:800 clamp(3rem,6.5vw,7rem) Manrope;line-height:.88;letter-spacing:-.06em;text-transform:uppercase}
+.contact p{font-weight:600;max-width:540px;margin-top:22px}
+.contact-actions{display:flex;flex-direction:column;gap:10px}
+.contact-btn{
+  display:flex;align-items:center;justify-content:space-between;padding:20px 22px;
+  border:1px solid rgba(0,0,0,.45);text-decoration:none;font-weight:800;
+  font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;transition:.2s;
 }
-@media(max-width:480px){
-  .hero-bg-num{display:none;}
-  .pk-desc{font-size:.92rem;}
-  .terms-cta .pc-btn{width:100%;}
+.contact-btn:hover{background:#000;color:#fff;transform:translateX(5px)}
+
+/* FOOTER */
+footer{background:var(--ink);color:#fff;padding:32px 5%;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.f-logo{font:800 1.3rem Manrope;letter-spacing:.08em}.f-logo span{color:var(--green)}
+.f-copy{font-size:.65rem;color:rgba(255,255,255,.45);letter-spacing:.06em;text-transform:uppercase;text-align:right}
+
+/* RESPONSIVE (same structure/order as index.html) */
+@media(max-width:1180px){
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:fixed;top:82px;left:16px;right:16px;
+    display:flex;flex-direction:column;align-items:stretch;
+    background:rgba(13,15,16,.98);backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,.2);padding:6px;
+    max-height:calc(100vh - 100px);overflow-y:auto;
+    opacity:0;visibility:hidden;transform:translateY(-8px);transition:.2s;
+  }
+  .nav-links.open{opacity:1;visibility:visible;transform:none}
+  .nav-links a{text-align:center;padding:14px;font-size:.72rem}
+}
+@media(max-width:1024px){
+  .contact-inner{grid-template-columns:1fr}
+  .terms-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:700px){
+  nav{height:68px;padding:0 20px}
+  .nav-links{top:68px;left:20px;right:20px}
+  .pk-hero{padding:110px 20px 55px}
+  .wrap{padding:0 20px}
+  .section{padding:76px 0}
+  .section-head{grid-template-columns:auto 1fr;gap:10px;margin-bottom:38px}
+  .section-intro{grid-column:1/-1;font-size:.92rem}
+  .rule{display:none}
+  .terms-grid{grid-template-columns:1fr}
+  .term{min-height:auto}
+  .price-grid{border-left:none}
+  .price-card{border-left:1px solid var(--line)}
+  .plan-badge{top:10px;right:10px;font-size:.52rem;padding:4px 7px}
+  .plan-no{font-size:1.7rem;padding:16px 16px 0}
+  .pc-head{padding:8px 16px 12px}
+  .pc-name{font-size:1rem;margin-bottom:3px}
+  .pc-tag{font-size:.74rem;line-height:1.4}
+  .pc-price-block{padding:12px 16px}
+  .pc-price-label{font-size:.56rem;margin-bottom:3px}
+  .pc-price{font-size:1.4rem}
+  .pc-bundle{font-size:.66rem;margin-top:4px}
+  .pc-body{padding:12px 16px;display:grid;grid-template-columns:1fr 1fr;column-gap:12px;row-gap:4px}
+  .pc-group-label{grid-column:1/-1;margin:6px 0 2px;font-size:.54rem}
+  .pc-group-label:first-child{margin-top:0}
+  .pc-feat{font-size:.7rem;gap:5px;line-height:1.3}
+  .pc-feat i{font-size:.6rem;margin-top:3px}
+  .pc-foot{padding:12px 16px 16px}
+  .pc-foot .btn{min-height:42px;font-size:.62rem;padding:0 14px}
+  .contact{padding:88px 20px}
+  .contact-inner{gap:42px}
+  footer{padding:25px 20px;flex-direction:column;text-align:center}
+  .f-copy{text-align:center}
+}
+@media(max-width:380px){
+  .pk-title{font-size:clamp(2.3rem,15vw,3.5rem)}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*:before,*:after{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+<style>
+:root{
+  --shadow:5px 5px 0 #111;
+  --shadow-lg:8px 8px 0 #111;
+  --radius:0px;
+}
+body{
+  background-color:#fff;
+  background-image:
+    linear-gradient(rgba(17,17,17,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(17,17,17,.055) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+.section{background:rgba(255,255,255,.94)}
+.btn,.price-card,.term,.terms-cta,.plan-badge{border-radius:0!important}
+@media(max-width:700px){
+  body{background-size:20px 20px}
+  .pk-title{text-shadow:3px 3px 0 rgba(37,182,132,.25)}
+  .section h2{text-shadow:3px 3px 0 rgba(37,182,132,.25)}
 }
 </style>
 </head>
-<body>
 
+<body>
 <div class="noise" aria-hidden="true"></div>
 
-<nav role="navigation" aria-label="Main navigation">
+<nav id="mainNav" aria-label="Main navigation">
   <a class="nav-logo" href="index.html">UK<span>.</span></a>
-  <div class="nav-links">
+  <button id="navToggle" class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+    <i class="fas fa-bars" aria-hidden="true"></i>
+    <i class="fas fa-xmark" aria-hidden="true"></i>
+  </button>
+  <div id="navLinks" class="nav-links">
     <a href="index.html">Home</a>
     <a href="all-projects.html">Portfolio</a>
     <a href="shop.html">Shop</a>
@@ -169,251 +325,121 @@ footer{border-top:2px solid var(--border);padding:20px 6%;display:flex;align-ite
 
 <!-- HERO -->
 <section class="pk-hero">
-  <div class="hero-bg-num" aria-hidden="true">EDIT</div>
+  <span class="hero-bg-num" aria-hidden="true">EDIT</span>
   <div class="pk-hero-inner">
-    <a href="packages.html" class="back-link"><i class="fas fa-arrow-left"></i> All Packages</a>
-    <div class="hero-tag">
-      <div class="tag-dot" aria-hidden="true"></div>
-      <span>Video Editing Services</span>
-    </div>
-    <h1 class="pk-title">EDITING<span class="accent">PACKAGES</span></h1>
-    <p class="pk-desc">Reels, YouTube videos and social content — edited, colour graded and delivered fast. Pick a plan below or message us on WhatsApp for a custom quote.</p>
-    <p class="pk-sub">Pricing shown in <span>PKR</span> · Per-video or monthly bundle</p>
+    <a href="packages.html" class="back-link reveal"><i class="fas fa-arrow-left"></i> All Packages</a>
+    <div class="eyebrow reveal"><span class="dot"></span> Video Editing Services</div>
+    <h1 class="pk-title reveal">Editing <span class="accent">Packages</span></h1>
+    <p class="pk-desc reveal">Reels, YouTube videos and social content — edited, colour graded and delivered fast. Pick a plan below or message us on WhatsApp for a custom quote.</p>
+    <p class="pk-sub reveal">Pricing shown in <span>PKR</span> · Per-video or monthly bundle</p>
   </div>
 </section>
 
-<div class="wrap">
+<!-- TICKER -->
+<div class="ticker" aria-label="Video editing services ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">Reels</span>
+    <span class="ticker-item">YouTube Edits</span>
+    <span class="ticker-item">Colour Grading</span>
+    <span class="ticker-item">Motion Graphics</span>
+    <span class="ticker-item">Sound Design</span>
+    <span class="ticker-item">Premiere Pro</span>
+    <span class="ticker-item">After Effects</span>
+    <span class="ticker-item">Reels</span>
+    <span class="ticker-item">YouTube Edits</span>
+    <span class="ticker-item">Colour Grading</span>
+    <span class="ticker-item">Motion Graphics</span>
+    <span class="ticker-item">Sound Design</span>
+    <span class="ticker-item">Premiere Pro</span>
+    <span class="ticker-item">After Effects</span>
+  </div>
+</div>
 
+<main class="wrap">
   <!-- PRICING -->
-  <section class="section" id="pricing" style="border-top:none;padding-top:44px;">
-    <div class="sec-label">
-      <span class="sec-num">01</span>
-      <h2 class="sec-title">CHOOSE A PLAN</h2>
-      <div class="sec-rule" aria-hidden="true"></div>
+  <section class="section" id="pricing">
+    <div class="section-head reveal">
+      <span class="section-no">01</span>
+      <h2>Choose A Plan</h2>
+      <div class="rule"></div>
+      <p class="section-intro">Four plans from quick social cuts to full agency-level production with priority support.</p>
     </div>
-
-    <div class="price-grid" id="priceGrid"></div>
+    <div class="price-grid reveal" id="priceGrid"></div>
   </section>
 
   <!-- GOOD TO KNOW -->
   <section class="section" id="terms">
-    <div class="sec-label">
-      <span class="sec-num">02</span>
-      <h2 class="sec-title">GOOD TO KNOW</h2>
-      <div class="sec-rule" aria-hidden="true"></div>
+    <div class="section-head reveal">
+      <span class="section-no">02</span>
+      <h2>Good To Know</h2>
+      <div class="rule"></div>
+      <p class="section-intro">A few details worth knowing before you pick a plan.</p>
     </div>
-    <div class="terms-grid">
-      <div class="term-card">
-        <div class="term-icon"><i class="fas fa-tag"></i></div>
-        <div>
-          <div class="term-t">Prices Are Starting Points</div>
-          <div class="term-d">Rates above are estimates — the final cost depends on your footage length and complexity.</div>
-        </div>
-      </div>
-      <div class="term-card">
-        <div class="term-icon"><i class="fas fa-video"></i></div>
-        <div>
-          <div class="term-t">You Bring The Footage</div>
-          <div class="term-d">Just send over your raw clips — cutting, colour and sound are handled from there.</div>
-        </div>
-      </div>
-      <div class="term-card">
-        <div class="term-icon"><i class="fas fa-handshake"></i></div>
-        <div>
-          <div class="term-t">Simple Payment Split</div>
-          <div class="term-d">50% advance to start, balance on final delivery. EasyPaisa, JazzCash or bank transfer.</div>
-        </div>
-      </div>
-      <div class="term-card">
-        <div class="term-icon"><i class="fas fa-bolt"></i></div>
-        <div>
-          <div class="term-t">Need It Fast?</div>
-          <div class="term-d">Rush delivery within 24–48 hours is available on any plan for a small extra fee.</div>
-        </div>
-      </div>
-      <div class="term-card">
-        <div class="term-icon"><i class="fas fa-arrows-rotate"></i></div>
-        <div>
-          <div class="term-t">Flexible Revisions</div>
-          <div class="term-d">Need more than your plan's revision limit? Just ask and we'll sort out a fair rate.</div>
-        </div>
-      </div>
-      <div class="term-card">
-        <div class="term-icon"><i class="fas fa-clock"></i></div>
-        <div>
-          <div class="term-t">Custom Timelines</div>
-          <div class="term-d">Long or complex footage may need a bit more time — we'll always confirm delivery dates upfront.</div>
-        </div>
-      </div>
+    <div class="terms-grid reveal">
+      <div class="term"><div class="term-icon"><i class="fas fa-tag"></i></div><h3>Prices Are Starting Points</h3><p>Rates above are estimates — the final cost depends on your footage length and complexity.</p></div>
+      <div class="term"><div class="term-icon"><i class="fas fa-video"></i></div><h3>You Bring The Footage</h3><p>Just send over your raw clips — cutting, colour and sound are handled from there.</p></div>
+      <div class="term"><div class="term-icon"><i class="fas fa-handshake"></i></div><h3>Simple Payment Split</h3><p>50% advance to start, balance on final delivery. EasyPaisa, JazzCash or bank transfer.</p></div>
+      <div class="term"><div class="term-icon"><i class="fas fa-bolt"></i></div><h3>Need It Fast?</h3><p>Rush delivery within 24–48 hours is available on any plan for a small extra fee.</p></div>
+      <div class="term"><div class="term-icon"><i class="fas fa-arrows-rotate"></i></div><h3>Flexible Revisions</h3><p>Need more than your plan's revision limit? Just ask and we'll sort out a fair rate.</p></div>
+      <div class="term"><div class="term-icon"><i class="fas fa-clock"></i></div><h3>Custom Timelines</h3><p>Long or complex footage may need a bit more time — we'll always confirm delivery dates upfront.</p></div>
     </div>
-    <div class="terms-cta">
+    <div class="terms-cta reveal">
       <p>None of this is set in stone — every project is a little different. <b>Message us your footage details on WhatsApp</b> and we'll confirm the exact price and timeline together.</p>
-      <a class="pc-btn" href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20want%20a%20quote%20for%20a%20video%20editing%20package." target="_blank"><i class="fab fa-whatsapp"></i> Chat On WhatsApp</a>
+      <a class="btn btn-primary" href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20want%20a%20quote%20for%20a%20video%20editing%20package." target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Chat On WhatsApp</a>
     </div>
   </section>
+</main>
 
-</div><!-- /wrap -->
-
-<!-- CONTACT -->
-<div class="contact-section" style="padding:0 6% 70px;max-width:1280px;margin:0 auto;">
-  <div class="contact-strip">
-    <div class="cs-left">
-      <h2 class="cs-h">Not Sure Which Plan?</h2>
-      <p class="cs-s">Send your footage details on WhatsApp for a free custom quote</p>
+<!-- CONTACT / FINAL CTA -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="reveal">
+      <div class="eyebrow" style="color:#000;border-color:#000"><span class="dot" style="background:#000"></span> Available for projects</div>
+      <h2>Not sure which plan?</h2>
+      <p>Send your footage details on WhatsApp for a free custom quote, or email if you'd rather write it out.</p>
     </div>
-    <div class="cs-right">
-      <a href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20want%20a%20quote%20for%20a%20video%20editing%20package." target="_blank" class="cbtn cbtn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-      <a href="mailto:osman.chaajao@gmail.com" class="cbtn cbtn-em"><i class="fas fa-envelope"></i> Email</a>
+    <div class="contact-actions reveal">
+      <a class="contact-btn" href="https://wa.me/923072969303?text=Hi%20Usman%2C%20I%20want%20a%20quote%20for%20a%20video%20editing%20package." target="_blank" rel="noopener"><span><i class="fab fa-whatsapp"></i> WhatsApp</span><i class="fas fa-arrow-right"></i></a>
+      <a class="contact-btn" href="mailto:osman.chaajao@gmail.com"><span><i class="fas fa-envelope"></i> Email</span><i class="fas fa-arrow-right"></i></a>
     </div>
   </div>
-</div>
+</section>
 
 <footer>
   <div class="f-logo">UK<span>.</span></div>
-  <div class="f-copy">© 2026 Usman Khan — Visual Artist. All rights reserved.</div>
+  <div class="f-copy">© 2026 Usman Khan — Video Editor &amp; Visual Artist. All rights reserved.</div>
 </footer>
 
 <script>
 const WA = "923072969303";
 
-// ── Pricing plan data (edit numbers freely — everything else builds itself) ──
 const plans = [
-  {
-    id: "starter",
-    name: "Starter",
-    tag: "Simple cuts, fast turnaround for creators just getting going",
-    popular: false,
-    perVideo: 1500,
-    bundleCount: 10,
-    bundlePrice: 13000,
-    videoLength: "Under 60s",
-    output: "MP4 1080p",
-    revisions: "1",
-    delivery: "2–3 days",
-    features: {
-      "Editing": {
-        "Cuts & trim": true,
-        "1 transition style": true,
-        "Royalty-free music": true,
-        "Text overlay / caption": true,
-        "Colour correction": false,
-        "Dynamic transitions": false
-      },
-      "Visuals": {
-        "Motion graphics": false,
-        "VFX": false,
-        "Intro / outro": false
-      },
-      "Extras": {
-        "Source files": false,
-        "Priority support": false
-      }
-    }
-  },
-  {
-    id: "growth",
-    name: "Growth",
-    tag: "Polished, engaging reels for accounts that post regularly",
-    popular: false,
-    perVideo: 2800,
-    bundleCount: 10,
-    bundlePrice: 24000,
-    videoLength: "Under 90s",
-    output: "MP4 1080p",
-    revisions: "2",
-    delivery: "3–4 days",
-    features: {
-      "Editing": {
-        "Cuts & trim": true,
-        "1 transition style": true,
-        "Royalty-free music": true,
-        "Text overlay / caption": true,
-        "Colour correction": true,
-        "Dynamic transitions": true
-      },
-      "Visuals": {
-        "Motion graphics": false,
-        "VFX": false,
-        "Intro / outro": false
-      },
-      "Extras": {
-        "Source files": false,
-        "Priority support": false
-      }
-    }
-  },
-  {
-    id: "pro",
-    name: "Pro",
-    tag: "Cinematic, branded content for a serious social presence",
-    popular: true,
-    perVideo: 5500,
-    bundleCount: 10,
-    bundlePrice: 48000,
-    videoLength: "Under 3 min",
-    output: "MP4 4K",
-    revisions: "3",
-    delivery: "4–5 days",
-    features: {
-      "Editing": {
-        "Cuts & trim": true,
-        "1 transition style": true,
-        "Royalty-free music": true,
-        "Text overlay / caption": true,
-        "Colour correction": true,
-        "Dynamic transitions": true
-      },
-      "Visuals": {
-        "Motion graphics": true,
-        "VFX": "Basic",
-        "Intro / outro": "Template"
-      },
-      "Extras": {
-        "Source files": false,
-        "Priority support": false
-      }
-    }
-  },
-  {
-    id: "agency",
-    name: "Agency",
-    tag: "Full-service, agency-level production with priority support",
-    popular: false,
-    perVideo: 10000,
-    bundleCount: 10,
-    bundlePrice: 85000,
-    videoLength: "Up to 5 min",
-    output: "MP4 / MOV 4K",
-    revisions: "Unlimited",
-    delivery: "5–7 days",
-    features: {
-      "Editing": {
-        "Cuts & trim": true,
-        "1 transition style": true,
-        "Royalty-free music": true,
-        "Text overlay / caption": true,
-        "Colour correction": true,
-        "Dynamic transitions": true
-      },
-      "Visuals": {
-        "Motion graphics": true,
-        "VFX": "Advanced",
-        "Intro / outro": "Custom"
-      },
-      "Extras": {
-        "Source files": true,
-        "Priority support": true
-      }
-    }
-  }
+  { id:"starter", name:"Starter", tier:"green", tag:"Simple cuts, fast turnaround for creators just getting going", popular:false, perVideo:1500, bundleCount:10, bundlePrice:13000,
+    features:{ "Editing":{ "Cuts & trim":true, "1 transition style":true, "Royalty-free music":true, "Text overlay / caption":true, "Colour correction":false, "Dynamic transitions":false },
+      "Visuals":{ "Motion graphics":false, "VFX":false, "Intro / outro":false },
+      "Extras":{ "Source files":false, "Priority support":false } } },
+  { id:"growth", name:"Growth", tier:"orange", tag:"Polished, engaging reels for accounts that post regularly", popular:false, perVideo:2800, bundleCount:10, bundlePrice:24000,
+    features:{ "Editing":{ "Cuts & trim":true, "1 transition style":true, "Royalty-free music":true, "Text overlay / caption":true, "Colour correction":true, "Dynamic transitions":true },
+      "Visuals":{ "Motion graphics":false, "VFX":false, "Intro / outro":false },
+      "Extras":{ "Source files":false, "Priority support":false } } },
+  { id:"pro", name:"Pro", tier:"pink", tag:"Cinematic, branded content for a serious social presence", popular:true, perVideo:5500, bundleCount:10, bundlePrice:48000,
+    features:{ "Editing":{ "Cuts & trim":true, "1 transition style":true, "Royalty-free music":true, "Text overlay / caption":true, "Colour correction":true, "Dynamic transitions":true },
+      "Visuals":{ "Motion graphics":true, "VFX":"Basic", "Intro / outro":"Template" },
+      "Extras":{ "Source files":false, "Priority support":false } } },
+  { id:"agency", name:"Agency", tier:"yellow", tag:"Full-service, agency-level production with priority support", popular:false, perVideo:10000, bundleCount:10, bundlePrice:85000,
+    features:{ "Editing":{ "Cuts & trim":true, "1 transition style":true, "Royalty-free music":true, "Text overlay / caption":true, "Colour correction":true, "Dynamic transitions":true },
+      "Visuals":{ "Motion graphics":true, "VFX":"Advanced", "Intro / outro":"Custom" },
+      "Extras":{ "Source files":true, "Priority support":true } } }
 ];
 
-// ── Render pricing cards ──
+const tierVar = { green:"var(--green)", pink:"var(--pink)", orange:"var(--orange)", yellow:"var(--yellow)" };
+
 const priceGrid = document.getElementById('priceGrid');
-plans.forEach(p => {
+plans.forEach((p,i) => {
   const waMsg = encodeURIComponent(`Hi Usman, I'm interested in the ${p.name} editing package.`);
   const card = document.createElement('div');
   card.className = 'price-card' + (p.popular ? ' popular' : '');
+  card.style.setProperty('--tier', tierVar[p.tier]);
 
   let bodyHtml = '';
   Object.keys(p.features).forEach(group => {
@@ -427,7 +453,8 @@ plans.forEach(p => {
   });
 
   card.innerHTML = `
-    ${p.popular ? '<div class="price-badge">Most Popular</div>' : ''}
+    ${p.popular ? '<div class="plan-badge">Most Popular</div>' : ''}
+    <div class="plan-no">${String(i+1).padStart(2,'0')}</div>
     <div class="pc-head">
       <div class="pc-name">${p.name}</div>
       <div class="pc-tag">${p.tag}</div>
@@ -439,10 +466,50 @@ plans.forEach(p => {
     </div>
     <div class="pc-body">${bodyHtml}</div>
     <div class="pc-foot">
-      <a class="pc-btn" href="https://wa.me/${WA}?text=${waMsg}" target="_blank"><i class="fab fa-whatsapp"></i> Select ${p.name}</a>
+      <a class="btn btn-primary" href="https://wa.me/${WA}?text=${waMsg}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Select ${p.name}</a>
     </div>
   `;
   priceGrid.appendChild(card);
+});
+
+(function(){
+  const nav=document.getElementById('mainNav');
+  const toggle=document.getElementById('navToggle');
+  const links=document.getElementById('navLinks');
+
+  function syncNav(){ nav.classList.toggle('solid',window.scrollY>40); }
+  window.addEventListener('scroll',syncNav,{passive:true});
+  syncNav();
+
+  if(toggle){
+    toggle.addEventListener('click',function(){
+      const open=links.classList.toggle('open');
+      toggle.classList.toggle('open',open);
+      toggle.setAttribute('aria-expanded',String(open));
+    });
+  }
+  links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+    links.classList.remove('open');
+    toggle.classList.remove('open');
+    toggle.setAttribute('aria-expanded','false');
+  }));
+})();
+
+document.addEventListener('DOMContentLoaded',function(){
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reveals=document.querySelectorAll('.reveal');
+  if(reduced){ reveals.forEach(el=>el.classList.add('in')); }
+  else{
+    const ro=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('in');
+          ro.unobserve(entry.target);
+        }
+      });
+    },{threshold:.12});
+    reveals.forEach(el=>ro.observe(el));
+  }
 });
 </script>
 </body>
